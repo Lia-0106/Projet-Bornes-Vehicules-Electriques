@@ -6,6 +6,7 @@ header('Access-Control-Allow-Origin: *') ;
 require_once('Database.php') ;
 require_once('Stats.php') ;
 require_once('Recherche.php') ;
+require_once('Carte.php') ;
 
 $database = new Database() ;
 $db = $database->getConnexion() ;
@@ -29,6 +30,12 @@ if ($requestMethod === 'GET' && $ressource === 'stats') {
 if ($requestMethod === 'GET' && $ressource === 'recherche') {
     $recherche = new Recherche($db) ;
     $data = $recherche->getRecherche() ;
+    echo json_encode($data) ;
+}
+
+if ($requestMethod === 'GET' && $ressource === 'carte') {
+    $carte = new Carte($db) ;
+    $data = $carte->getRechercheCarte() ;
     echo json_encode($data) ;
 }
 

@@ -8,6 +8,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
   <link href="../css/style-front.css" rel="stylesheet" />
+  <script src="../js/carte.js" defer></script>
 </head>
 <body>
 
@@ -34,12 +35,12 @@
     <div class="row g-3 align-items-end">
       <div class="col-sm-6 col-md-4">
         <label class="form-label-custom">Année d'installation</label>
-        <select class="form-select">
+        <select id="recherche-carte-annee" class="form-select">
         </select>
       </div>
       <div class="col-sm-6 col-md-4">
         <label class="form-label-custom">Département</label>
-        <select class="form-select">
+        <select id="recherche-carte-departement" class="form-select">
         </select>
       </div>
       <div class="col-sm-12 col-md-2">
