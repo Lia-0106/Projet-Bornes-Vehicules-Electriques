@@ -18,9 +18,15 @@ function displayStats(data) {
     // Affichage STAT 1
     document.getElementById('stat-total-points').textContent = data.total_points ;
 
-    // Affichage STAT 2
-    document.getElementById('stat-points-recent-year').textContent = data.points_annee_recente.nb_points ;
-    document.getElementById('stat-points-recent-desc').textContent = `Installations en ${data.points_annee_recente.annee_recente}`
+    // Affichage STAT 2 : liste des points par année
+    const listePointsAnnee = document.getElementById('stat-annee-list') ;
+    listePointsAnnee.innerHTML = '' ;
+    data.points_annee.forEach(annee => {
+    listePointsAnnee.innerHTML += `<div class="d-flex justify-content-between border-bottom pb-1">
+        <span>${annee.annee}</span>
+        <span class="fw-bold text-primary">${annee.nb_points}</span>
+        </div>` ;
+    }) ;
 
     // Affichage STAT 3
     const listePointsDep = document.getElementById('stat-dep-list') ;
@@ -35,9 +41,9 @@ function displayStats(data) {
     // Affichage STAT 4
     const listePointsDepAnnee = document.getElementById('stat-year-dep-list') ;
     listePointsDepAnnee.innerHTML = '' ;
-    data.points_par_dep_recent.forEach(depAnnee => {
+    data.points_par_dep_annee.forEach(depAnnee => {
     listePointsDepAnnee.innerHTML += `<div class="d-flex justify-content-between border-bottom pb-1">
-        <span>${depAnnee.nom_departement}</span>
+        <span>${depAnnee.annee} — ${depAnnee.nom_departement}</span>
         <span class="fw-bold text-primary">${depAnnee.nb_points}</span>
         </div>            `
     })

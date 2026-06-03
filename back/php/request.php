@@ -5,6 +5,7 @@ header('Access-Control-Allow-Origin: *') ;
 
 require_once('Database.php') ;
 require_once('Stats.php') ;
+require_once('Recherche.php') ;
 
 $database = new Database() ;
 $db = $database->getConnexion() ;
@@ -22,6 +23,12 @@ $ressource = array_shift($request) ;
 if ($requestMethod === 'GET' && $ressource === 'stats') {
     $stats = new Stats($db) ;
     $data = $stats->getStats() ;
+    echo json_encode($data) ;
+}
+
+if ($requestMethod === 'GET' && $ressource === 'recherche') {
+    $recherche = new Recherche($db) ;
+    $data = $recherche->getRecherche() ;
     echo json_encode($data) ;
 }
 
