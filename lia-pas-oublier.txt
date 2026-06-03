@@ -1,2 +1,0 @@
-1) configurer Vhost
-2) bdd en local pour emma
