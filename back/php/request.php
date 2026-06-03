@@ -42,7 +42,11 @@ if ($requestMethod === 'GET' && $ressource === 'carte') {
 
 if ($requestMethod === 'GET' && $ressource === 'resultats') {
     $resultats = new Resultats($db) ;
-    $data = $resultats->getResultats() ;
+    $amenageur = $_GET['amenageur'] ;
+    $type_prise = $_GET['type_prise'] ;
+    $code_dep = $_GET['code_dep'] ;
+
+    $data = $resultats->getResultats($amenageur, $type_prise, $code_dep) ;
     echo json_encode($data) ;
 }
 
