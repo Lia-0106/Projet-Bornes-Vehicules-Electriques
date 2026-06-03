@@ -7,7 +7,7 @@ require_once('Database.php') ;
 require_once('../../front/php/Stats.php') ;
 require_once('../../front/php/Recherche.php') ;
 require_once('../../front/php/Carte.php') ;
-require_once('../../front/php/Resultats
+require_once('../../front/php/Resultats.php') ;
 
 $database = new Database() ;
 $db = $database->getConnexion() ;
