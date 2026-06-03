@@ -1,0 +1,373 @@
+Projet CIR2 – 2026
+Projet web
+Présentation générale
+CIR2 Brest/Caen/Nantes/Rennes - 
+2025/2026
+olivier .rochecouste@isen-ouest.yncrea.fr
+sebastien.langlais@isen-ouest.yncrea.fr
+christophe.vignaud@isen-ouest.yncrea.fr  
+simon.le-gloannec@isen-ouest.yncrea.fr
+antoine.bouyer@isen-ouest.yncrea.fr
+Projet CIR2 – 2026 2
+Fonctionnement interne :
+•Partie front-end : recherche de données avec filtre,  statistiques, visualisation  sur une 
+carte 
+•Partie back-end : saisie des paramètres par défaut (aménageur , type de rise, …), insertion 
+d’une nouvelle installation,
+•Partie API : partie permettant de fournir les informations au frontSujet
+Objectif
+Concevoir et développer une application de gestion des points de 
+recharge des véhicules électriques
+Cette application devra permettre d’afficher la liste des points de recharges des véhicules 
+électriques en Bretagne, d’obtenir des statistique s et de visualiser l a répartition sur une carte.
+Projet CIR2 – 2026 3
+Exemple de données
+Les données vous sont fournies sous forme de fichiers CSV contenant plusieurs milliers de lignes
+Description des champs :
+https://schema.data.gouv.fr/etalab/schema-irve-statique/2.2.0/documentation.html
+
+Projet CIR2 – 2026 4
+Analyse :
+•MCD 
+•Maquette du site web ( FIGMA)
+•Requêtes REST associées aux pages présentées
+ 
+Conception et développement :
+•HTML
+•CSS
+•JavaScript
+•PHP
+•SQL
+ 
+Test 
+ 
+Recette fonctionnelle et mise en place sur le serveurProcessus de développement
+Projet CIR2 – 2026 5
+Vous allez devoir créer une base de données à partir des données se trouvant dans les 
+fichiers fournis (irve_init.csv et communes-france-2024-limite.csv).
+MCD :
+•Vous devez créer un MCD et un MPD de bdd puis créer la base
+•Vous avez les fichiers adéquats sur Moodle
+ 
+Import des données :
+•En fonction de la bdd issue de votre MCD (et MPD) vous devez peupler la base à 
+partir des données fournies, pour les utiliser avec votre codePremière phase = > base de données
+Projet CIR2 – 2026 6
+6 fonctionnalités principales sont attendues :
+1.Accueil (présentation du site)
+2.Visualisation des statistiques
+3.Récupération des données pour le formulaire de recherche
+4.Affichage du tableau de résultat
+5.Affichage du détail d’une installation
+6.Affichage de la carte avec les points de rechargesCahier des charges - Front
+Attention
+Les fonctionnalités additionnelles que vous développerez seront évaluées uniquement si 
+les 6 fonctionnalités principales sont en place.
+Projet CIR2 – 2026 7
+Fonctionnalités communes à toutes les pages du front
+•Entete
+●Avec un logo
+●Un titre
+●Le menu avec 3 liens (accueil, recherche, carte)
+•Pied de page
+●Avec votre nom et le groupe (CIN2)
+●L’année
+ Cahier des charges - Front
+Projet CIR2 – 2026 8
+Fonctionnalité 1 : Accueil
+•Présentation et description (textuelle) de l’objectif du site
+•Quelques statistiques :
+●Nombre d’enregistrements en base
+●Nombre de points par années
+●Nombre de points par département
+●Nombre de points par années et par département
+●Nombre d’aménageurs
+●Nombre de type de prise (nbre_pdc )
+•Accès à la page de recherche
+•Accès à la page de visualisation sur une carte
+ Cahier des charges - Front
+Projet CIR2 – 2026 9
+Fonctionnalité 2 : formulaire de recherche
+Champ de recherche avec filtre de type select
+•pour l’aménageur
+•pour le type de prise
+•Pour le département
+Les éléments de select pour les aménageurs doivent être limités à 20 items  pris au 
+hasard dans la bdd.
+ Cahier des charges - Front
+Projet CIR2 – 2026 10
+Fonctionnalité 3  : Affichage du résultat
+Affichage du résultat sous forme de tableau avec uniquement les informations :
+•Date de mise en service (mois et année)
+•Nombre de points
+•prises
+•Puissance 
+•Localisation
+La récupération des données se fera en utilisant un javascript (à développer) qui 
+appellera une API (à développer) qui retournera le résultat sous forme JSON.
+Le javascript affichera le résultat sous le formulaire (sans changer de page).
+ Cahier des charges - Front
+Projet CIR2 – 2026 11
+Fonctionnalité 4  : Détails d’un point de recharge
+•Afficher dans le tableau précédent un lien sur chaque ligne permettant d’ouvrir 
+une nouvelle page détails
+•La page détails devra afficher l’ensemble des données du point visé
+•Les données devront être récupérées également par api et affichées par 
+javascript
+ Cahier des charges - Front
+Projet CIR2 – 2026 12
+Fonctionnalité 5  : Affichage d’une carte avec sélection des données
+•Créer un formulaire comportant 2 champs de type select (et chacun limité à une 
+vingtaine d'éléments)
+●année d'installation
+●département 
+Les résultats devront s'afficher sur une carte (openstreeMap) en utilisant le script leaflet 
+(https://leafletjs.com/examples/quick-start/)
+Il faudra créer un plot pour chaque résultat avec une bulle indiquant quelques informations 
+(localité, puissance) et un lien vers la page détail
+ Cahier des charges - Front
+Projet CIR2 – 2026 13
+5 fonctionnalités principales sont attendues :
+1.Accueil (présentation du back)
+2.Visualisation de l’ensemble des données limité à 100 items
+3.Saisie d’un nouveau point de recharge 
+4.Modification d’un point de recharge 
+5.Visualisation des détails d’un point de recharge 
+Toutes les url de la partie back devront commencer par /back/… .
+ Cahier des charges - Back
+Attention
+Les fonctionnalités additionnelles que vous développerez seront évaluées uniquement si 
+les 5 fonctionnalités principales sont en place.
+Projet CIR2 – 2026 14
+Fonctionnalités communes à toutes les pages du back
+•Entete
+●Avec un logo
+●Un titre
+●Le menu avec 3 liens (accueil, recherche, carte)
+•Pied de page
+●Avec votre nom et le groupe (CIN2)
+●L’année
+CSS : les couleurs de fond (en-tête et pied de page devront être de couleur 
+différentes du front)
+ Cahier des charges - Back
+Projet CIR2 – 2026 15
+Fonctionnalité 1 : Accueil
+•Présentation et description (textuelle) de l’objectif du site
+•Tableau avec le principales informations de points irve (maximum 6 élément de 
+colonne) et pour chaque enregistrement :
+●Lien vers la page détail du point
+●Lien vers la page de modification
+•Accès à la page de création de point irve
+ Cahier des charges – Back
+Projet CIR2 – 2026 16
+Interactions client – serveur , la partie API doit permettre de :
+•Répondre aux requêtes du front (client) en respectant l’architecture REST :
+•Récupération de données: GET
+•Ajout de données : POST
+•Modification de données :  PUT
+•Suppression de données : DELETE
+•Interroger la base de données
+•Renvoyer des informations au format JSON
+Base de données et back :
+•Toutes les informations doivent être stockées dans une base de données relationnelle modélisée en 
+utilisant les règles de normalisation classique
+•Utilisation exclusivement  de PDO en PHP pour les interactions avec la base de données
+•L'utilisation de classes PHP est fortement recommandéeCahier des charges
+Fonctionnalités
+Projet CIR2 – 2026 17
+Serveur web avec virtual host
+•Le site hébergé sur la VM devra répondre avec un URL formée ainsi :
+•http://projet-cir2-XX
+•Avec xx correspondant au dernier chiffre de l’adresse ip de la VM (exemple : avec la VM 10.10.51.20 
+l’url sera http://projet-cir2-20 )
+•Vous devez réaliser le virtual host sur la VMCahier des charges
+Fonctionnalités
+Projet CIR2 – 2026 18
+Partie front-end :
+•Le front doit être développé uniquement avec les technologies :
+•Les bibliothèques suivantes, et uniquement celles-ci, peuvent être utilisées :Cahier des charges
+Technologies à utiliser
+
+Projet CIR2 – 2026 19
+Partie API :
+•Exclusivement  en PHP 
+•SGBD de type PostgreSQL ou MySQL
+•Communications avec le client avec AJAX
+•Échange de données avec le client en  JSON
+Déploiement  :
+Configuration obligatoire de la machine virtuelle : 
+•Apache 2 et utilisation du Virtual Host
+•PHP  8.2
+•MariaDb 10 (equivalent à Mysql)Cahier des charges
+Technologies à utiliser
+
+Projet CIR2 – 2026 20
+Mise en page :
+Il faut que la mise en page du front prenne en compte un en-tête et un pied de page commun à toutes les 
+pages.
+Accès :
+L’accès au site web sera via l’adresse IP de la machine virtuelle
+L’application doit être :
+•Responsive
+•Ergonomique : facilité d’utilisation, homogénéité des informations, respect des normes utilisées 
+pour le Web
+Le code doit être :
+•Correctement architecturé
+•Ré-exploitable : code lisible, code bien commenté, noms de variables/classes/fonctions explicites
+•Séparé en plusieurs fichiers (par fonctionnalités)Cahier des charges
+Contraintes
+Projet CIR2 – 2026 21
+•Utilisées et consolidées :
+•Programmation Web : 
+•Front : HTML/CSS/Bootstrap
+•API : PHP
+•Communication client/serveur : AJAX/JSON
+•Base de données :
+•Modélisation: JMerise
+•Requêtes SQL : MySQL ou PostgreSQL 
+•Serveur Web : 
+•Déploiement et gestion d’un serveur Web
+•Apprises :
+•Gestion de projet
+•Maquette : Figma
+•Développement d’une application web complèteCahier des charges
+Compétences techniques
+Projet CIR2 – 2026 22
+Déroulement
+Calendrier
+Semaine 1 (26h) Semaine 2
+Lundi (3,5h)Mardi (7h) Mercredi (7h) Jeudi (7h) Vendredi (7h) Lundi (7h)Mardi (6h)
+Mock-ups
+Modèle BDD
+Interfaces JS/PHP•Développement d
+e l’application web
+ coté client (JS)
+•Développement d
+e l’application web
+ coté serveur 
+(PHP)
+•Vérification des 
+VM par 
+enseignants•Développement de l
+’application web cot
+é client (JS)
+•Développement de l
+’application web cot
+é serveur (PHP)•Développement de l’
+application web coté 
+client (JS)
+•Développement de l’
+application web coté
+ serveur (PHP)●Développement
+ de l’application 
+web coté client 
+(JS)
+●Développement
+ de l’application 
+web coté serveu
+r (PHP)Recette fonction
+nelle
+Dépôt du rendu fi
+nal avant 18h sur
+ Moodle
+Présentation 
+du sujet, des atte
+ndus et des 
+recettes.
+Mock-ups
+Modèle BDD
+Interfaces JS/PHPRecette 
+MCD + Maquet
+te
+Dépôt du MCD 
+et de la 
+maquette 
+avant 18h sur 
+Moodle•Développement d
+e l’application web
+ coté client (JS)
+•Développement d
+e l’application web
+ coté serveur 
+(PHP)•Développement de l
+’application web cot
+é client (JS)
+•Développement de l
+’application web cot
+é serveur (PHP)•Développement de l’
+application web coté 
+client (JS)
+•Développement de l’
+application web coté
+ serveur (PHP)●Développement
+ de l’application 
+web coté client 
+(JS)
+●Développement
+ de l’application 
+web coté serveu
+r (PHP)Recette fonction
+nelle
+Dépôt du rendu fi
+nal avant 18h sur
+ Moodle
+Projet CIR2 – 2026 23
+Travail en binôme :
+•Chaque étudiant dans le binôme connaît l’ensemble du projet : utiliser un gestionnaire de code ( Git 
+par exemple)
+•Attention à bien se répartir le travail
+•Ajoutez une page dans la présentation qui répond à la question : Qui a fait quoi ?
+Ressources externes :
+•Tous les documents sont autorisés 
+•Attention à utiliser avec une grande précaution tout document extérieur : site de vulgarisation, 
+forum, code d’autrui, IA
+Documentation du projet :
+•Au fur et à mesure
+•Standardisée
+•Livraison de code ou de document :
+•Ne pas attendre la dernière minute pour poster un livrable
+•Préparer des livrables intermédiaires (surtout pour les sources)
+•Sauvegarder régulièrement vos données 
+•Mise en production :
+•Vérifier votre configuration 
+•Faire régulièrement des mises en production pour vérifier le fonctionnementDéroulement
+Organisation
+Projet CIR2 – 2026 24
+Format de l’archive :
+Archive ZIP, TGZ, 7ZIP, pas de RAR : projetweb_groupeX.zip  (remplacer X par votre numéro de 
+binôme)
+Le rendu intermédiaire doit contenir :
+•Un fichier PDF contenant un lien cliquable qui dirige vers la maquette conçue avec Figma (vérifiez si 
+vous pouvez l'ouvrir via une navigation privée de votre navigateur)
+•Les schémas de la base de données :  MCD et MPD
+•La répartition des tâches dans le binôme
+Le rendu final doit contenir :
+•Les éléments du rendu intermédiaire
+•Un fichier README (format markdown) détaillant l’installation de votre application
+•Les scripts SQL de création des tables et d’insertion du jeu de test
+•L’intégralité de votre code commenté avec vos ressources (images, icônes…)Livrables
+Attention
+Les livrables seront à poster sur l’intranet. Tout retard sera sanctionné (l’heure du réseau 
+faisant foi). 
+Les fichiers au mauvais format ou avec un mauvais nommage seront pénalisés.
+Projet CIR2 – 2026 25
+Barème indicatif :
+•Présentation MCD et maquette (rendu intermédiaire) : 20%
+•Recette fonctionnelle : 40%
+•Évaluation du code (rendu final) : 40%
+Remarques :
+•Malus possible sur l’un des membres du groupe si l'investissement est jugé trop faible
+•Possibilité d'être interrogé durant le projet de façon individuelle
+•Plagiat sévèrement sanctionné pour TOUS les membres du/des groupe(s)
+•Si utilisation d’une IA, vous devez être capable d’expliquer le fonctionnement du code généré et d’y 
+apporter une modification à la demande du profNotations
+Projet CIR2 – 2026 26
+En front
+•Remplacement des select des formulaires par un champ à auto-complétion
+•trouver les bornes à proximité d’une borne (en cas de panne ou d’occupation) ou à 
+proximité d’une ville en donnant un rayon de recherche (exemple : 10km)
+En back
+•Visualisation du tableau de l’ensemble des installations en gérant la pagination par 50 éléments
+•Possibilité de modifier la valeur du nombre d’éléments de la paginationFonctionnalités complémentaires
+Projet CIR2 – 2026 27
+Des questions ?

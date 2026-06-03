@@ -6,35 +6,15 @@
   <title>BretagneCharge — Accueil</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <style>
-    :root {
-      --purple: #7c3aed;
-      --purple-dim: #a78bfa;
-      --card-bg: #161616;
-      --border: #222;
-      --muted: #6b7280;
-      --muted-light: #9ca3af;
-    }
-    body { background: #0d0d0d; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-    .bc-navbar { background: #0d0d0d; border-bottom: 1px solid var(--border); position: relative; z-index: 10; }
-    .nav-link-custom { color: var(--muted-light); text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: .95rem; font-weight: 500; transition: all 0.2s; }
-    .nav-link-custom:hover { color: #fff; background: #1e1e1e; }
-    .nav-link-custom.active { color: #fff; background: rgba(124,58,237,.18); }
-    .bc-logo-box { width: 34px; height: 34px; background: var(--purple); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
-    .bc-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; }
-    .stat-icon-box { width: 40px; height: 40px; background: rgba(124,58,237,.18); border-radius: 9px; display: grid; place-items: center; }
-    .stat-number { font-size: 1.75rem; font-weight: 700; letter-spacing: -.02em; line-height: 1.1; }
-    .img-placeholder { background: #2a2a2a; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 1.2rem; font-weight: 500; min-height: 280px; }
-    .bc-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: .78rem; padding: 14px 0; margin-top: auto; }
-  </style>
+  <link rel="stylesheet" href="css/style-front.css" />
 </head>
 <body>
 
 <nav class="bc-navbar py-2">
   <div class="container-xl px-4 d-flex align-items-center justify-content-between">
     <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none">
-      <div class="bc-logo-box"><i class="fa fa-bolt text-white" style="font-size:13px;"></i></div>
-      <span class="fw-semibold text-white" style="font-size:.97rem;">Bretagne<span style="color:#a78bfa;">Charge</span></span>
+      <div class="bc-logo-box"><img src="img/logo.jpeg" alt="Logo BretagneCharge" /></div>
+      <span class="fw-semibold text-white brand-text">Bretagne<span class="brand-highlight">Charge</span></span>
     </a>
     <div class="d-flex align-items-center gap-2">
         <a href="index.html" class="nav-link-custom active">Accueil</a>
@@ -49,23 +29,18 @@
   <!-- Hero -->
   <div class="row align-items-center py-5 g-5">
     <div class="col-lg-5">
-      <span class="d-inline-flex align-items-center gap-2 rounded-pill px-3 py-1 mb-3"
-        style="border:1px solid rgba(124,58,237,.5); background:rgba(124,58,237,.1); font-size:.76rem; color:#c4b5fd;">
-        <span class="rounded-circle" style="width:6px;height:6px;background:var(--purple);display:inline-block;"></span>
-        Données ouvertes IRVE — Région Bretagne
-      </span>
       <h1 class="h2 fw-bold mb-3">Présentation du site</h1>
-      <p style="color:#9ca3af; font-size:.92rem; line-height:1.65;">
+      <p class="hero-text">
         Bienvenue sur BretagneCharge, la plateforme de visualisation et d'exploration des infrastructures de recharge pour véhicules électriques en région Bretagne.
       </p>
-      <p style="color:#9ca3af; font-size:.92rem; line-height:1.65;">
+      <p class="hero-text">
         Consultez les statistiques régionales, recherchez des stations par critères, affichez leur localisation sur la carte interactive ou accédez au détail complet de chaque point de charge.
       </p>
       <div class="d-flex gap-3 mt-4">
-        <a href="html/carte.html" class="btn px-4 py-2" style="background:var(--purple); color:#fff; border-radius:9px; font-size:.9rem; border:none;">
+        <a href="html/carte.html" class="btn px-4 py-2 btn-purple-custom">
           <i class="fa fa-map me-2"></i>Voir la carte
         </a>
-        <a href="html/recherche.html" class="btn px-4 py-2" style="background:#1e1e1e; color:#e5e7eb; border:1px solid #333; border-radius:9px; font-size:.9rem;">
+        <a href="html/recherche.html" class="btn px-4 py-2 btn-dark-custom">
           <i class="fa fa-magnifying-glass me-2"></i>Rechercher
         </a>
       </div>
@@ -75,58 +50,76 @@
     </div>
   </div>
 
-  <!-- Chiffres clés -->
-  <section class="py-5" style="border-top:1px solid var(--border);">
+  <!-- STATISTIQUES -->
+  <section class="py-5 section-bordered">
     <div class="d-flex justify-content-between align-items-start mb-4">
       <div>
-        <h2 class="h4 fw-bold mb-1">Chiffres clés</h2>
-        <p style="color:#9ca3af; font-size:.87rem; margin:0;">Vue d'ensemble du parc de recharge breton</p>
+        <h2 class="h4 fw-bold mb-1">Statistiques</h2>
+        <p class="section-subtitle">Vue d'ensemble du parc de recharge breton</p>
       </div>
     </div>
-    <div class="row g-3">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
       <!-- Card 1 -->
-      <div class="col-sm-6 col-xl">
-        <div class="bc-card p-4 h-100">
-          <div class="stat-icon-box mb-3"><i class="fa fa-table-cells" style="color:#a78bfa;"></i></div>
-          <div class="stat-number" id="stat-total-points">4 382</div>
-          <div class="fw-medium mt-1" style="font-size:.88rem;">Enregistrements en base</div>
-          <div style="color:#6b7280; font-size:.78rem; margin-top:4px;">points de recharge</div>
+      <div class="col">
+        <div class="bc-card p-4 h-100 d-flex flex-column">
+          <div class="stat-icon-box mb-3"><i class="fa fa-table-cells icon-purple-dim"></i></div>
+          <div class="stat-number" id="stat-total-points"></div>
+          <div class="fw-medium mt-1 stat-label">Enregistrements en base</div>
+          <div class="stat-desc">Points de recharge totaux</div>
         </div>
       </div>
       <!-- Card 2 -->
-      <div class="col-sm-6 col-xl">
-        <div class="bc-card p-4 h-100">
-          <div class="stat-icon-box mb-3"><i class="fa fa-calendar-days" style="color:#a78bfa;"></i></div>
-          <div class="stat-number" id="stat-points-2023">847</div>
-          <div class="fw-medium mt-1" style="font-size:.88rem;">Points installés en 2023</div>
-          <div style="color:#22c55e; font-size:.78rem; margin-top:4px;">+24% vs 2022</div>
+      <div class="col">
+        <div class="bc-card p-4 h-100 d-flex flex-column">
+          <div class="stat-icon-box mb-3"><i class="fa fa-calendar-days icon-purple-dim"></i></div>
+          <div class="stat-number" id="stat-points-recent-year"></div>
+          <div class="fw-medium mt-1 stat-label" id="stat-points-recent-label">Points installés</div>
+          <div class="stat-desc" id="stat-points-recent-desc">Chargement...</div>
         </div>
       </div>
       <!-- Card 3 -->
-      <div class="col-sm-6 col-xl">
-        <div class="bc-card p-4 h-100">
-          <div class="stat-icon-box mb-3"><i class="fa fa-chart-line" style="color:#a78bfa;"></i></div>
-          <div class="stat-number" id="stat-avg-dep">1 096</div>
-          <div class="fw-medium mt-1" style="font-size:.88rem;">Points par département</div>
-          <div style="color:#6b7280; font-size:.78rem; margin-top:4px;">en moyenne par dép.</div>
+      <div class="col">
+        <div class="bc-card p-4 h-100 d-flex flex-column">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stat-icon-box"><i class="fa fa-chart-line icon-purple-dim"></i></div>
+            <div class="fw-medium stat-label">Points par département</div>
+          </div>
+          <div id="stat-dep-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
+            <div class="text-muted">Chargement...</div>
+          </div>
         </div>
       </div>
       <!-- Card 4 -->
-      <div class="col-sm-6 col-xl">
-        <div class="bc-card p-4 h-100">
-          <div class="stat-icon-box mb-3"><i class="fa fa-building" style="color:#a78bfa;"></i></div>
-          <div class="stat-number" id="stat-amenageurs">63</div>
-          <div class="fw-medium mt-1" style="font-size:.88rem;">Aménageurs distincts</div>
-          <div style="color:#6b7280; font-size:.78rem; margin-top:4px;">opérateurs actifs</div>
+      <div class="col">
+        <div class="bc-card p-4 h-100 d-flex flex-column">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stat-icon-box"><i class="fa fa-chart-column icon-purple-dim"></i></div>
+            <div class="fw-medium stat-label">Année la plus récente / Dép.</div>
+          </div>
+          <div id="stat-year-dept-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
+            <div class="text-muted">Chargement...</div>
+          </div>
         </div>
       </div>
       <!-- Card 5 -->
-      <div class="col-sm-6 col-xl">
-        <div class="bc-card p-4 h-100">
-          <div class="stat-icon-box mb-3"><i class="fa fa-plug" style="color:#a78bfa;"></i></div>
-          <div class="stat-number" id="stat-prises">7</div>
-          <div class="fw-medium mt-1" style="font-size:.88rem;">Types de prise</div>
-          <div style="color:#6b7280; font-size:.78rem; margin-top:4px;">standards identifiés</div>
+      <div class="col">
+        <div class="bc-card p-4 h-100 d-flex flex-column">
+          <div class="stat-icon-box mb-3"><i class="fa fa-building icon-purple-dim"></i></div>
+          <div class="stat-number" id="stat-amenageurs"></div>
+          <div class="fw-medium mt-1 stat-label">Aménageurs distincts</div>
+          <div class="stat-desc">Opérateurs actifs en Bretagne</div>
+        </div>
+      </div>
+      <!-- Card 6 -->
+      <div class="col">
+        <div class="bc-card p-4 h-100 d-flex flex-column">
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <div class="stat-icon-box"><i class="fa fa-plug icon-purple-dim"></i></div>
+            <div class="fw-medium stat-label">Types de prises</div>
+          </div>
+          <div id="stat-prises-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
+            <div class="text-muted">Chargement...</div>
+          </div>
         </div>
       </div>
     </div>
@@ -136,13 +129,13 @@
   <div class="bc-card p-4 mb-5 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-4">
     <div>
       <div class="fw-semibold mb-1">Prêt à explorer ?</div>
-      <div style="color:#9ca3af; font-size:.87rem;">Utilisez la carte ou le moteur de recherche pour trouver des stations.</div>
+      <div class="cta-desc">Utilisez la carte ou le moteur de recherche pour trouver des stations.</div>
     </div>
     <div class="d-flex gap-3 flex-shrink-0">
-      <a href="html/carte.html" class="btn px-4 py-2" style="background:var(--purple); color:#fff; border:none; border-radius:9px; font-size:.9rem;">
+      <a href="html/carte.html" class="btn px-4 py-2 btn-purple-custom">
         <i class="fa fa-map me-2"></i>Carte
       </a>
-      <a href="html/recherche.html" class="btn px-4 py-2" style="background:#1e1e1e; color:#e5e7eb; border:1px solid #333; border-radius:9px; font-size:.9rem;">
+      <a href="html/recherche.html" class="btn px-4 py-2 btn-dark-custom">
         <i class="fa fa-magnifying-glass me-2"></i>Recherche
       </a>
     </div>
@@ -152,7 +145,7 @@
 
 <footer class="bc-footer">
   <div class="container-xl px-4 d-flex justify-content-between">
-    <span>NOM Prénom — Groupe</span><span>2026</span>
+    <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe 7</span><span>2026</span>
   </div>
 </footer>
 

@@ -6,44 +6,15 @@
   <title>BretagneCharge — Recherche</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <style>
-    :root {
-      --purple: #7c3aed;
-      --purple-dim: #a78bfa;
-      --card-bg: #161616;
-      --border: #222;
-      --muted: #6b7280;
-      --muted-light: #9ca3af;
-    }
-    body { background: #0d0d0d; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
-    .bc-navbar { background: #0d0d0d; border-bottom: 1px solid var(--border); position: relative; z-index: 10; }
-    .nav-link-custom { color: var(--muted-light); text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: .95rem; font-weight: 500; transition: all 0.2s; }
-    .nav-link-custom:hover { color: #fff; background: #1e1e1e; }
-    .nav-link-custom.active { color: #fff; background: rgba(124,58,237,.18); }
-    .bc-logo-box { width: 34px; height: 34px; background: var(--purple); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
-    .bc-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; }
-    .form-select {
-      background-color: #1e1e1e;
-      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23999' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
-      border-color: #303030; color: #fff; border-radius: 8px;
-    }
-    .form-select:focus { background-color: #1e1e1e; border-color: var(--purple); box-shadow: 0 0 0 3px rgba(124,58,237,.2); color: #fff; }
-    .form-select option { background: #1e1e1e; }
-    .bc-table { color: #e5e7eb; }
-    .bc-table thead th { color: var(--muted-light); font-size: .76rem; font-weight: 500; border-color: var(--border); padding: 10px 14px; text-transform: none; }
-    .bc-table tbody td { border-color: #1c1c1c; padding: 13px 14px; font-size: .88rem; vertical-align: middle; }
-    .bc-table tbody tr:hover td { background: #1a1a1a; }
-    .kw-badge { background: #1e1458; color: var(--purple-dim); border-radius: 6px; padding: 3px 10px; font-size: .74rem; font-weight: 600; }
-    .bc-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: .78rem; padding: 14px 0; margin-top: auto; }
-  </style>
+  <link href="../css/style-front.css" rel="stylesheet" />
 </head>
 <body>
 
 <nav class="bc-navbar py-2">
   <div class="container-xl px-4 d-flex align-items-center justify-content-between">
     <a href="../index.html" class="d-flex align-items-center gap-2 text-decoration-none">
-      <div class="bc-logo-box"><i class="fa fa-bolt text-white" style="font-size:13px;"></i></div>
-      <span class="fw-semibold text-white" style="font-size:.97rem;">Bretagne<span style="color:#a78bfa;">Charge</span></span>
+      <div class="bc-logo-box"><img src="../img/logo.jpeg" alt="Logo BretagneCharge" /></div>
+      <span class="fw-semibold text-white brand-text">Bretagne<span class="brand-highlight">Charge</span></span>
     </a>
     <div class="d-flex align-items-center gap-2">
         <a href="../index.html" class="nav-link-custom">Accueil</a>
@@ -55,30 +26,27 @@
 
 <main class="container-xl px-4 pt-5 pb-4 flex-grow-1">
   <h1 class="h3 fw-bold mb-1">Formulaire de recherche</h1>
-  <p class="mb-4" style="color:#9ca3af; font-size:.88rem;">Filtrez les points de recharge selon vos critères</p>
+  <p class="mb-4 section-subtitle">Filtrez les points de recharge selon vos critères</p>
 
   <div class="bc-card p-4 mb-4">
     <div class="row g-3 align-items-end">
       <div class="col-md-3">
-        <label class="d-block mb-1" style="font-size:.76rem; color:#9ca3af;">Aménageur</label>
+        <label class="form-label-custom">Aménageur</label>
         <select class="form-select">
-          <option>Tous</option><option>IZIVIA</option><option>Freshmile</option><option>Bouygues Énergies</option>
         </select>
       </div>
       <div class="col-md-3">
-        <label class="d-block mb-1" style="font-size:.76rem; color:#9ca3af;">Type de prise</label>
+        <label class="form-label-custom">Type de prise</label>
         <select class="form-select">
-          <option>Tous</option><option>Type 2</option><option>Combo CCS</option><option>CHAdeMO</option><option>Type 3C</option>
         </select>
       </div>
       <div class="col-md-4">
-        <label class="d-block mb-1" style="font-size:.76rem; color:#9ca3af;">Département</label>
+        <label class="form-label-custom">Département</label>
         <select class="form-select">
-          <option>Tous</option><option>22 — Côtes-d'Armor</option><option>29 — Finistère</option><option>35 — Ille-et-Vilaine</option><option>56 — Morbihan</option>
         </select>
       </div>
       <div class="col-md-2">
-        <button class="btn w-100 py-2" style="background:var(--purple); color:#fff; border:none; border-radius:8px; font-size:.88rem;">
+        <button class="btn-search">
           <i class="fa fa-magnifying-glass me-2"></i>Rechercher
         </button>
       </div>
@@ -86,28 +54,18 @@
   </div>
 
   <div class="bc-card overflow-hidden">
-    <div class="d-flex align-items-center justify-content-between px-4 py-3" style="border-bottom:1px solid var(--border);">
-      <span class="fw-semibold" style="font-size:.9rem;">Résultats</span>
-      <span class="rounded-pill px-3 py-1" style="border:1px solid var(--purple); color:#a78bfa; font-size:.75rem;">10 points</span>
+    <div class="table-header-flex">
+      <span class="table-title">Résultats</span>
+      <span class="table-badge">X points de recharge</span>
     </div>
     <div class="table-responsive">
       <table class="table bc-table mb-0">
         <thead>
           <tr>
-            <th>Date install.</th><th>No point</th><th>Type de prise</th><th>Puiss. (kW)</th><th>Localisation</th><th>Dép.</th><th>Détails</th>
+            <th>Date de mise en service</th><th>Type de prise</th><th>Puissance (kW)</th><th>Localisation</th><th>Détails</th>
           </tr>
         </thead>
         <tbody>
-          <tr><td style="color:#6b7280;">2021-03-15</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0001</td><td>Type 2</td><td><span class="kw-badge">22 kW</span></td><td>Rennes</td><td>35</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2022-07-08</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0042</td><td>Combo CCS</td><td><span class="kw-badge">50 kW</span></td><td>Brest</td><td>29</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2020-11-20</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0087</td><td>CHAdeMO</td><td><span class="kw-badge">50 kW</span></td><td>Quimper</td><td>29</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2023-01-05</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0123</td><td>Combo CCS</td><td><span class="kw-badge">150 kW</span></td><td>Lorient</td><td>56</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2021-09-17</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0156</td><td>Type 2</td><td><span class="kw-badge">7 kW</span></td><td>Saint-Brieuc</td><td>22</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2022-03-29</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0189</td><td>Type 2</td><td><span class="kw-badge">22 kW</span></td><td>Vannes</td><td>56</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2023-06-14</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0210</td><td>Combo CCS</td><td><span class="kw-badge">350 kW</span></td><td>Vitré</td><td>35</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2021-12-03</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0245</td><td>Type 3C</td><td><span class="kw-badge">3 kW</span></td><td>Dinan</td><td>22</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2022-08-22</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0267</td><td>Type 2</td><td><span class="kw-badge">11 kW</span></td><td>Fougères</td><td>35</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
-          <tr><td style="color:#6b7280;">2023-04-09</td><td class="fw-semibold" style="font-family:monospace;font-size:.84rem;">FR-E27-E0301</td><td>Combo CCS</td><td><span class="kw-badge">100 kW</span></td><td>Lannion</td><td>22</td><td><a href="#" style="color:#8b5cf6;text-decoration:none;font-size:.87rem;">Voir ›</a></td></tr>
         </tbody>
       </table>
     </div>
@@ -116,7 +74,7 @@
 
 <footer class="bc-footer">
   <div class="container-xl px-4 d-flex justify-content-between">
-    <span>NOM Prénom — Groupe</span><span>2026</span>
+    <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe 7</span><span>2026</span>
   </div>
 </footer>
 
