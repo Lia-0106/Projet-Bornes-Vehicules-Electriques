@@ -31,7 +31,7 @@ function displayResultats(data) {
         const row = document.createElement('tr') ;
 
         const cellDate = document.createElement('td') ;
-        let dateFormatee = 'Inconnu' ;
+        let dateFormatee = 'Inconnue' ;
         if(item.date_mise_en_service && item.date_mise_en_service.substring(0, 4) !== '0000') {
             const annee = item.date_mise_en_service.substring(0,4) ;
             const mois = item.date_mise_en_service.substring(5, 7) ;
@@ -47,7 +47,7 @@ function displayResultats(data) {
         row.appendChild(cellPrise) ;
 
         const cellPuissance = document.createElement('td') ;
-        cellPuissance.textContent = `${item.puissance} kW` || 'Inconnu' ;
+        cellPuissance.textContent = `${item.puissance} kW` || 'Inconnue' ;
         row.appendChild(cellPuissance) ;
 
         const cellLocalisation = document.createElement('td') ;

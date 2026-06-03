@@ -1,7 +1,7 @@
 <?php
 require_once 'Database.php';
 require_once 'constantes.php';
-require_once 'PointRecharge.php';
+require_once '../../front/php/PointRecharge.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 

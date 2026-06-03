@@ -8,6 +8,7 @@ require_once('../../front/php/Stats.php') ;
 require_once('../../front/php/Recherche.php') ;
 require_once('../../front/php/Carte.php') ;
 require_once('../../front/php/Resultats.php') ;
+require_once('../../front/php/PointRecharge.php') ;
 
 $database = new Database() ;
 $db = $database->getConnexion() ;
@@ -50,5 +51,11 @@ if ($requestMethod === 'GET' && $ressource === 'resultats') {
     echo json_encode($data) ;
 }
 
+if ($requestMethod === 'GET' && $ressource === 'point-recharge') {
+    $id = isset($_GET['id']) ? $_GET['id'] : 0 ;
+    $PointRecharge = new PointRecharge($db) ;
+    $data = $PointRecharge->getDetails() ;
+    echo json_encode($data) ;
+}
 
 ?>
