@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BretagneCharge — FR-E27-E0001</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --purple: #7c3aed;
+      --purple-dim: #a78bfa;
+      --card-bg: #161616;
+      --border: #222;
+      --muted: #6b7280;
+      --muted-light: #9ca3af;
+    }
+    body { background: #0d0d0d; color: #f3f4f6; font-family: system-ui, -apple-system, sans-serif; min-height: 100vh; display: flex; flex-direction: column; }
+    .bc-navbar { background: #0d0d0d; border-bottom: 1px solid var(--border); position: relative; z-index: 10; }
+    .nav-link-custom { color: var(--muted-light); text-decoration: none; padding: 6px 14px; border-radius: 8px; font-size: .95rem; font-weight: 500; transition: all 0.2s; }
+    .nav-link-custom:hover { color: #fff; background: #1e1e1e; }
+    .nav-link-custom.active { color: #fff; background: rgba(124,58,237,.18); }
+    .bc-logo-box { width: 34px; height: 34px; background: var(--purple); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
+    .bc-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; }
+    /* Info card header icon */
+    .card-icon-box { width: 36px; height: 36px; background: rgba(124,58,237,.18); border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
+    /* Info row */
+    .info-row { display: flex; gap: 16px; padding: 9px 0; border-bottom: 1px solid #1c1c1c; font-size: .87rem; }
+    .info-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .info-label { color: var(--muted-light); min-width: 155px; flex-shrink: 0; }
+    .bc-footer { border-top: 1px solid var(--border); color: var(--muted); font-size: .78rem; padding: 14px 0; margin-top: auto; }
+  </style>
+</head>
+<body>
+
+<nav class="bc-navbar py-2">
+  <div class="container-xl px-4 d-flex align-items-center justify-content-between">
+    <a href="../index.html" class="d-flex align-items-center gap-2 text-decoration-none">
+      <div class="bc-logo-box"><i class="fa fa-bolt text-white" style="font-size:13px;"></i></div>
+      <span class="fw-semibold text-white" style="font-size:.97rem;">Bretagne<span style="color:#a78bfa;">Charge</span></span>
+    </a>
+    <div class="d-flex align-items-center gap-2">
+        <a href="../index.html" class="nav-link-custom">Accueil</a>
+        <a href="recherche.html" class="nav-link-custom">Recherche</a>
+        <a href="carte.html" class="nav-link-custom">Carte</a>
+    </div>
+  </div>
+</nav>
+
+<main class="container-xl px-4 pt-4 pb-5 flex-grow-1">
+
+  <!-- Retour -->
+  <a href="#" class="d-inline-flex align-items-center gap-2 text-decoration-none mb-4" style="color:#8b5cf6; font-size:.88rem;">
+    <i class="fa fa-arrow-left" style="font-size:.8rem;"></i> Retour aux résultats
+  </a>
+
+  <!-- Header card -->
+  <div class="bc-card p-4 mb-4 d-flex align-items-center gap-3">
+    <div class="bc-logo-box" style="width:42px;height:42px;border-radius:10px;"><i class="fa fa-bolt text-white"></i></div>
+    <div>
+      <div style="color:#9ca3af; font-size:.78rem; margin-bottom:4px;">Détails du point de recharge</div>
+      <div class="fw-bold" style="font-size:1.1rem; font-family:monospace;">FR-E27-E0001</div>
+    </div>
+  </div>
+
+  <!-- 2×2 info cards -->
+  <div class="row g-4">
+
+    <!-- Identification -->
+    <div class="col-md-6">
+      <div class="bc-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="card-icon-box"><i class="fa fa-building" style="color:#a78bfa; font-size:.85rem;"></i></div>
+          <span class="fw-semibold" style="font-size:.95rem;">Identification</span>
+        </div>
+        <div class="info-row"><span class="info-label">Identifiant station</span><span>FR-E27-E0001</span></div>
+        <div class="info-row"><span class="info-label">Aménageur</span><span>IZIVIA</span></div>
+        <div class="info-row"><span class="info-label">Contact aménageur</span><span>contact@izivia.com</span></div>
+      </div>
+    </div>
+
+    <!-- Localisation -->
+    <div class="col-md-6">
+      <div class="bc-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="card-icon-box"><i class="fa fa-location-dot" style="color:#a78bfa; font-size:.85rem;"></i></div>
+          <span class="fw-semibold" style="font-size:.95rem;">Localisation</span>
+        </div>
+        <div class="info-row"><span class="info-label">Adresse</span><span>4 allée de la Robiquette, 35000 Rennes</span></div>
+        <div class="info-row"><span class="info-label">Commune</span><span>Rennes</span></div>
+        <div class="info-row"><span class="info-label">Département</span><span>Ille-et-Vilaine (35)</span></div>
+        <div class="info-row">
+          <span class="info-label">Coordonnées</span>
+          <a href="#" style="color:#8b5cf6; text-decoration:none;">48.1173, &nbsp;−1.6778</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Caractéristiques -->
+    <div class="col-md-6">
+      <div class="bc-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="card-icon-box"><i class="fa fa-plug" style="color:#a78bfa; font-size:.85rem;"></i></div>
+          <span class="fw-semibold" style="font-size:.95rem;">Caractéristiques</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Horaires</span>
+          <span><i class="fa fa-clock me-1" style="color:var(--purple);"></i>7j/7 — 06h00 à 23h00</span>
+        </div>
+        <div class="info-row"><span class="info-label">Puissance maximale</span><span>22 kW</span></div>
+        <div class="info-row"><span class="info-label">Type de prise</span><span>Type 2</span></div>
+        <div class="info-row">
+          <span class="info-label">Gratuit</span>
+          <span style="color:#f87171;"><i class="fa fa-circle-xmark me-1"></i>Non — service payant</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Câble T2 attaché</span>
+          <span style="color:#4ade80;"><i class="fa fa-circle-check me-1"></i>Oui</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Exploitation -->
+    <div class="col-md-6">
+      <div class="bc-card p-4 h-100">
+        <div class="d-flex align-items-center gap-2 mb-3">
+          <div class="card-icon-box"><i class="fa fa-screwdriver-wrench" style="color:#a78bfa; font-size:.85rem;"></i></div>
+          <span class="fw-semibold" style="font-size:.95rem;">Exploitation</span>
+        </div>
+        <div class="info-row"><span class="info-label">Enseigne</span><span>IZIVIA</span></div>
+        <div class="info-row"><span class="info-label">Opérateur</span><span>IZIVIA SA</span></div>
+        <div class="info-row"><span class="info-label">Mise en service</span><span>2021-03-15</span></div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="bc-footer">
+  <div class="container-xl px-4 d-flex justify-content-between">
+    <span>NOM Prénom — Groupe</span><span>2026</span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
