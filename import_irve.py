@@ -136,8 +136,8 @@ def resoudre_code_insee(code_brut):
 # =====================================================================
 print("Extraction et nettoyage des acteurs...")
 
-amenageurs_ids = {}
-operateurs_ids = {}
+amenageurs_ids = {}  # nom -> id_acteur
+operateurs_ids = {}  # nom -> id_acteur
 
 with open('irve_init.csv', mode='r', encoding='utf-8') as f:
     reader = csv.DictReader(f, delimiter=',')
@@ -159,33 +159,30 @@ with open('irve_init.csv', mode='r', encoding='utf-8') as f:
             if enseigne_clean:
                 cursor.execute("INSERT IGNORE INTO enseigne (nom_enseigne) VALUES (%s)", (enseigne_clean,))
 
-            # Aménageur
-            nom_am     = row['nom_amenageur'].strip().title()    if row['nom_amenageur']     else ""
+            # Aménageur — clé de dédup : nom uniquement (une entité = un nom)
+            nom_am     = row['nom_amenageur'].strip().title()     if row['nom_amenageur']     else ""
             contact_am = row['contact_amenageur'].strip().lower() if row['contact_amenageur'] else ""
-            siren_am   = row['siren_amenageur'].strip()           if row['siren_amenageur']   else None
+            siren_am   = row['siren_amenageur'].strip()            if row['siren_amenageur']   else None
             
-            if nom_am and (nom_am, contact_am) not in amenageurs_ids:
-                # CORRECTIF 1 : INSERT IGNORE pour éviter les doublons si le script est relancé
+            if nom_am and nom_am not in amenageurs_ids:
                 sql_act = """
                     INSERT IGNORE INTO acteur (nom, siren, contact, role)
                     VALUES (%s, %s, %s, 'Amenageur')
                 """
                 cursor.execute(sql_act, (nom_am, siren_am, contact_am))
                 db.commit()
-                # Récupérer l'id (qu'il vienne d'un insert ou d'un ignore)
                 cursor.execute(
-                    "SELECT id_acteur FROM acteur WHERE nom=%s AND contact=%s AND role='Amenageur'",
-                    (nom_am, contact_am)
+                    "SELECT id_acteur FROM acteur WHERE nom=%s AND role='Amenageur'",
+                    (nom_am,)
                 )
-                amenageurs_ids[(nom_am, contact_am)] = cursor.fetchone()[0]
+                amenageurs_ids[nom_am] = cursor.fetchone()[0]
 
-            # Opérateur
-            nom_op     = row['nom_operateur'].strip().title()    if row['nom_operateur']     else ""
+            # Opérateur — clé de dédup : nom uniquement
+            nom_op     = row['nom_operateur'].strip().title()     if row['nom_operateur']     else ""
             contact_op = row['contact_operateur'].strip().lower() if row['contact_operateur'] else ""
             tel_op     = format_phone(row['telephone_operateur'])
             
-            if nom_op and (nom_op, contact_op) not in operateurs_ids:
-                # CORRECTIF 1 : INSERT IGNORE pour éviter les doublons si le script est relancé
+            if nom_op and nom_op not in operateurs_ids:
                 sql_act = """
                     INSERT IGNORE INTO acteur (nom, contact, telephone, role)
                     VALUES (%s, %s, %s, 'Operateur')
@@ -193,10 +190,10 @@ with open('irve_init.csv', mode='r', encoding='utf-8') as f:
                 cursor.execute(sql_act, (nom_op, contact_op, tel_op))
                 db.commit()
                 cursor.execute(
-                    "SELECT id_acteur FROM acteur WHERE nom=%s AND contact=%s AND role='Operateur'",
-                    (nom_op, contact_op)
+                    "SELECT id_acteur FROM acteur WHERE nom=%s AND role='Operateur'",
+                    (nom_op,)
                 )
-                operateurs_ids[(nom_op, contact_op)] = cursor.fetchone()[0]
+                operateurs_ids[nom_op] = cursor.fetchone()[0]
 
 db.commit()
 
@@ -219,13 +216,11 @@ with open('irve_init.csv', mode='r', encoding='utf-8') as f:
         if row['code_dep'].strip() not in BRETAGNE_DEPS:
             continue
 
-        nom_am     = row['nom_amenageur'].strip().title()    if row['nom_amenageur']     else ""
-        contact_am = row['contact_amenageur'].strip().lower() if row['contact_amenageur'] else ""
-        nom_op     = row['nom_operateur'].strip().title()    if row['nom_operateur']     else ""
-        contact_op = row['contact_operateur'].strip().lower() if row['contact_operateur'] else ""
-        
-        id_am = amenageurs_ids.get((nom_am, contact_am))
-        id_op = operateurs_ids.get((nom_op, contact_op))
+        nom_am = row['nom_amenageur'].strip().title() if row['nom_amenageur'] else ""
+        nom_op = row['nom_operateur'].strip().title() if row['nom_operateur'] else ""
+
+        id_am = amenageurs_ids.get(nom_am)
+        id_op = operateurs_ids.get(nom_op)
         
         impl_station   = row['implantation_station'].strip() if row['implantation_station'] else None
         horaires_clean = row['horaires'].strip()             if row['horaires']             else None
