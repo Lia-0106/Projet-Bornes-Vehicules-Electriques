@@ -1,2 +1,2 @@
 1) configurer Vhost
-2) mettre bdd sur VM
+2) bdd en local pour emma
