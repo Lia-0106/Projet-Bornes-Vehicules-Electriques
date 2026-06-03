@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BretagneCharge — Créer un point</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <span class="bolt">logo</span>
+      </div>
+      <span class="brand-text"><strong>Bretagne</strong>Charge</span>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="index.html">Accueil</a>
+      <a class="nav-link" href="recherche.html">Recherche</a>
+      <a class="nav-link" href="carte.html">Carte</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <a class="link" href="index.html">← Retour à l'accueil</a>
+
+    <section class="card form-card">
+      <h2>Créer un point de recharge</h2>
+      <p class="muted">Ajoutez un nouveau point IRVE à la base de données régionale</p>
+
+      <form id="form-create" class="form-grid">
+        <fieldset>
+          <legend>Identification</legend>
+          <div class="grid-2">
+            <div class="field">
+              <label>Identifiant station *</label>
+              <input name="id" required placeholder="FR-EXX-E0001" />
+            </div>
+            <div class="field">
+              <label>Aménageur *</label>
+              <input name="amenageur" required placeholder="IZIVIA" />
+            </div>
+            <div class="field span-2">
+              <label>Contact aménageur *</label>
+              <input name="contact" required type="email" placeholder="contact@example.com" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Localisation</legend>
+          <div class="grid-2">
+            <div class="field span-2">
+              <label>Adresse *</label>
+              <input name="adresse" required placeholder="4 allée de la Robiquette, 35000 Rennes" />
+            </div>
+            <div class="field">
+              <label>Commune *</label>
+              <input name="commune" required placeholder="Rennes" />
+            </div>
+            <div class="field">
+              <label>Département *</label>
+              <select name="departement" required>
+                <option value="">Sélectionner…</option>
+                <option>Ille-et-Vilaine (35)</option>
+                <option>Côtes-d'Armor (22)</option>
+                <option>Finistère (29)</option>
+                <option>Morbihan (56)</option>
+              </select>
+            </div>
+            <div class="field">
+              <label>Latitude *</label>
+              <input name="lat" required placeholder="48.1173" />
+            </div>
+            <div class="field">
+              <label>Longitude *</label>
+              <input name="lng" required placeholder="-1.6778" />
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Caractéristiques</legend>
+          <div class="grid-2">
+            <div class="field">
+              <label>Horaires *</label>
+              <input name="horaires" required placeholder="24/7" />
+            </div>
+            <div class="field">
+              <label>Puissance maximale (kW) *</label>
+              <input name="puissance" required type="number" placeholder="22" />
+            </div>
+            <div class="field">
+              <label>Type de prise *</label>
+              <select name="typePrise" required>
+                <option>Type 2</option>
+                <option>Type 2 + CCS</option>
+                <option>CHAdeMO</option>
+              </select>
+            </div>
+            <div class="checkline">
+              <label><input type="checkbox" name="gratuit" /> Service gratuit</label>
+              <label><input type="checkbox" name="cable" /> Câble T2 attaché</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Exploitation</legend>
+          <div class="grid-2">
+            <div class="field">
+              <label>Enseigne *</label>
+              <input name="enseigne" required placeholder="IZIVIA" />
+            </div>
+            <div class="field">
+              <label>Opérateur *</label>
+              <input name="operateur" required placeholder="IZIVIA SA" />
+            </div>
+            <div class="field">
+              <label>Mise en service *</label>
+              <input name="miseEnService" required type="date" />
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="form-actions">
+          <a class="btn" href="index.html">Annuler</a>
+          <button type="submit" class="btn btn-primary">+ Créer le point</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">
+    FEUARDENT Emma / ZADOROZNYJ Lia — Groupe : CIN2
+  </footer>
+</body>
+</html>

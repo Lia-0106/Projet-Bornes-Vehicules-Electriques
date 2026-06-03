@@ -4,3 +4,86 @@
 ----------- Rajouter un formulaire de filtre pour trouver plus facilement les pts à modifs ---------------
 ---------------------------------------------------------------------------------------------------------- -->
 
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BretagneCharge — Accueil</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <span class="bolt">logo</span>
+      </div>
+      <span class="brand-text"><strong>Bretagne</strong>Charge</span>
+    </div>
+    <nav class="nav">
+      <a class="nav-link active" href="index.html">Accueil</a>
+      <a class="nav-link" href="recherche.html">Recherche</a>
+      <a class="nav-link" href="carte.html">Carte</a>
+    </nav>
+  </header>
+
+  <main class="container">
+
+    <section class="hero">
+      <div class="hero-body">
+        <h1>Présentation du site</h1>
+        <p>
+          Bienvenue sur BretagneCharge, la plateforme de visualisation et d'exploration des
+          infrastructures de recharge pour véhicules électriques en région Bretagne.
+        </p>
+        <p>
+          Consultez les statistiques régionales, recherchez des stations par critères, affichez leur
+          localisation sur la carte interactive ou accédez au détail complet de chaque point de charge.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="carte.html">Voir la carte</a>
+          <a class="btn" href="recherche.html">Rechercher</a>
+        </div>
+      </div>
+      <aside class="hero-aside">
+        <img
+          src="images/bretagne.jpg"
+          alt="Carte de Bretagne"
+          class="hero-image"
+        >
+      </aside>
+    </section>
+
+    <section class="card">
+      <div class="card-header">
+        <h2>Points de recharge</h2>
+        <div class="spacer"></div>
+        <a class="btn btn-primary" href="creer-point-recharge.html">+ Créer un point</a>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Identifiant</th>
+              <th>Commune</th>
+              <th>Aménageur</th>
+              <th>Puissance</th>
+              <th>Type</th>
+              <th class="center">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="list-body">
+            <!-- Rendu par app.js -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    FEUARDENT Emma / ZADOROZNYJ Lia — Groupe : CIN2
+  </footer>
+</body>
+</html>

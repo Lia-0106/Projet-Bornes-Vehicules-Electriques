@@ -2,3 +2,90 @@
 --------------------------------------------------------------------------
 ----------- IDENTIQUE FRONT JUSTE CHANGER LES VAR COULEURS ---------------
 -------------------------------------------------------------------------- -->
+
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>BretagneCharge — Détail du point</title>
+  <link rel="stylesheet" href="styles.css" />
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">
+        <span class="bolt">logo</span>
+      </div>
+      <span class="brand-text"><strong>Bretagne</strong>Charge</span>
+    </div>
+    <nav class="nav">
+      <a class="nav-link" href="index.html">Accueil</a>
+      <a class="nav-link" href="recherche.html">Recherche</a>
+      <a class="nav-link" href="carte.html">Carte</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <a class="link" href="index.html">← Retour aux résultats</a>
+
+    <section class="card header-detail">
+      <div class="detail-icon">⚡</div>
+      <div class="detail-title">
+        <div class="muted">Détails du point de recharge</div>
+        <h2 id="detail-id">—</h2>
+      </div>
+      <div class="spacer"></div>
+      <a class="btn" id="btn-edit" href="modifier-point-recharge.html">Modifier</a>
+    </section>
+
+    <section class="grid-2 gap">
+      <div class="card">
+        <h3>Identification</h3>
+        <div class="desc">
+          <div><strong>Identifiant station</strong><br><span id="d-identifiant">—</span></div>
+          <div><strong>Aménageur</strong><br><span id="d-amenageur">—</span></div>
+          <div><strong>Contact aménageur</strong><br><a id="d-contact" href="#">—</a></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Localisation</h3>
+        <div class="desc">
+          <div><strong>Adresse</strong><br><span id="d-adresse">—</span></div>
+          <div><strong>Commune</strong><br><span id="d-commune">—</span></div>
+          <div><strong>Département</strong><br><span id="d-departement">—</span></div>
+          <div class="coords"><strong>Coordonnées</strong><br>
+            <span id="d-coords">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Caractéristiques</h3>
+        <div class="desc">
+          <div><strong>Horaires</strong><br><span id="d-horaires">—</span></div>
+          <div><strong>Puissance maximale</strong><br><span id="d-puissance">—</span></div>
+          <div><strong>Type de prise</strong><br><span id="d-type">—</span></div>
+          <div><strong>Gratuit</strong><br><span id="d-gratuit">—</span></div>
+          <div><strong>Câble T2 attaché</strong><br><span id="d-cable">—</span></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Exploitation</h3>
+        <div class="desc">
+          <div><strong>Enseigne</strong><br><span id="d-enseigne">—</span></div>
+          <div><strong>Opérateur</strong><br><span id="d-operateur">—</span></div>
+          <div><strong>Mise en service</strong><br><span id="d-mes">—</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    FEUARDENT Emma / ZADOROZNYJ Lia — Groupe : CIN2
+  </footer>
+</body>
+</html>
