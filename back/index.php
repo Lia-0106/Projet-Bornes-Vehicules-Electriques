@@ -1,7 +1,7 @@
 <?php
-require_once 'php/Database.php';
-require_once 'php/constantes.php';
-require_once 'php/PointRecharge.php';
+require_once 'php/API/Database.php';
+require_once 'php/API/constantes.php';
+require_once 'php/API/PointRecharge.php';
 
 $point = new PointRecharge();
 $liste = $point->getListe();

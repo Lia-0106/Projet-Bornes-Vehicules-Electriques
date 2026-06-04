@@ -3,7 +3,7 @@
 requestRecherche();
 
 async function requestRecherche() {
-    const response = await fetch('/back/php/request.php/recherche');
+    const response = await fetch('/back/php/API/request.php/recherche');
 
     if (response.ok) {
         const data = await response.json();

@@ -1,16 +1,15 @@
 <?php
 
-require_once 'Database.php';
+require_once('Database.php') ;
 
 // Classe PointRecharge : contient toutes les requêtes SQL liées aux pts de recharge
- 
 class PointRecharge {
 
-    private $db; // connexion à la base de données
+    private $db ;
 
     public function __construct() {
-        $database = new Database();
-        $this->db = $database->getConnexion();
+        $database = new Database() ;
+        $this->db = $database->getConnexion() ;
     }
 
     // -------------------------------------------------------
@@ -40,43 +39,36 @@ class PointRecharge {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    // -------------------------------------------------------
-    // 2.DETAIL : on récupère toutes les infos d'un point par son id
-    //    Utilisé sur la page détail
-    // -------------------------------------------------------
-    public function getById($id) {
-        $sql = "SELECT 
-                    p.id,
-                    p.puissance_nominale,
-                    p.cable_t2_attache,
-                    p.gratuit,
-                    p.tarification,
-                    p.consolidated_longitude,
-                    p.consolidated_latitude,
-                    p.condition_acces,
-                    s.id_station_itinerance,
-                    s.nom_station,
-                    s.adresse_station,
-                    s.date_mise_en_service,
-                    s.nbre_pdc,
-                    s.horaires,
-                    s.nom_enseigne,
-                    c.nom_commune,
-                    d.nom_departement,
-                    a.nom        AS nom_amenageur,
-                    a.contact    AS contact_amenageur,
-                    op.nom       AS nom_operateur
-                FROM point_de_recharge p
-                JOIN station s  ON p.id_station_itinerance = s.id_station_itinerance
-                JOIN commune c  ON s.code_insee_commune    = c.code_insee_commune
-                JOIN departement d ON c.code_dep           = d.code_dep
-                JOIN acteur a   ON s.id_acteur             = a.id_acteur
-                LEFT JOIN acteur op ON s.id_acteur_operateur = op.id_acteur
-                WHERE p.id = :id";
+    // -----------------------------------------------------------------------
+    // 2. getDetails() : on récupère toutes les infos d'un point à partir de son id
+    //    Utilisé sur la page détail d'un point de recharge, en front et en back
+    // -----------------------------------------------------------------------
+    public function getDetails() {
+        $id = isset($_GET['id']) ? $_GET['id'] : 0 ;
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(array(':id' => $id));
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $sql= "SELECT p.id, p.puissance_nominale, p.cable_t2_attache, p.gratuit, p.tarification, p.consolidated_longitude,
+               p.consolidated_latitude, p.condition_acces, s.id_station_itinerance, s.nom_station, s.adresse_station,
+               s.date_mise_en_service, s.nbre_pdc, s.horaires, s.nom_enseigne, c.nom_commune, d.nom_departement,
+               a.nom AS nom_amenageur, a.contact AS contact_amenageur, a.siren AS siren_amenageur, op.nom AS nom_operateur,
+               op.telephone AS telephone_operateur,
+               GROUP_CONCAT(DISTINCT p_prise.type_prise SEPARATOR ', ') AS types_prises,
+               GROUP_CONCAT(DISTINCT p_paie.type_paiement SEPARATOR ', ') AS types_paiement
+               FROM point_de_recharge p
+               LEFT JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
+               LEFT JOIN commune c ON s.code_insee_commune = c.code_insee_commune
+               LEFT JOIN departement d ON c.code_dep = d.code_dep
+               LEFT JOIN acteur a ON s.id_acteur = a.id_acteur
+               LEFT JOIN acteur op ON s.id_acteur_operateur = op.id_acteur
+               LEFT JOIN point_recharge_prise p_prise ON p.id = p_prise.id
+               LEFT JOIN point_recharge_paiement p_paie ON p.id = p_paie.id
+               WHERE p.id = :id
+               GROUP BY p.id" ;
+
+        $statement = $this->db->prepare($sql) ;
+        $statement->bindParam(':id', $id, PDO::PARAM_INT) ;
+        $statement->execute() ;
+        $result = $statement->fetch(PDO::FETCH_ASSOC) ;
+        return $result ;
     }
 
     // -------------------------------------------------------

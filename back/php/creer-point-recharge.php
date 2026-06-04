@@ -1,7 +1,7 @@
 <?php
-require_once 'Database.php';
-require_once 'constantes.php';
-require_once '../../front/php/PointRecharge.php';
+require_once 'API/Database.php';
+require_once 'API/constantes.php';
+require_once 'API/PointRecharge.php';
 
 $erreur = '';
 

@@ -3,7 +3,7 @@
 requestStats() ;
 
 async function requestStats() {
-    const response = await fetch('/back/php/request.php/stats') ;
+    const response = await fetch('/back/php/API/request.php/stats') ;
         
     if (response.ok) {
         const data = await response.json() ;  

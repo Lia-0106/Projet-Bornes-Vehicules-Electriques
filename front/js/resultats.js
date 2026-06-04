@@ -5,7 +5,7 @@ async function requestResultats() {
     const type_prise = document.getElementById('recherche-type-de-prise').value ;
     const code_dep   = document.getElementById('recherche-departement').value ;
 
-    const response = await fetch(`/back/php/request.php/resultats?amenageur=${amenageur}&type_prise=${type_prise}&code_dep=${code_dep}`) ;
+    const response = await fetch(`/back/php/API/request.php/resultats?amenageur=${amenageur}&type_prise=${type_prise}&code_dep=${code_dep}`) ;
 
     if (response.ok) {
         const data = await response.json();

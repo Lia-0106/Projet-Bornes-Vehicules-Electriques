@@ -1,7 +1,7 @@
 <?php
-require_once 'Database.php';
-require_once 'constantes.php';
-require_once '../../front/php/PointRecharge.php';
+require_once 'API/Database.php';
+require_once 'API/constantes.php';
+require_once 'API/PointRecharge.php';
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
@@ -11,7 +11,7 @@ if ($id <= 0) {
 }
 
 $pointRecharge = new PointRecharge();
-$p = $pointRecharge->getById($id);
+$p = $pointRecharge->getDetails();
 
 if (!$p) {
     header('Location: ../index.php');
