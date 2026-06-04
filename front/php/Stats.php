@@ -57,8 +57,7 @@ class Stats {
             $stats["nb_amenageurs"] = $result["nb_amenageurs"] ;
 
             // STAT 6 : Nb de prises par type
-            $statement = $this->db->query("SELECT type_prise, COUNT(id) AS nb_prises FROM point_recharge_prise
-                                    GROUP BY type_prise ORDER BY nb_prises DESC") ;
+            $statement = $this->db->query("SELECT type_prise, COUNT(id) AS nb_prises FROM point_recharge_prise GROUP BY type_prise ORDER BY nb_prises DESC") ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $stats["prises_par_type"] = $result ;
 
