@@ -41,12 +41,19 @@ if ($requestMethod === 'GET' && $ressource === 'carte') {
     echo json_encode($data) ;
 }
 
+if ($requestMethod === 'GET' && $ressource === 'marqueurs') {
+    $annee = isset($_GET['annee']) ? $_GET['annee'] : '' ;
+    $dep = isset($_GET['dep']) ? $_GET['dep'] : '' ;
+    $carte = new Carte($db) ;
+    $data = $carte->getMarqueurs($annee, $dep) ;
+    echo json_encode($data) ;
+}
+
 if ($requestMethod === 'GET' && $ressource === 'resultats') {
     $resultats = new Resultats($db) ;
     $amenageur = $_GET['amenageur'] ;
     $type_prise = $_GET['type_prise'] ;
     $code_dep = $_GET['code_dep'] ;
-
     $data = $resultats->getResultats($amenageur, $type_prise, $code_dep) ;
     echo json_encode($data) ;
 }
