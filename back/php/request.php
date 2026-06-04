@@ -39,5 +39,12 @@ if ($requestMethod === 'GET' && $ressource === 'carte') {
     echo json_encode($data) ;
 }
 
+if ($requestMethod === 'GET' && $ressource === 'marqueurs') {
+    $annee = isset($_GET['annee']) ? $_GET['annee'] : '' ;
+    $dep = isset($_GET['dep']) ? $_GET['dep'] : '' ;
+    $carte = new Carte($db) ;
+    $data  = $carte->getMarqueurs($annee, $dep) ;
+    echo json_encode($data) ;
+}
 
 ?>
