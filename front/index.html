@@ -1,165 +1,132 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BretagneCharge — Accueil</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style-front.css" />
-  <script src="js/stats.js" defer></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EliVolt</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="css/style-front.css" rel="stylesheet">
 </head>
-
 <body>
 
-  <nav class="bc-navbar py-2">
-    <div class="container-xl px-4 d-flex align-items-center justify-content-between">
-      <a href="index.html" class="d-flex align-items-center gap-2 text-decoration-none">
-        <div class="bc-logo-box"><img src="img/logo.jpeg" alt="Logo BretagneCharge" /></div>
-        <span class="fw-semibold text-white brand-text">Bretagne<span class="brand-highlight">Charge</span></span>
+<nav class="ev-nav">
+  <a href="index.html" class="brand">
+    <img src="/ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo">
+    <span class="brand-name">EliVolt</span>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Accueil</a>
+    <a href="html/recherche.html">Recherche</a>
+    <a href="html/carte.html">Carte</a>
+    <a href="/back/php/login.php" class="admin">Administration</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="nav-mobile" id="navMobile">
+  <a href="index.html" class="active">Accueil</a>
+  <a href="html/recherche.html">Recherche</a>
+  <a href="html/carte.html">Carte</a>
+  <a href="/back/php/login.php" class="admin">Administration</a>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero-block">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Bienvenue sur EliVolt</h1>
+      <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Perspiciatis dolores consequuntur corrupti fugit dolorum, quidem, eos fuga nemo ipsam veniam molestias facilis inventore magni blanditiis recusandae dolore ipsum tempore impedit?</p>
+      <div class="hero-ctas">
+        <a href="html/carte.html" class="btn-prim">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Voir la carte
+        </a>
+        <a href="html/recherche.html" class="btn-sec">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          Rechercher
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATISTIQUES -->
+  <div class="stats-card">
+    <div class="stats-card-title">Statistiques</div>
+
+    <div class="stat-row stat-row-3">
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Points de recharge</div>
+        <div class="stat-bloc-value accent" id="stat-total-points">—</div>
+      </div>
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Aménageurs</div>
+        <div class="stat-bloc-value" id="stat-amenageurs">—</div>
+      </div>
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Nombre de stations</div>
+        <div class="stat-bloc-value" id="stat-nb-stations">—</div>
+      </div>
+    </div>
+
+    <div class="stat-row stat-row-2">
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Points installés par année</div>
+        <div class="stat-list-wrap" id="stat-annee-list"></div>
+      </div>
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Points par département</div>
+        <div class="stat-list-wrap" id="stat-dep-list"></div>
+      </div>
+    </div>
+
+    <div class="stat-row stat-row-2">
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Points par année / département</div>
+        <div class="stat-list-wrap" id="stat-year-dep-list"></div>
+      </div>
+      <div class="stat-bloc">
+        <div class="stat-bloc-label">Types de prises</div>
+        <div class="stat-list-wrap" id="stat-prises-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- EXPLORE -->
+  <div class="explore-band">
+    <div>
+      <h3>Prêt à explorer ?</h3>
+      <p>Utilisez la carte ou le moteur de recherche pour trouver des stations.</p>
+    </div>
+    <div class="explore-ctas">
+      <a href="html/carte.html" class="btn-accent">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Carte
       </a>
-      <div class="d-flex align-items-center gap-2">
-        <a href="index.html" class="nav-link-custom active">Accueil</a>
-        <a href="html/recherche.html" class="nav-link-custom">Recherche</a>
-        <a href="html/carte.html" class="nav-link-custom">Carte</a>
-      </div>
+      <a href="html/recherche.html" class="btn-outline">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        Recherche
+      </a>
     </div>
-  </nav>
+  </div>
 
-  <main class="container-xl px-4 flex-grow-1">
+</div>
 
-    <!-- Hero -->
-    <div class="row align-items-center py-5 g-5">
-      <div class="col-lg-5">
-        <h1 class="h2 fw-bold mb-3">Présentation du site</h1>
-        <p class="hero-text">
-          Bienvenue sur BretagneCharge, la plateforme de visualisation et d'exploration des infrastructures de recharge
-          pour véhicules électriques en région Bretagne.
-        </p>
-        <p class="hero-text">
-          Consultez les statistiques régionales, recherchez des stations par critères, affichez leur localisation sur la
-          carte interactive ou accédez au détail complet de chaque point de charge.
-        </p>
-        <div class="d-flex gap-3 mt-4">
-          <a href="html/carte.html" class="btn px-4 py-2 btn-purple-custom">
-            <i class="fa fa-map me-2"></i>Voir la carte
-          </a>
-          <a href="html/recherche.html" class="btn px-4 py-2 btn-dark-custom">
-            <i class="fa fa-magnifying-glass me-2"></i>Rechercher
-          </a>
-        </div>
-      </div>
-      <div class="col-lg-7">
-        <div class="img-placeholder">Image</div>
-      </div>
-    </div>
+<footer class="ev-footer">
+  <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe CIN2</span>
+  <span>2026</span>
+</footer>
 
-    <!-- STATISTIQUES -->
-    <section class="py-5 section-bordered">
-      <div class="d-flex justify-content-between align-items-start mb-4">
-        <div>
-          <h2 class="h4 fw-bold mb-1">Statistiques</h2>
-          <p class="section-subtitle">Vue d'ensemble du parc de recharge breton</p>
-        </div>
-      </div>
-      <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
-        <!-- Card 1 -->
-        <div class="col">
-          <div class="bc-card p-4 h-100 d-flex flex-column">
-            <div class="stat-icon-box mb-3"><i class="fa fa-table-cells icon-purple-dim"></i></div>
-            <div class="stat-number" id="stat-total-points"></div>
-            <div class="fw-medium mt-1 stat-label">Enregistrements en base</div>
-            <div class="stat-desc">Points de recharge totaux</div>
-          </div>
-        </div>
-        <!-- Card 2 -->
-        <div class="col">
-          <div class="bc-card p-4 h-100 d-flex flex-column">
-            <div class="d-flex align-items-center gap-3 mb-3">
-              <div class="stat-icon-box"><i class="fa fa-calendar-days icon-purple-dim"></i></div>
-              <div class="fw-medium stat-label">Points installés par année</div>
-            </div>
-            <div id="stat-annee-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
-              <div class="text-muted">Chargement...</div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 3 -->
-        <div class="col">
-          <div class="bc-card p-4 h-100 d-flex flex-column">
-            <div class="d-flex align-items-center gap-3 mb-3">
-              <div class="stat-icon-box"><i class="fa fa-chart-line icon-purple-dim"></i></div>
-              <div class="fw-medium stat-label">Points par département</div>
-            </div>
-            <div id="stat-dep-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
-              <div class="text-muted">Chargement...</div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 4 -->
-        <div class="col">
-          <div class="bc-card p-4 h-100 d-flex flex-column">
-            <div class="d-flex align-items-center gap-3 mb-3">
-              <div class="stat-icon-box"><i class="fa fa-chart-column icon-purple-dim"></i></div>
-              <div class="fw-medium stat-label">Points par année / Dép.</div>
-            </div>
-            <div id="stat-year-dep-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
-              <div class="text-muted">Chargement...</div>
-            </div>
-          </div>
-        </div>
-        <!-- Card 5 -->
-        <div class="col">
-          <div class="bc-card p-4 h-100 d-flex flex-column">
-            <div class="stat-icon-box mb-3"><i class="fa fa-building icon-purple-dim"></i></div>
-            <div class="stat-number" id="stat-amenageurs"></div>
-            <div class="fw-medium mt-1 stat-label">Aménageurs distincts</div>
-            <div class="stat-desc">Opérateurs actifs en Bretagne</div>
-          </div>
-        </div>
-        <!-- Card 6 -->
-        <div class="col">
-          <div class="bc-card p-4 h-100 d-flex flex-column">
-            <div class="d-flex align-items-center gap-3 mb-3">
-              <div class="stat-icon-box"><i class="fa fa-plug icon-purple-dim"></i></div>
-              <div class="fw-medium stat-label">Types de prises</div>
-            </div>
-            <div id="stat-prises-list" class="d-flex flex-column gap-2 mt-auto w-100" style="font-size: .85rem;">
-              <div class="text-muted">Chargement...</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTA -->
-    <div
-      class="bc-card p-4 mb-5 d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-4">
-      <div>
-        <div class="fw-semibold mb-1">Prêt à explorer ?</div>
-        <div class="cta-desc">Utilisez la carte ou le moteur de recherche pour trouver des stations.</div>
-      </div>
-      <div class="d-flex gap-3 flex-shrink-0">
-        <a href="html/carte.html" class="btn px-4 py-2 btn-purple-custom">
-          <i class="fa fa-map me-2"></i>Carte
-        </a>
-        <a href="html/recherche.html" class="btn px-4 py-2 btn-dark-custom">
-          <i class="fa fa-magnifying-glass me-2"></i>Recherche
-        </a>
-      </div>
-    </div>
-
-  </main>
-
-  <footer class="bc-footer">
-    <div class="container-xl px-4 d-flex justify-content-between">
-      <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe 7</span><span>2026</span>
-    </div>
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="js/stats.js" defer></script>
+<script>
+  const toggle = document.getElementById('navToggle');
+  const menu   = document.getElementById('navMobile');
+  toggle.addEventListener('click', () => menu.classList.toggle('open'));
+</script>
 </body>
-
 </html>

@@ -1,5 +1,6 @@
 'use strict'
 
+// Récupère depuis l'API les résultats filtrés
 async function requestResultats() {
     const amenageur = document.getElementById('recherche-amenageur').value ;
     const type_prise = document.getElementById('recherche-type-de-prise').value ;
@@ -8,14 +9,16 @@ async function requestResultats() {
     const response = await fetch(`/back/php/API/request.php/resultats?amenageur=${amenageur}&type_prise=${type_prise}&code_dep=${code_dep}`) ;
 
     if (response.ok) {
-        const data = await response.json();
-        displayResultats(data);
+        const data = await response.json() ;
+        displayResultats(data) ;
     }
     else {
-        console.error("Erreur lors de l'affichage des points de recharge :", error);
+        console.error("Erreur lors de l'affichage des points de recharge :", response.status) ;
     }
 }
 
+
+// Affiche les résultats dans le tableau + le badge avec le nb de résultats
 function displayResultats(data) {
     const tbody = document.querySelector('.table tbody') ;
     const badge = document.querySelector('.table-badge') ;
@@ -31,23 +34,22 @@ function displayResultats(data) {
         const row = document.createElement('tr') ;
 
         const cellDate = document.createElement('td') ;
-        let dateFormatee = 'Inconnue' ;
+        let dateFormatee = '—' ;
         if(item.date_mise_en_service && item.date_mise_en_service.substring(0, 4) !== '0000') {
             const annee = item.date_mise_en_service.substring(0,4) ;
             const mois = item.date_mise_en_service.substring(5, 7) ;
-            const jour = item.date_mise_en_service.substring(8, 10) ;
             
-            dateFormatee = `${jour}/${mois}/${annee}` ;
+            dateFormatee = `${mois}/${annee}` ;
         }
         cellDate.textContent = dateFormatee ;
         row.appendChild(cellDate) ;
 
         const cellPrise = document.createElement('td') ;
-        cellPrise.textContent = item.types_prises || 'Inconnu' ;
+        cellPrise.textContent = item.types_prises || '—' ;
         row.appendChild(cellPrise) ;
 
         const cellPuissance = document.createElement('td') ;
-        cellPuissance.textContent = `${item.puissance} kW` || 'Inconnue' ;
+        cellPuissance.textContent = `${item.puissance} kW` || '—' ;
         row.appendChild(cellPuissance) ;
 
         const cellLocalisation = document.createElement('td') ;
@@ -57,14 +59,15 @@ function displayResultats(data) {
         const cellDetails = document.createElement('td') ;
         const link = document.createElement('a') ;
         link.href = `point-recharge.html?id=${item.point_id}` ;
-        link.className = 'btn btn-sm btn-purple-custom' ;
-        link.innerHTML = '<i class="fa fa-eye"></i>'
+        link.className = 'cell-link' ;
+        link.innerHTML = 'Voir →' ;
         cellDetails.appendChild(link) ;
         row.appendChild(cellDetails)
 
         tbody.appendChild(row) ;
         
-    });
+    }) ;
 }
 
-document.querySelector('.btn-search').addEventListener('click', requestResultats) ;
+document.querySelector('.filter-btn').addEventListener('click', requestResultats) ;
+requestResultats() ;

@@ -7,8 +7,8 @@ import re
 # =====================================================================
 db = mysql.connector.connect(
     host="localhost",
-    user="root",
-    password="",  
+    user="irveuser",
+    password="irvepwd",  
     database="irve"
 )
 cursor = db.cursor()

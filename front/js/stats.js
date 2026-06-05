@@ -2,6 +2,8 @@
 
 requestStats() ;
 
+
+// Récupère depuis l'API les statistiques globales
 async function requestStats() {
     const response = await fetch('/back/php/API/request.php/stats') ;
         
@@ -14,11 +16,13 @@ async function requestStats() {
     }  
 }
 
+
+// Affiche les statistiques dans la page
 function displayStats(data) {
-    // Affichage STAT 1
+    // STAT 1 : Nb total de points
     document.getElementById('stat-total-points').textContent = data.total_points ;
 
-    // Affichage STAT 2 : liste des points par année
+    // STAT 2 : Nb de points par années
     const listePointsAnnee = document.getElementById('stat-annee-list') ;
     listePointsAnnee.innerHTML = '' ;
     data.points_annee.forEach(annee => {
@@ -28,7 +32,7 @@ function displayStats(data) {
         </div>` ;
     }) ;
 
-    // Affichage STAT 3
+    // STAT 3 : Nb de points par dep
     const listePointsDep = document.getElementById('stat-dep-list') ;
     listePointsDep.innerHTML = '' ;
     data.points_par_dep.forEach(dep => {
@@ -36,9 +40,9 @@ function displayStats(data) {
         <span>${dep.nom_departement} (${dep.code_dep})</span>
         <span class="fw-bold text-primary">${dep.nb_points}</span>
         </div>` ;
-    });
+    }) ;
 
-    // Affichage STAT 4
+    // STAT 4 : Nb de points par dep par année
     const listePointsDepAnnee = document.getElementById('stat-year-dep-list') ;
     listePointsDepAnnee.innerHTML = '' ;
     data.points_par_dep_annee.forEach(depAnnee => {
@@ -46,12 +50,12 @@ function displayStats(data) {
         <span>${depAnnee.annee} — ${depAnnee.nom_departement}</span>
         <span class="fw-bold text-primary">${depAnnee.nb_points}</span>
         </div>            `
-    })
+    }) ;
 
-    // Affichage STAT 5
+    // STAT 5 : Nb aménageurs
     document.getElementById('stat-amenageurs').textContent = data.nb_amenageurs ;
 
-    // Affichage STAT 6
+    // STAT 6 : Nb de prises par type
     const listePrises = document.getElementById('stat-prises-list') ;
     listePrises.innerHTML = '';
     data.prises_par_type.forEach(prise => {
@@ -59,5 +63,11 @@ function displayStats(data) {
         <span>Prise ${prise.type_prise}</span>
         <span class="fw-bold text-success">${prise.nb_prises}</span>
         </div>`
-    })
+    }) ;
+
+    // STAT 7 : Nb de stations
+        document.getElementById('stat-amenageurs').textContent = data.nb_amenageurs ;
+
+    // STAT 6 : Nb de prises par type
+    document.getElementById('stat-nb-stations').textContent = data.nb_stations ;
 }

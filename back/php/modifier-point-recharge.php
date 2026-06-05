@@ -1,24 +1,28 @@
 <?php
-require_once 'API/Database.php';
-require_once 'API/constantes.php';
-require_once 'API/PointRecharge.php';
+session_start() ;
+if (!isset($_SESSION['admin'])) {
+    header('Location: ../php/login.php') ;
+    exit ;
+}
+
+require_once __DIR__ . '/API/Database.php' ;
+require_once __DIR__ . '/API/constantes.php' ;
+require_once __DIR__ . '/API/PointRecharge.php' ;
 
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-
 if ($id <= 0) {
-    header('Location: ../index.php');
+    header('Location: /back/index.php');
     exit;
 }
 
 $pointRecharge = new PointRecharge();
-$p = $pointRecharge->getDetails();
+$p = $pointRecharge->getDetails($id);
 
 if (!$p) {
-    header('Location: ../index.php');
+    header('Location: /back/index.php');
     exit;
 }
 
-// traitement du formulaire quand il est soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = [
         'nom_station'          => $_POST['nom_station']          ?? '',
@@ -31,13 +35,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'gratuit'              => isset($_POST['gratuit'])          ? 1 : 0,
         'tarification'         => $_POST['tarification']         ?? '',
         'condition_acces'      => $_POST['condition_acces']      ?? '',
+        'implantation_station' => $_POST['implantation_station'] ?? '',
+        'consolidated_latitude'  => $_POST['consolidated_latitude']  ?? 0,
+        'consolidated_longitude' => $_POST['consolidated_longitude'] ?? 0,
+        'nom_amenageur'        => $_POST['nom_amenageur']        ?? '',
+        'siren_amenageur'      => $_POST['siren_amenageur']      ?? '',
+        'contact_amenageur'    => $_POST['contact_amenageur']    ?? '',
+        'telephone_amenageur'  => $_POST['telephone_amenageur']  ?? '',
+        'nom_operateur'        => $_POST['nom_operateur']        ?? '',
+        'contact_operateur'    => $_POST['contact_operateur']    ?? '',
+        'telephone_operateur'  => $_POST['telephone_operateur']  ?? '',
+        'types_prises'         => $_POST['types_prises']         ?? [],
+        'types_paiement'       => $_POST['types_paiement']       ?? [],
     ];
 
     $pointRecharge->update($id, $data);
-
-    //redirige vers la page détail après modif
-    header('Location: point-recharge.php?id=' . $id);
+    header('Location: /back/php/details-point-recharge.php?id=' . $id);
     exit;
+}
+
+// Helper : est-ce qu'une valeur est dans la liste CSV stockée ?
+function inList(?string $list, string $val): bool {
+    if (!$list) return false;
+    return in_array($val, array_map('trim', explode(',', $list)));
 }
 ?>
 <!doctype html>
@@ -45,108 +65,306 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BretagneCharge — Modifier un point</title>
-  <link rel="stylesheet" href="../css/styles.css" />
+  <title>EliVolt — Modifier un point</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/style-back.css" />
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo">
-        <span class="bolt">logo</span>
+
+<nav class="ev-nav">
+  <a href="/back/index.php" class="brand">
+    <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo"/>
+    <span class="brand-name">EliVolt <span class="text-muted fw-normal" style="font-size:14px">Admin</span></span>
+  </a>
+<!-- Nav desktop -->
+<div class="nav-links">
+  <a href="/back/index.php">Accueil</a>
+  <a href="/front/html/recherche.html">Recherche</a>
+  <a href="/front/html/carte.html">Carte</a>
+  <a href="/front/index.html" class="site">Aller au site</a>
+</div>
+</nav>
+
+<!-- Nav mobile -->
+<div class="nav-mobile" id="navMobile">
+  <a href="/back/index.php">Accueil</a>
+  <a href="/front/html/recherche.html">Recherche</a>
+  <a href="/front/html/carte.html">Carte</a>
+  <a href="/front/index.html" class="site">Aller au site</a>
+</div>
+
+<main class="container-xl px-4 pt-4 pb-5 flex-grow-1">
+
+  <a href="/back/php/details-point-recharge.php?id=<?= $id ?>" class="back-link mb-4 d-inline-flex">
+    <i class="fa fa-arrow-left"></i> Retour au détail
+  </a>
+
+  <div class="bc-card p-4 mb-4">
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <div class="d-flex align-items-center gap-3">
+        <div class="bc-logo-box-lg" style="background:var(--accent);">
+          <i class="fa fa-pen text-white fs-5"></i>
+        </div>
+        <div>
+          <div class="details-subtitle">Modification du point de recharge</div>
+          <div class="details-title"><?= htmlspecialchars($p['id_station_itinerance'] ?? 'Point #' . $id) ?></div>
+        </div>
       </div>
-      <span class="brand-text"><strong>Bretagne</strong>Charge</span>
+      <span class="table-badge"><?= htmlspecialchars($p['nom_station'] ?? '') ?></span>
     </div>
-    <nav class="nav">
-      <a class="nav-link" href="../index.php">Accueil</a>
-      <a class="nav-link" href="recherche.php">Recherche</a>
-      <a class="nav-link" href="carte.php">Carte</a>
-    </nav>
-  </header>
+  </div>
 
-  <main class="container">
-    <a class="link" href="point-recharge.php?id=<?= $id ?>">← Retour au détail</a>
+  <form method="POST" action="modifier-point-recharge.php?id=<?= $id ?>" class="form-grid">
 
-    <section class="card form-card">
-      <h2>Modifier le point de recharge</h2>
-      <p class="muted">Mettez à jour les informations du point</p>
+    <!-- ── IDENTIFICATION ─────────────────────────────── -->
+    <fieldset>
+      <legend>Identification</legend>
+      <div class="grid-2 mt-3">
 
-      <form method="POST" action="modifier-point-recharge.php?id=<?= $id ?>" class="form-grid">
-
-        <fieldset>
-          <legend>Identification</legend>
-          <div class="grid-2">
-            <div class="field">
-              <label>Nom de la station</label>
-              <input name="nom_station" value="<?= htmlspecialchars($p['nom_station'] ?? '') ?>" />
-            </div>
-            <div class="field">
-              <label>Enseigne</label>
-              <input name="nom_enseigne" value="<?= htmlspecialchars($p['nom_enseigne'] ?? '') ?>" />
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Localisation</legend>
-          <div class="grid-2">
-            <div class="field span-2">
-              <label>Adresse</label>
-              <input name="adresse_station" value="<?= htmlspecialchars($p['adresse_station'] ?? '') ?>" />
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Caractéristiques</legend>
-          <div class="grid-2">
-            <div class="field">
-              <label>Horaires</label>
-              <input name="horaires" value="<?= htmlspecialchars($p['horaires'] ?? '') ?>" />
-            </div>
-            <div class="field">
-              <label>Puissance maximale (kW)</label>
-              <input name="puissance_nominale" type="number" value="<?= htmlspecialchars($p['puissance_nominale'] ?? '') ?>" />
-            </div>
-            <div class="field">
-              <label>Condition d'accès</label>
-              <input name="condition_acces" value="<?= htmlspecialchars($p['condition_acces'] ?? '') ?>" />
-            </div>
-            <div class="field">
-              <label>Tarification</label>
-              <input name="tarification" value="<?= htmlspecialchars($p['tarification'] ?? '') ?>" />
-            </div>
-            <div class="checkline">
-              <label>
-                <input type="checkbox" name="gratuit" <?= $p['gratuit'] ? 'checked' : '' ?> /> Service gratuit
-              </label>
-              <label>
-                <input type="checkbox" name="cable_t2_attache" <?= $p['cable_t2_attache'] ? 'checked' : '' ?> /> Câble T2 attaché
-              </label>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset>
-          <legend>Exploitation</legend>
-          <div class="grid-2">
-            <div class="field">
-              <label>Mise en service</label>
-              <input name="date_mise_en_service" type="date" value="<?= htmlspecialchars($p['date_mise_en_service'] ?? '') ?>" />
-            </div>
-          </div>
-        </fieldset>
-
-        <div class="form-actions">
-          <a class="btn" href="details-point-recharge.php?id=<?= $id ?>">Annuler</a>
-          <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+        <div class="field">
+          <label>Nom de la station *</label>
+          <input type="text" name="nom_station" required
+                 value="<?= htmlspecialchars($p['nom_station'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Enseigne *</label>
+          <input type="text" name="nom_enseigne" required
+                 value="<?= htmlspecialchars($p['nom_enseigne'] ?? '') ?>"
+                 class="filter-input" />
         </div>
 
-      </form>
-    </section>
-  </main>
+        <div class="field span-2" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem;">
+          <label style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem;display:block;">Aménageur</label>
+        </div>
 
-  <footer class="footer">
-    FEUARDENT Emma / ZADOROZNYJ Lia — Groupe : CIN2 — 2026
-  </footer>
+        <div class="field">
+          <label>Nom aménageur</label>
+          <input type="text" name="nom_amenageur"
+                 value="<?= htmlspecialchars($p['nom_amenageur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>SIREN aménageur</label>
+          <input type="text" name="siren_amenageur"
+                 value="<?= htmlspecialchars($p['siren_amenageur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Contact aménageur</label>
+          <input type="text" name="contact_amenageur"
+                 value="<?= htmlspecialchars($p['contact_amenageur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Téléphone aménageur</label>
+          <input type="text" name="telephone_amenageur"
+                 value="<?= htmlspecialchars($p['telephone_amenageur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+
+        <div class="field span-2" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem;">
+          <label style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem;display:block;">Opérateur</label>
+        </div>
+
+        <div class="field">
+          <label>Nom opérateur</label>
+          <input type="text" name="nom_operateur"
+                 value="<?= htmlspecialchars($p['nom_operateur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Contact opérateur</label>
+          <input type="text" name="contact_operateur"
+                 value="<?= htmlspecialchars($p['contact_operateur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Téléphone opérateur</label>
+          <input type="text" name="telephone_operateur"
+                 value="<?= htmlspecialchars($p['telephone_operateur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+
+      </div>
+    </fieldset>
+
+    <!-- ── LOCALISATION ───────────────────────────────── -->
+    <fieldset>
+      <legend>Localisation</legend>
+      <div class="grid-2 mt-3">
+
+        <div class="field span-2">
+          <label>Adresse *</label>
+          <input type="text" name="adresse_station" required
+                 value="<?= htmlspecialchars($p['adresse_station'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+
+        <!-- Commune en lecture seule : liée au code INSEE, non modifiable ici -->
+        <div class="field">
+          <label>Commune</label>
+          <input type="text"
+                 value="<?= htmlspecialchars($p['nom_commune'] ?? '') ?>"
+                 class="filter-input"
+                 disabled
+                 title="La commune est liée au code INSEE et ne peut pas être modifiée ici." />
+        </div>
+        <div class="field">
+          <label>Département</label>
+          <input type="text"
+                 value="<?= htmlspecialchars($p['nom_departement'] ?? '') ?>"
+                 class="filter-input"
+                 disabled />
+        </div>
+
+        <div class="field filter-select-wrap">
+          <label>Implantation</label>
+          <select name="implantation_station">
+            <option value="">— Choisir —</option>
+            <?php
+            $implantations = [
+              'Parking public',
+              'Parking privé à usage public',
+              'Parking privé réservé à la clientèle',
+              'Station dédiée à la recharge rapide',
+              'Voirie',
+            ];
+            foreach ($implantations as $imp):
+              $sel = ($p['implantation_station'] ?? '') === $imp ? 'selected' : '';
+            ?>
+            <option value="<?= $imp ?>" <?= $sel ?>><?= $imp ?></option>
+            <?php endforeach; ?>
+          </select>
+        </div>
+        <div class="field"><!-- spacer --></div>
+
+        <div class="field">
+          <label>Latitude *</label>
+          <input type="text" name="consolidated_latitude" required
+                 value="<?= htmlspecialchars($p['consolidated_latitude'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Longitude *</label>
+          <input type="text" name="consolidated_longitude" required
+                 value="<?= htmlspecialchars($p['consolidated_longitude'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+
+      </div>
+    </fieldset>
+
+    <!-- ── CARACTÉRISTIQUES ───────────────────────────── -->
+    <fieldset>
+      <legend>Caractéristiques</legend>
+      <div class="grid-2 mt-3">
+
+        <div class="field">
+          <label>Horaires *</label>
+          <input type="text" name="horaires" required
+                 value="<?= htmlspecialchars($p['horaires'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Puissance maximale (kW) *</label>
+          <input type="number" name="puissance_nominale" required
+                 value="<?= htmlspecialchars($p['puissance_nominale'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field filter-select-wrap">
+          <label>Condition d'accès *</label>
+          <select name="condition_acces" required>
+            <option value="Accès libre"   <?= ($p['condition_acces'] ?? '') === 'Accès libre'    ? 'selected' : '' ?>>Accès libre</option>
+            <option value="Accès réservé" <?= ($p['condition_acces'] ?? '') === 'Accès réservé'  ? 'selected' : '' ?>>Accès réservé</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Tarification</label>
+          <input type="text" name="tarification"
+                 value="<?= htmlspecialchars($p['tarification'] ?? '') ?>"
+                 placeholder="Gratuit / payant" class="filter-input" />
+        </div>
+
+        <div class="field span-2">
+          <label>Types de prises</label>
+          <div class="checkline mt-1">
+            <?php foreach (['T2','Combo CCS','CHAdeMO','EF','Autre'] as $prise): ?>
+            <label>
+              <input type="checkbox" name="types_prises[]" value="<?= $prise ?>"
+                     <?= inList($p['types_prises'] ?? '', $prise) ? 'checked' : '' ?> />
+              <?= $prise ?>
+            </label>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
+        <div class="field span-2">
+          <label>Options</label>
+          <div class="checkline mt-1">
+            <label>
+              <input type="checkbox" name="gratuit" <?= !empty($p['gratuit']) ? 'checked' : '' ?> />
+              Service gratuit
+            </label>
+            <label>
+              <input type="checkbox" name="cable_t2_attache" <?= !empty($p['cable_t2_attache']) ? 'checked' : '' ?> />
+              Câble T2 attaché
+            </label>
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+
+    <!-- ── EXPLOITATION ───────────────────────────────── -->
+    <fieldset>
+      <legend>Exploitation</legend>
+      <div class="grid-2 mt-3">
+
+        <div class="field">
+          <label>Date de mise en service *</label>
+          <input type="date" name="date_mise_en_service" required
+                 value="<?= htmlspecialchars($p['date_mise_en_service'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field"><!-- spacer --></div>
+
+        <div class="field span-2">
+          <label>Types de paiement</label>
+          <div class="checkline mt-1">
+            <?php foreach (['CB','Acte','Autre'] as $paie): ?>
+            <label>
+              <input type="checkbox" name="types_paiement[]" value="<?= $paie ?>"
+                     <?= inList($p['types_paiement'] ?? '', $paie) ? 'checked' : '' ?> />
+              <?= $paie ?>
+            </label>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
+      </div>
+    </fieldset>
+
+    <!-- ── ACTIONS ────────────────────────────────────── -->
+    <div class="form-actions mt-2 border-top pt-4">
+      <button type="submit" class="btn-prim">Enregistrer les modifications</button>
+      <a class="btn-sec" href="/back/php/details-point-recharge.php?id=<?= $id ?>">Annuler</a>
+    </div>
+
+  </form>
+</main>
+
+<footer class="ev-footer">
+  <span>FEUARDENT Emma / ZADOROZNYJ Lia — Groupe CIN2</span>
+  <span>2026</span>
+</footer>
+
+<script>
+  const toggle = document.getElementById('navToggle');
+  const mobile = document.getElementById('navMobile');
+  toggle.addEventListener('click', () => mobile.classList.toggle('open'));
+</script>
 </body>
 </html>

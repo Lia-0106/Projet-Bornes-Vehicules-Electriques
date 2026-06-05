@@ -1,18 +1,24 @@
 <?php
 
-class Resultats
-{
-    private $db;
+// ---------------------------------------------------------
+// CLASSE Resultats
+// Retourne les points de recharge filtrés pour la recherche
+// --------------------------------------------------------
+class Resultats {
+    private $db ;
 
-    public function __construct($db)
-    {
-        $this->db = $db;
+    public function __construct($db) {
+        $this->db = $db ;
     }
 
-    // GROUP_CONTACT --> fusionner en une ligne les données
-    // WHERE et AND --> dans le cas présent, permettent de regarder et noter si l'utilisateur a sélectionné les champs ou non
-    public function getResultats($amenageur, $type_prise, $code_dep)
-    {
+    // -------------------------------------------------------
+    //RESULTATS FILTRES 
+    //les 3 filtres sont optionnels : si vide (''),
+    //la condition est ignorée grâce au OR
+    //GROUP_CONCAT fusionne les types de prises en une ligne
+    //utilisé sur la page de résultats en front
+    // -------------------------------------------------------
+    public function getResultats($amenageur, $type_prise, $code_dep) {
         try {
             $request = "SELECT s.date_mise_en_service, s.nbre_pdc AS nb_points, p.puissance_nominale AS puissance,
                         s.adresse_station, c.code_postal, c.nom_commune, p.id AS point_id,
@@ -25,20 +31,21 @@ class Resultats
                         WHERE (:amenageur = '' OR a.nom = :amenageur)
                         AND (:type_prise = '' OR p_prise.type_prise = :type_prise)
                         AND (:code_dep = '' OR c.code_dep = :code_dep)
-                        GROUP BY p.id";
+                        GROUP BY p.id" ;
 
-            $statement = $this->db->prepare($request);
-            $statement->bindParam(':amenageur', $amenageur, PDO::PARAM_STR);
-            $statement->bindParam(':type_prise', $type_prise, PDO::PARAM_STR);
-            $statement->bindParam(':code_dep', $code_dep, PDO::PARAM_STR);
-            $statement->execute();
-            $result = $statement->fetchAll(PDO::FETCH_ASSOC);
-        } catch (PDOException $exception) {
-            error_log('Request error: ' . $exception->getMessage());
-            return false;
+            $statement = $this->db->prepare($request) ;
+            $statement->bindParam(':amenageur', $amenageur, PDO::PARAM_STR) ;
+            $statement->bindParam(':type_prise', $type_prise, PDO::PARAM_STR) ;
+            $statement->bindParam(':code_dep', $code_dep, PDO::PARAM_STR) ;
+            $statement->execute() ;
+            $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
+        }
+        catch (PDOException $exception) {
+            error_log('Request error: ' . $exception->getMessage()) ;
+            return false ;
         }
 
-        return $result;
+        return $result ;
     }
 }
 

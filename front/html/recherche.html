@@ -3,59 +3,74 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>BretagneCharge — Recherche</title>
+  <title>EliVolt</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <link href="../css/style-front.css" rel="stylesheet" />
   <script src="../js/recherche.js" defer></script>
   <script src="../js/resultats.js" defer></script>
-
 </head>
 <body>
 
-<nav class="bc-navbar py-2">
-  <div class="container-xl px-4 d-flex align-items-center justify-content-between">
-    <a href="../index.html" class="d-flex align-items-center gap-2 text-decoration-none">
-      <div class="bc-logo-box"><img src="../img/logo.jpeg" alt="Logo BretagneCharge" /></div>
-      <span class="fw-semibold text-white brand-text">Bretagne<span class="brand-highlight">Charge</span></span>
-    </a>
-    <div class="d-flex align-items-center gap-2">
-        <a href="../index.html" class="nav-link-custom">Accueil</a>
-        <a href="recherche.html" class="nav-link-custom active">Recherche</a>
-        <a href="carte.html" class="nav-link-custom">Carte</a>
-    </div>
+<nav class="ev-nav">
+  <a href="../index.html" class="brand">
+    <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo">
+    <span class="brand-name">EliVolt</span>
+  </a>
+  <div class="nav-links">
+    <a href="../index.html">Accueil</a>
+    <a href="recherche.html" class="active">Recherche</a>
+    <a href="carte.html">Carte</a>
   </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
-<main class="container-xl px-4 pt-5 pb-4 flex-grow-1">
-  <h1 class="h3 fw-bold mb-1">Formulaire de recherche</h1>
-  <p class="mb-4 section-subtitle">Filtrez les points de recharge selon vos critères</p>
+<div class="nav-mobile" id="navMobile">
+  <a href="../index.html">Accueil</a>
+  <a href="recherche.html" class="active">Recherche</a>
+  <a href="carte.html">Carte</a>
+</div>
 
-  <div class="bc-card p-4 mb-4">
-    <div class="row g-3 align-items-end">
-      <div class="col-md-3">
-        <label class="form-label-custom">Aménageur</label>
-        <select id="recherche-amenageur" class="form-select">
-        </select>
+<main class="container-xl px-4 pt-4 pb-5 flex-grow-1">
+
+  <div class="carte-title-row mb-4">
+    <h1 class="page-title">Recherche</h1>
+    <p class="section-subtitle">—</p>
+    <p class="section-subtitle">Filtrez les points de recharge selon vos critères</p>
+  </div>
+
+  <!-- Filtres -->
+  <div class="filter-row mb-4">
+    <div class="filter-group filter-group">
+      <span class="filter-label">Aménageur</span>
+      <div class="filter-select-wrap">
+        <select id="recherche-amenageur"></select>
       </div>
-      <div class="col-md-3">
-        <label class="form-label-custom">Type de prise</label>
-        <select id="recherche-type-de-prise" class="form-select">
-        </select>
+    </div>
+    <div class="filter-group filter-group">
+      <span class="filter-label">Type de prise</span>
+      <div class="filter-select-wrap">
+        <select id="recherche-type-de-prise"></select>
       </div>
-      <div class="col-md-4">
-        <label class="form-label-custom">Département</label>
-        <select id="recherche-departement" class="form-select">
-        </select>
+    </div>
+    <div class="filter-group filter-group">
+      <span class="filter-label">Département</span>
+      <div class="filter-select-wrap">
+        <select id="recherche-departement"></select>
       </div>
-      <div class="col-md-2">
-        <button class="btn-search">
-          <i class="fa fa-magnifying-glass me-2"></i>Rechercher
-        </button>
-      </div>
+    </div>
+    <div class="filter-group filter-group">
+      <span class="filter-label filter-label--hidden">Action</span>
+      <button class="filter-btn">
+        <i class="fa fa-magnifying-glass"></i>Rechercher
+      </button>
     </div>
   </div>
 
+  <!-- Résultats -->
   <div class="bc-card overflow-hidden">
     <div class="table-header-flex">
       <span class="table-title">Résultats</span>
@@ -65,22 +80,30 @@
       <table class="table bc-table mb-0">
         <thead>
           <tr>
-            <th>Date de mise en service</th><th>Type de prise</th><th>Puissance (kW)</th><th>Localisation</th><th>Détails</th>
+            <th>Date de mise en service</th>
+            <th>Type de prise</th>
+            <th>Puissance (kW)</th>
+            <th>Localisation</th>
+            <th>Détails</th>
           </tr>
         </thead>
-        <tbody>
-        </tbody>
+        <tbody></tbody>
       </table>
     </div>
   </div>
+
 </main>
 
-<footer class="bc-footer">
-  <div class="container-xl px-4 d-flex justify-content-between">
-    <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe 7</span><span>2026</span>
-  </div>
+<footer class="ev-footer">
+  <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe CIN2</span>
+  <span>2026</span>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const toggle = document.getElementById('navToggle');
+  const menu   = document.getElementById('navMobile');
+  toggle.addEventListener('click', () => menu.classList.toggle('open'));
+</script>
 </body>
 </html>

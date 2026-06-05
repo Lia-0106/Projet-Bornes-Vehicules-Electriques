@@ -1,5 +1,11 @@
 <?php
 
+
+// -------------------------------------------------------
+// CLASSE Stats
+// Fournit tous les chiffres clés pour la page d'accueil
+// -------------------------------------------------------
+
 class Stats {
     private $db ;
 
@@ -7,6 +13,11 @@ class Stats {
         $this->db = $db ;
     }
 
+    // -------------------------------------------------------
+    // STATISTIQUES GENERALES
+    //toutes les stats sont regroupées dans un seul tableau
+    // retourné en une fois pour limiter les appels API
+    // -------------------------------------------------------
     public function getStats() {
         try {
             $stats = [] ;
@@ -60,6 +71,11 @@ class Stats {
             $statement = $this->db->query("SELECT type_prise, COUNT(id) AS nb_prises FROM point_recharge_prise GROUP BY type_prise ORDER BY nb_prises DESC") ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $stats["prises_par_type"] = $result ;
+
+            // STAT 7 : Nb de sations
+            $statement = $this->db->query("SELECT  COUNT(*) AS nb_stations FROM station") ;
+            $result = $statement->fetch(PDO::FETCH_ASSOC) ;
+            $stats["nb_stations"] = $result["nb_stations"] ;
 
             return $stats ;
         }
