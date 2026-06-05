@@ -68,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EliVolt — Créer un point</title>
+  <title>EliVolt</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -112,6 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div>
         <div class="details-subtitle">Nouveau point de recharge</div>
         <div class="details-title">Ajouter à la base de données</div>
+        <div class="details">Les champs obligatoires sont identifiés par <span>*</span></div>
       </div>
     </div>
   </div>
@@ -128,56 +129,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="grid-2 mt-3">
 
         <div class="field">
-          <label>Identifiant station *</label>
-          <input type="text" name="id_station_itinerance" required placeholder="FR-EXX-E0001" class="filter-input" />
+          <label>Identifiant station <span>*</span></label>
+          <input type="text" name="id_station_itinerance" required placeholder="Ex : FR-EXX-E0001" class="filter-input" />
         </div>
         <div class="field">
-          <label>Nom de la station *</label>
+          <label>Nom de la station <span>*</span></label>
           <input type="text" name="nom_station" required placeholder="Nom de la station" class="filter-input" />
         </div>
 
-        <div class="field span-2" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem;">
-          <label style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem;display:block;">Aménageur</label>
-        </div>
-
         <div class="field">
-          <label>Nom aménageur *</label>
-          <input type="text" name="amenageur" required placeholder="IZIVIA" class="filter-input" />
+          <label>Aménageur <span>*</span></label>
+          <input type="text" name="amenageur" required placeholder="Ex : IZIVIA" class="filter-input" />
         </div>
         <div class="field">
-          <label>SIREN aménageur</label>
-          <input type="text" name="siren_amenageur" placeholder="123456789" class="filter-input" />
+          <label>SIREN aménageur <span>*</span></label>
+          <input type="text" name="siren_amenageur" placeholder="Ex : 785412369" class="filter-input" />
         </div>
         <div class="field">
           <label>Contact aménageur</label>
-          <input type="text" name="contact_amenageur" placeholder="contact@amenageur.fr" class="filter-input" />
+          <input type="text" name="contact_amenageur" placeholder="Ex : contact@amenageur.fr" class="filter-input" />
         </div>
-        <div class="field">
-          <label>Téléphone aménageur</label>
-          <input type="text" name="telephone_amenageur" placeholder="0600000000" class="filter-input" />
-        </div>
-
-        <div class="field span-2" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem;">
-          <label style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem;display:block;">Opérateur</label>
-        </div>
-
-        <div class="field">
-          <label>Nom opérateur</label>
-          <input type="text" name="operateur" placeholder="Nom de l'opérateur" class="filter-input" />
-        </div>
-        <div class="field">
-          <label>Contact opérateur</label>
-          <input type="text" name="contact_operateur" placeholder="contact@operateur.fr" class="filter-input" />
-        </div>
-        <div class="field">
-          <label>Téléphone opérateur</label>
-          <input type="text" name="telephone_operateur" placeholder="0600000000" class="filter-input" />
-        </div>
-        <div class="field">
-          <label>Enseigne *</label>
-          <input type="text" name="nom_enseigne" required placeholder="IZIVIA" class="filter-input" />
-        </div>
-
       </div>
     </fieldset>
 
@@ -187,15 +158,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="grid-2 mt-3">
 
         <div class="field span-2">
-          <label>Adresse *</label>
-          <input type="text" name="adresse_station" required placeholder="4 allée de la Robiquette, 35000 Rennes" class="filter-input" />
+          <label>Adresse <span>*</span></label>
+          <input type="text" name="adresse_station" required placeholder="Ex : 4 allée de la Robiquette, 35000 Rennes" class="filter-input" />
         </div>
         <div class="field">
-          <label>Commune *</label>
-          <input type="text" name="commune" required placeholder="Rennes" class="filter-input" />
+          <label>Département</label>
+          <input type="text" name="commune" required placeholder="Ex : Rennes" class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Commune</label>
+          <input type="text" name="departement" required placeholder="Ex : 35" class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Latitude <span>*</span></label>
+          <input type="text" name="consolidated_latitude" required placeholder="Ex : 48.1173" class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Longitude <span>*</span></label>
+          <input type="text" name="consolidated_longitude" required placeholder="Ex : -1.6778" class="filter-input" />
         </div>
         <div class="field filter-select-wrap">
-          <label>Implantation</label>
+          <label>Implantation <span>*</span></label>
           <select name="implantation_station">
             <option value="">— Choisir —</option>
             <option value="Parking public">Parking public</option>
@@ -204,14 +187,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="Station dédiée à la recharge rapide">Station dédiée à la recharge rapide</option>
             <option value="Voirie">Voirie</option>
           </select>
-        </div>
-        <div class="field">
-          <label>Latitude *</label>
-          <input type="text" name="consolidated_latitude" required placeholder="48.1173" class="filter-input" />
-        </div>
-        <div class="field">
-          <label>Longitude *</label>
-          <input type="text" name="consolidated_longitude" required placeholder="-1.6778" class="filter-input" />
         </div>
 
       </div>
@@ -223,23 +198,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="grid-2 mt-3">
 
         <div class="field">
-          <label>Horaires *</label>
-          <input type="text" name="horaires" required placeholder="24/7" class="filter-input" />
+          <label>Horaires <span>*</span></label>
+          <input type="text" name="horaires" required placeholder="Ex : 24/7" class="filter-input" />
         </div>
         <div class="field">
-          <label>Puissance maximale (kW) *</label>
-          <input type="number" name="puissance_nominale" required placeholder="22" class="filter-input" />
+          <label>Puissance max (kW) *</label>
+          <input type="number" name="puissance_nominale" required placeholder="Ex : 30.5" class="filter-input" />
         </div>
-        <div class="field">
-          <label>Nombre de points de recharge *</label>
-          <input type="number" name="nbre_pdc" required placeholder="1" min="1" class="filter-input" />
-        </div>
+
         <div class="field filter-select-wrap">
-          <label>Condition d'accès *</label>
+          <label>Condition d'accès <span>*</span></label>
           <select name="condition_acces" required>
             <option value="Accès libre">Accès libre</option>
             <option value="Accès réservé">Accès réservé</option>
           </select>
+        </div>
+
+        <div class="field">
+          <label>Tarification</label>
+          <input type="text" name="tarification" placeholder="Ex : 0,36€/kWh" class="filter-input" />
         </div>
 
         <div class="field span-2">
@@ -250,6 +227,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <label><input type="checkbox" name="types_prises[]" value="CHAdeMO" /> CHAdeMO</label>
             <label><input type="checkbox" name="types_prises[]" value="EF" /> EF</label>
             <label><input type="checkbox" name="types_prises[]" value="Autre" /> Autre</label>
+          </div>
+        </div>
+
+        <div class="field span-2">
+          <label>Types de paiement</label>
+          <div class="checkline mt-1">
+            <label><input type="checkbox" name="types_paiement[]" value="CB" /> CB</label>
+            <label><input type="checkbox" name="types_paiement[]" value="Acte" /> Acte</label>
+            <label><input type="checkbox" name="types_paiement[]" value="Autre" /> Autre</label>
           </div>
         </div>
 
@@ -268,25 +254,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <fieldset>
       <legend>Exploitation</legend>
       <div class="grid-2 mt-3">
-
+        
+        <div class="field">
+          <label>Enseigne <span>*</span></label>
+          <input type="text" name="nom_enseigne" required placeholder="Ex : IZIVIA" class="filter-input" />
+        </div>
         <div class="field">
           <label>Date de mise en service *</label>
           <input type="date" name="date_mise_en_service" required class="filter-input" />
         </div>
         <div class="field">
-          <label>Tarification</label>
-          <input type="text" name="tarification" placeholder="Gratuit / payant" class="filter-input" />
+          <label>Opérateur <span>*</span></label>
+          <input type="text" name="operateur" placeholder="Nom de l'opérateur" class="filter-input" />
         </div>
-
-        <div class="field span-2">
-          <label>Types de paiement</label>
-          <div class="checkline mt-1">
-            <label><input type="checkbox" name="types_paiement[]" value="CB" /> CB</label>
-            <label><input type="checkbox" name="types_paiement[]" value="Acte" /> Acte</label>
-            <label><input type="checkbox" name="types_paiement[]" value="Autre" /> Autre</label>
-          </div>
+        <div class="field">
+          <label>Contact opérateur <span>*</span></label>
+          <input type="text" name="contact_operateur" placeholder="Ex : contact@operateur.fr" class="filter-input" />
         </div>
-
+        <div class="field">
+          <label>Téléphone opérateur</label>
+          <input type="text" name="telephone_operateur" placeholder=" Ex : 0615849874" class="filter-input" />
+        </div>
       </div>
     </fieldset>
 

@@ -65,7 +65,7 @@ function inList(?string $list, string $val): bool {
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>EliVolt — Modifier un point</title>
+  <title>EliVolt</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
@@ -110,6 +110,7 @@ function inList(?string $list, string $val): bool {
         <div>
           <div class="details-subtitle">Modification du point de recharge</div>
           <div class="details-title"><?= htmlspecialchars($p['id_station_itinerance'] ?? 'Point #' . $id) ?></div>
+          <div class="details">Les champs obligatoires sont identifiés par <span>*</span></div>
         </div>
       </div>
       <span class="table-badge"><?= htmlspecialchars($p['nom_station'] ?? '') ?></span>
@@ -124,30 +125,20 @@ function inList(?string $list, string $val): bool {
       <div class="grid-2 mt-3">
 
         <div class="field">
-          <label>Nom de la station *</label>
+          <label>Nom de la station <span>*</span></label>
           <input type="text" name="nom_station" required
                  value="<?= htmlspecialchars($p['nom_station'] ?? '') ?>"
                  class="filter-input" />
         </div>
-        <div class="field">
-          <label>Enseigne *</label>
-          <input type="text" name="nom_enseigne" required
-                 value="<?= htmlspecialchars($p['nom_enseigne'] ?? '') ?>"
-                 class="filter-input" />
-        </div>
-
-        <div class="field span-2" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem;">
-          <label style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem;display:block;">Aménageur</label>
-        </div>
 
         <div class="field">
-          <label>Nom aménageur</label>
+          <label>Aménageur <span>*</span></label>
           <input type="text" name="nom_amenageur"
                  value="<?= htmlspecialchars($p['nom_amenageur'] ?? '') ?>"
                  class="filter-input" />
         </div>
         <div class="field">
-          <label>SIREN aménageur</label>
+          <label>SIREN aménageur <span>*</span></label>
           <input type="text" name="siren_amenageur"
                  value="<?= htmlspecialchars($p['siren_amenageur'] ?? '') ?>"
                  class="filter-input" />
@@ -158,36 +149,6 @@ function inList(?string $list, string $val): bool {
                  value="<?= htmlspecialchars($p['contact_amenageur'] ?? '') ?>"
                  class="filter-input" />
         </div>
-        <div class="field">
-          <label>Téléphone aménageur</label>
-          <input type="text" name="telephone_amenageur"
-                 value="<?= htmlspecialchars($p['telephone_amenageur'] ?? '') ?>"
-                 class="filter-input" />
-        </div>
-
-        <div class="field span-2" style="border-top:1px solid var(--border);padding-top:1rem;margin-top:.25rem;">
-          <label style="font-size:12px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:.8px;margin-bottom:.75rem;display:block;">Opérateur</label>
-        </div>
-
-        <div class="field">
-          <label>Nom opérateur</label>
-          <input type="text" name="nom_operateur"
-                 value="<?= htmlspecialchars($p['nom_operateur'] ?? '') ?>"
-                 class="filter-input" />
-        </div>
-        <div class="field">
-          <label>Contact opérateur</label>
-          <input type="text" name="contact_operateur"
-                 value="<?= htmlspecialchars($p['contact_operateur'] ?? '') ?>"
-                 class="filter-input" />
-        </div>
-        <div class="field">
-          <label>Téléphone opérateur</label>
-          <input type="text" name="telephone_operateur"
-                 value="<?= htmlspecialchars($p['telephone_operateur'] ?? '') ?>"
-                 class="filter-input" />
-        </div>
-
       </div>
     </fieldset>
 
@@ -197,7 +158,7 @@ function inList(?string $list, string $val): bool {
       <div class="grid-2 mt-3">
 
         <div class="field span-2">
-          <label>Adresse *</label>
+          <label>Adresse <span>*</span></label>
           <input type="text" name="adresse_station" required
                  value="<?= htmlspecialchars($p['adresse_station'] ?? '') ?>"
                  class="filter-input" />
@@ -221,7 +182,7 @@ function inList(?string $list, string $val): bool {
         </div>
 
         <div class="field filter-select-wrap">
-          <label>Implantation</label>
+          <label>Implantation <span>*</span></label>
           <select name="implantation_station">
             <option value="">— Choisir —</option>
             <?php
@@ -242,13 +203,13 @@ function inList(?string $list, string $val): bool {
         <div class="field"><!-- spacer --></div>
 
         <div class="field">
-          <label>Latitude *</label>
+          <label>Latitude <span>*</span></label>
           <input type="text" name="consolidated_latitude" required
                  value="<?= htmlspecialchars($p['consolidated_latitude'] ?? '') ?>"
                  class="filter-input" />
         </div>
         <div class="field">
-          <label>Longitude *</label>
+          <label>Longitude <span>*</span></label>
           <input type="text" name="consolidated_longitude" required
                  value="<?= htmlspecialchars($p['consolidated_longitude'] ?? '') ?>"
                  class="filter-input" />
@@ -263,19 +224,19 @@ function inList(?string $list, string $val): bool {
       <div class="grid-2 mt-3">
 
         <div class="field">
-          <label>Horaires *</label>
+          <label>Horaires <span>*</span></label>
           <input type="text" name="horaires" required
                  value="<?= htmlspecialchars($p['horaires'] ?? '') ?>"
                  class="filter-input" />
         </div>
         <div class="field">
-          <label>Puissance maximale (kW) *</label>
+          <label>Puissance max (kW) <span>*</span></label>
           <input type="number" name="puissance_nominale" required
                  value="<?= htmlspecialchars($p['puissance_nominale'] ?? '') ?>"
                  class="filter-input" />
         </div>
         <div class="field filter-select-wrap">
-          <label>Condition d'accès *</label>
+          <label>Condition d'accès <span>*</span></label>
           <select name="condition_acces" required>
             <option value="Accès libre"   <?= ($p['condition_acces'] ?? '') === 'Accès libre'    ? 'selected' : '' ?>>Accès libre</option>
             <option value="Accès réservé" <?= ($p['condition_acces'] ?? '') === 'Accès réservé'  ? 'selected' : '' ?>>Accès réservé</option>
@@ -289,13 +250,26 @@ function inList(?string $list, string $val): bool {
         </div>
 
         <div class="field span-2">
-          <label>Types de prises</label>
+          <label>Types de prises <span>*</span></label>
           <div class="checkline mt-1">
             <?php foreach (['T2','Combo CCS','CHAdeMO','EF','Autre'] as $prise): ?>
             <label>
               <input type="checkbox" name="types_prises[]" value="<?= $prise ?>"
                      <?= inList($p['types_prises'] ?? '', $prise) ? 'checked' : '' ?> />
               <?= $prise ?>
+            </label>
+            <?php endforeach; ?>
+          </div>
+        </div>
+
+        <div class="field span-2">
+          <label>Types de paiement</label>
+          <div class="checkline mt-1">
+            <?php foreach (['CB','Acte','Autre'] as $paie): ?>
+            <label>
+              <input type="checkbox" name="types_paiement[]" value="<?= $paie ?>"
+                     <?= inList($p['types_paiement'] ?? '', $paie) ? 'checked' : '' ?> />
+              <?= $paie ?>
             </label>
             <?php endforeach; ?>
           </div>
@@ -324,24 +298,35 @@ function inList(?string $list, string $val): bool {
       <div class="grid-2 mt-3">
 
         <div class="field">
-          <label>Date de mise en service *</label>
+          <label>Enseigne <span>*</span></label>
+          <input type="text" name="nom_enseigne" required
+                 value="<?= htmlspecialchars($p['nom_enseigne'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Date de mise en service</label>
           <input type="date" name="date_mise_en_service" required
                  value="<?= htmlspecialchars($p['date_mise_en_service'] ?? '') ?>"
                  class="filter-input" />
         </div>
-        <div class="field"><!-- spacer --></div>
 
-        <div class="field span-2">
-          <label>Types de paiement</label>
-          <div class="checkline mt-1">
-            <?php foreach (['CB','Acte','Autre'] as $paie): ?>
-            <label>
-              <input type="checkbox" name="types_paiement[]" value="<?= $paie ?>"
-                     <?= inList($p['types_paiement'] ?? '', $paie) ? 'checked' : '' ?> />
-              <?= $paie ?>
-            </label>
-            <?php endforeach; ?>
-          </div>
+                <div class="field">
+          <label>Opérateur <span>*</span></label>
+          <input type="text" name="nom_operateur"
+                 value="<?= htmlspecialchars($p['nom_operateur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Contact opérateur <span>*</span></label>
+          <input type="text" name="contact_operateur"
+                 value="<?= htmlspecialchars($p['contact_operateur'] ?? '') ?>"
+                 class="filter-input" />
+        </div>
+        <div class="field">
+          <label>Téléphone opérateur</label>
+          <input type="text" name="telephone_operateur"
+                 value="<?= htmlspecialchars($p['telephone_operateur'] ?? '') ?>"
+                 class="filter-input" />
         </div>
 
       </div>
