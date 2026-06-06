@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav class="ev-nav">
   <a href="../index.html" class="brand">
     <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo">
@@ -22,11 +23,10 @@
     <a href="recherche.html">Recherche</a>
     <a href="carte.html" class="active">Carte</a>
   </div>
-  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu"><i class="fa-solid fa-bars"></i></button>
 </nav>
 
+<!-- NAVIGATION MOBILE -->
 <div class="nav-mobile" id="navMobile">
   <a href="../index.html">Accueil</a>
   <a href="recherche.html">Recherche</a>
@@ -34,7 +34,6 @@
 </div>
 
 <main class="flex-grow-1">
-
   <div class="container-xl px-4 pt-4 pb-4">
 
     <div class="carte-title-row mb-4">
@@ -43,7 +42,7 @@
       <p class="section-subtitle">Visualisez les points de recharge en Bretagne</p>
     </div>
 
-    <!-- Filtres -->
+    <!-- FILTRES -->
     <div class="filter-row">
       <div class="filter-group">
         <span class="filter-label">Année d'installation</span>
@@ -59,20 +58,19 @@
       </div>
       <div class="filter-group filter-group--btn">
         <span class="filter-label filter-label--hidden">Action</span>
-        <button class="filter-btn">
-          <i class="fa fa-magnifying-glass"></i>Rechercher
-        </button>
+        <button class="filter-btn"><i class="fa-solid fa-magnifying-glass"></i> Rechercher</button>
       </div>
     </div>
   </div>
 
-  <!-- Carte pleine largeur -->
+  <!-- CARTE -->
   <div class="map-fullwidth-wrap">
     <div id="map"></div>
   </div>
 
 </main>
 
+<!-- FOOTER -->
 <footer class="ev-footer">
   <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe CIN2</span>
   <span>2026</span>

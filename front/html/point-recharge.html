@@ -12,6 +12,7 @@
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav class="ev-nav">
   <a href="../index.html" class="brand">
     <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo">
@@ -22,11 +23,10 @@
     <a href="recherche.html">Recherche</a>
     <a href="carte.html">Carte</a>
   </div>
-  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu">
-    <span></span><span></span><span></span>
-  </button>
+  <button class="nav-toggle" id="navToggle" aria-label="Ouvrir le menu"><i class="fa-solid fa-bars"></i></button>
 </nav>
 
+<!-- NAVIGATION MOBILE -->
 <div class="nav-mobile" id="navMobile">
   <a href="../index.html">Accueil</a>
   <a href="recherche.html">Recherche</a>
@@ -35,24 +35,18 @@
 
 <main class="container-xl px-4 pt-4 pb-5 flex-grow-1">
 
-  <!-- Retour -->
-  <a href="recherche.html" class="back-link mb-4 d-inline-flex">
-    <i class="fa fa-arrow-left"></i> Retour à la recherche
-  </a>
+  <a href="recherche.html" class="back-link mb-4 d-inline-flex"><i class="fa-solid fa-arrow-left"></i> Retour à la recherche</a>
 
-  <!-- Header card -->
   <div class="bc-card p-4 mb-4 d-flex align-items-center gap-3">
-    <div class="bc-logo-box-lg"><i class="fa fa-bolt text-white fs-5"></i></div>
+    <div class="bc-logo-box-lg"><i class="fa-solid fa-bolt text-white fs-5"></i></div>
     <div>
       <div class="details-subtitle">Détails du point de recharge</div>
       <div id="id-station-title" class="details-title"></div>
     </div>
   </div>
 
-  <!-- Grille 2×2 -->
   <div class="row g-4">
-
-    <!-- Identification -->
+    <!-- IDENTIFICATION -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
@@ -66,7 +60,7 @@
       </div>
     </div>
 
-    <!-- Localisation -->
+    <!-- LOCALISATION -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
@@ -81,7 +75,7 @@
       </div>
     </div>
 
-    <!-- Caractéristiques -->
+    <!-- CARACTÉRISTIQUES -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
@@ -99,7 +93,7 @@
       </div>
     </div>
 
-    <!-- Exploitation -->
+    <!-- EXPLOITATION -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
@@ -113,10 +107,11 @@
         <div class="info-row"><span class="info-label">Tel. opérateur</span><span id="tel-operateur"></span></div>
       </div>
     </div>
-
   </div>
+
 </main>
 
+<!-- FOOTER -->
 <footer class="ev-footer">
   <span>ZADOROZNYJ Lia / FEUARDENT Emma — Groupe CIN2</span>
   <span>2026</span>
