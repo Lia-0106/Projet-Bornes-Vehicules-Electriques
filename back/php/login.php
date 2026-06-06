@@ -1,21 +1,35 @@
 <?php
-session_start() ;
-define('ADMIN_LOGIN', 'cin2') ;
-define('ADMIN_MDP', 'cin2mdp') ;
 
+// -------------------------------------------------------
+// INITIALISATION
+// session_start() appelé avant tout l'HTML
+// -------------------------------------------------------
+session_start() ;
+require_once('constantes.php') ;
+
+
+// -------------------------------------------------------
+// TRAITEMENT DU FORMULAIRE
+// Vérifie les identifiants et démarre la session admin
+// password_verify() compare le mot de passe saisi avec le hash stocké dans constantes.php
+// -------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $login = isset($_POST['login']) ? $_POST['login'] : '' ;
-    $mdp   = isset($_POST['mdp'])   ? $_POST['mdp']   : '' ;
+    $mdp = isset($_POST['mdp']) ? $_POST['mdp'] : '' ;
 
-    if ($login === ADMIN_LOGIN && $mdp === ADMIN_MDP) {
+    if ($login === ADMIN_LOGIN && password_verify($mdp, ADMIN_MDP)) {
         $_SESSION['admin'] = true ;
         header('Location: /back/index.php') ;
         exit ;
-    } else {
+    }
+    else {
         $erreur = 'Identifiants incorrects.' ;
     }
 }
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
