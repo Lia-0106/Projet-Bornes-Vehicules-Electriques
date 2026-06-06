@@ -1,6 +1,12 @@
 'use strict'
 
-// Récupère depuis l'API les résultats filtrés
+requestResultats() ;
+
+
+// -------------------------------------------------------
+// RÉCUPÉRATION DES RÉSULTATS
+// Lit les valeurs des 3 filtres puis appelle l'API
+// -------------------------------------------------------
 async function requestResultats() {
     const amenageur = document.getElementById('recherche-amenageur').value ;
     const type_prise = document.getElementById('recherche-type-de-prise').value ;
@@ -18,7 +24,10 @@ async function requestResultats() {
 }
 
 
-// Affiche les résultats dans le tableau + le badge avec le nb de résultats
+// -------------------------------------------------------
+// AFFICHAGE DES RÉSULTATS
+// Remplit le tableau + met à jour le badge avec le nb de résultats
+// -------------------------------------------------------
 function displayResultats(data) {
     const tbody = document.querySelector('.table tbody') ;
     const badge = document.querySelector('.table-badge') ;
@@ -69,5 +78,9 @@ function displayResultats(data) {
     }) ;
 }
 
+
+// -------------------------------------------------------
+// DÉCLENCHEMENT DE LA RECHERCHE
+// Au clic sur le bouton filtre
+// -------------------------------------------------------
 document.querySelector('.filter-btn').addEventListener('click', requestResultats) ;
-requestResultats() ;

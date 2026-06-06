@@ -3,7 +3,10 @@
 requestRecherche() ;
 
 
-// Récupère depuis l'API les données pour remplir les select
+// -------------------------------------------------------
+// RÉCUPÉRATION DES FILTRES
+// Appel API vers /recherche pour obtenir les listes des selects
+// -------------------------------------------------------
 async function requestRecherche() {
     const response = await fetch('/back/php/API/request.php/recherche') ;
 
@@ -17,7 +20,10 @@ async function requestRecherche() {
 }
 
 
-// Remplit les select avec les données reçues de l'API
+// -------------------------------------------------------
+// AFFICHAGE DES FILTRES
+// Remplit les 3 selects : aménageur, type de prise, département
+// -------------------------------------------------------
 function displayRecherche(data) {
     // FILTRE 1 : Par aménageur
     const selectAmenageur = document.getElementById('recherche-amenageur') ;

@@ -3,9 +3,11 @@
 requestPointRecharge() ;
 
 
-// Récupère depuis l'API les détails d'un point de recharge à partir de son id
+// -------------------------------------------------------
+// RÉCUPÉRATION DU POINT DE RECHARGE
+// Lit l'id dans l'URL puis appelle l'API pour les détails
+// -------------------------------------------------------
 async function requestPointRecharge() {
-    // On lit l'URL et on récupère l'id dedans
     const params = new URLSearchParams(window.location.search) ;
     const id = params.get('id') ;
 
@@ -21,7 +23,11 @@ async function requestPointRecharge() {
 }
 
 
-// Fonction qui affiche le détail des informations du point de recharge
+// -------------------------------------------------------
+// AFFICHAGE DU POINT DE RECHARGE
+// Remplit les 4 blocs : identification, localisation,
+// caractéristiques, exploitation
+// -------------------------------------------------------
 function displayPointRecharge(data) {
     document.getElementById('id-station-title').textContent = data.id_station_itinerance ;
 

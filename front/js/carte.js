@@ -1,10 +1,13 @@
-'use strict';
+'use strict' ;
 
-// Initialisation de la carte Leaflet centrée sur la Bretagne + d'un tableau pour les marqueurs
-var map = L.map('map').setView([48.1, -2.9], 8) ;
+// -------------------------------------------------------
+// INITIALISATION DE LA CARTE
+// Carte Leaflet centrée sur la Bretagne
+// Tableau marqueurs : stocke les marqueurs actifs
+// -------------------------------------------------------
+var map      = L.map('map').setView([48.1, -2.9], 8) ;
 var marqueurs = [] ;
 
-// Fond de carte OpenStreetMap
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 }).addTo(map) ;
@@ -12,23 +15,27 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 requestCarte() ;
 
 
-
-
-// Récupère les select depuis l'API pour remplir les select
+// -------------------------------------------------------
+// FILTRES DE RECHERCHE
+// Récupère les listes depuis l'API pour remplir les selects
+// -------------------------------------------------------
 async function requestCarte() {
     const response = await fetch('/back/php/API/request.php/carte') ;
-        
+
     if (response.ok) {
-        const data = await response.json() ;  
+        const data = await response.json() ;
         displayRechercheCarte(data) ;
     }
     else {
-        console.error("Erreur lors de la récupération des formulaires de recherche de la carte") ;
-    }  
+        console.error("Erreur lors de la récupération des filtres de la carte") ;
+    }
 }
 
 
-// Remplit les select de filtres
+// -------------------------------------------------------
+// AFFICHAGE DES FILTRES
+// Remplit les selects année et département
+// -------------------------------------------------------
 function displayRechercheCarte(data) {
     // FILTRE 1 : Par année d'installation
     const selectAnnee = document.getElementById('recherche-carte-annee') ;
@@ -46,7 +53,11 @@ function displayRechercheCarte(data) {
 }
 
 
-// Récupère les marqueurs depuis l'API selon les filtres
+// -------------------------------------------------------
+// RÉCUPÉRATION DES MARQUEURS
+// Appel API avec les filtres sélectionnés
+// Paramètres optionnels : annee et dep (vides = tous)
+// -------------------------------------------------------
 async function requestMarqueurs(annee = '', dep = '') {
     const url = '/back/php/API/request.php/marqueurs?annee=' + annee + '&dep=' + dep ;
     const response = await fetch(url) ;
@@ -61,14 +72,15 @@ async function requestMarqueurs(annee = '', dep = '') {
 }
 
 
-// Place les marqueurs sur la carte à partir des données reçues
+// -------------------------------------------------------
+// AFFICHAGE DES MARQUEURS
+// Supprime les anciens marqueurs + place les nouveaux avec leur pop-up
+// -------------------------------------------------------
 function afficherMarqueurs(points) {
-    
-    // Surrpime les anciens marqueurs ==> réinitialisation à chaque requête
+    // Supprime les anciens marqueurs avant d'afficher les nouveaux
     marqueurs.forEach(function(m) { map.removeLayer(m) ; }) ;
     marqueurs = [] ;
 
-    // Ajoute nv marqueurs
     points.forEach(function(point) {
         var lat = parseFloat(point.latitude) ;
         var lng = parseFloat(point.longitude) ;
@@ -77,20 +89,24 @@ function afficherMarqueurs(points) {
 
         var marqueur = L.marker([lat, lng]) ;
 
-        // Création des bulles popup avec infos + lien vers page détails
+        // Popup : infos de la station + lien vers la page détail
         var popup =
             '<strong>' + point.nom_station + '</strong><br>' +
             point.nom_commune + ' — ' + point.nom_departement + '<br>' +
             'Puissance : ' + point.puissance_nominale + ' kW<br>' +
             '<a href="point-recharge.html?id=' + point.id + '">Voir le détail</a>' ;
 
-        marqueur.bindPopup(popup) ; // Lie le pop-up au marqueur
-        marqueur.addTo(map) ;       // Place le marqueur sur la carte
+        marqueur.bindPopup(popup) ;
+        marqueur.addTo(map) ;
         marqueurs.push(marqueur) ;
     }) ;
 }
 
 
+// -------------------------------------------------------
+// DÉCLENCHEMENT DE LA RECHERCHE
+// Récupère les valeurs des filtres au clic sur le bouton
+// -------------------------------------------------------
 document.querySelector('.filter-btn').addEventListener('click', function() {
     var annee = document.getElementById('recherche-carte-annee').value ;
     var dep   = document.getElementById('recherche-carte-departement').value ;

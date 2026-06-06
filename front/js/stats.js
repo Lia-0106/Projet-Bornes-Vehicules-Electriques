@@ -3,7 +3,10 @@
 requestStats() ;
 
 
-// Récupère depuis l'API les statistiques globales
+// -------------------------------------------------------
+// RÉCUPÉRATION DES STATISTIQUES
+// Appel API pour obtenir toutes les statistiques requises
+// -------------------------------------------------------
 async function requestStats() {
     const response = await fetch('/back/php/API/request.php/stats') ;
         
@@ -17,7 +20,10 @@ async function requestStats() {
 }
 
 
-// Affiche les statistiques dans la page
+// -------------------------------------------------------
+// AFFICHAGE DES STATISTIQUES
+// Remplit chaque bloc stat de la page d'accueil
+// -------------------------------------------------------
 function displayStats(data) {
     // STAT 1 : Nb total de points
     document.getElementById('stat-total-points').textContent = data.total_points ;
