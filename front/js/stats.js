@@ -66,8 +66,5 @@ function displayStats(data) {
     }) ;
 
     // STAT 7 : Nb de stations
-        document.getElementById('stat-amenageurs').textContent = data.nb_amenageurs ;
-
-    // STAT 6 : Nb de prises par type
     document.getElementById('stat-nb-stations').textContent = data.nb_stations ;
 }

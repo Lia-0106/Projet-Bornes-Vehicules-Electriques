@@ -2,7 +2,7 @@
 
 // ---------------------------------------------------------
 // CLASSE Resultats
-// Retourne les points de recharge filtrés pour la recherche
+// Retourne les points de recharge filtrés par la recherche
 // --------------------------------------------------------
 class Resultats {
     private $db ;
@@ -12,11 +12,9 @@ class Resultats {
     }
 
     // -------------------------------------------------------
-    //RESULTATS FILTRES 
-    //les 3 filtres sont optionnels : si vide (''),
-    //la condition est ignorée grâce au OR
-    //GROUP_CONCAT fusionne les types de prises en une ligne
-    //utilisé sur la page de résultats en front
+    // RESULTATS FILTRES 
+    // Les 3 filtres sont optionnels
+    // GROUP_CONCAT fusionne les types de prises en une ligne
     // -------------------------------------------------------
     public function getResultats($amenageur, $type_prise, $code_dep) {
         try {
@@ -39,13 +37,14 @@ class Resultats {
             $statement->bindParam(':code_dep', $code_dep, PDO::PARAM_STR) ;
             $statement->execute() ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
+
+            return $result ;
         }
+
         catch (PDOException $exception) {
             error_log('Request error: ' . $exception->getMessage()) ;
             return false ;
         }
-
-        return $result ;
     }
 }
 

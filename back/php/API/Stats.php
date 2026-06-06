@@ -1,11 +1,9 @@
 <?php
 
-
 // -------------------------------------------------------
 // CLASSE Stats
 // Fournit tous les chiffres clés pour la page d'accueil
 // -------------------------------------------------------
-
 class Stats {
     private $db ;
 
@@ -15,8 +13,8 @@ class Stats {
 
     // -------------------------------------------------------
     // STATISTIQUES GENERALES
-    //toutes les stats sont regroupées dans un seul tableau
-    // retourné en une fois pour limiter les appels API
+    // Toutes les stats sont regroupées dans un seul tableau
+    // Retourné en une fois pour limiter les appels API
     // -------------------------------------------------------
     public function getStats() {
         try {
@@ -79,6 +77,7 @@ class Stats {
 
             return $stats ;
         }
+        
         catch (PDOException $exception) {
             error_log('Request error: '.$exception->getMessage()) ;
             return false ;

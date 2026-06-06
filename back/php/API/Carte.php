@@ -1,9 +1,11 @@
 <?php
 
+// --------------------------------------------------------------
+// CLASSE Carte
+// Contient toutes les requêtes SQL liées à la page carte
+// --------------------------------------------------------------
 class Carte {
     private $db ;
-
-    
 
     public function __construct($db) {
         $this->db = $db ;
@@ -17,7 +19,7 @@ class Carte {
         try {
             $rechercheCarte = [] ;
 
-            // FILTRE 1 : Par année : récup les données 
+            // FILTRE 1 : Par année
             $statement = $this->db->query("SELECT DISTINCT YEAR(date_mise_en_service) AS annee FROM station
                                            WHERE date_mise_en_service IS NOT NULL
                                            AND YEAR(date_mise_en_service) > 0
@@ -25,7 +27,7 @@ class Carte {
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $rechercheCarte["liste_annees"] = $result ;
 
-            // FILTRE 2 : Par département : récup tous les départements
+            // FILTRE 2 : Par département
             $statement = $this->db->query("SELECT code_dep, nom_departement FROM departement ORDER BY nom_departement") ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $rechercheCarte["liste_dep"] = $result ;
@@ -42,11 +44,10 @@ class Carte {
     // -------------------------------------------------------
     // RÉCUPÉRATION DES MARQUEURS CARTE
     // Retourne les points de recharge avec leurs coordonnées GPS
-    // filtrage optionnel par année et/ou par département
+    // Filtrage optionnel par année et/ou par département
     // -------------------------------------------------------
     public function getMarqueurs($annee, $dep) {
         try {
-            //requêtes sql : jointure station, commune, département, et '' sont ignorés
             $sql = "SELECT p.id, p.consolidated_latitude AS latitude, p.consolidated_longitude AS longitude,
                     p.puissance_nominale, s.nom_station, c.nom_commune, d.nom_departement
                     FROM point_de_recharge p
@@ -58,10 +59,8 @@ class Carte {
                     AND p.consolidated_latitude IS NOT NULL
                     AND p.consolidated_longitude IS NOT NULL" ;
 
-
-            //exécution avec les paramètres liés 
             $statement = $this->db->prepare($sql) ;
-            $statement->bindParam(':annee', $annee, PDO::PARAM_STR) ; //bindParam : sécuriser les entrées
+            $statement->bindParam(':annee', $annee, PDO::PARAM_STR) ;
             $statement->bindParam(':code_dep', $dep, PDO::PARAM_STR) ;
             $statement->execute() ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
@@ -75,3 +74,5 @@ class Carte {
         }
     }
 }
+
+?>

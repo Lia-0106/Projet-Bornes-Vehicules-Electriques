@@ -1,21 +1,14 @@
 <?php
 
-require_once('Database.php') ;
-
 // --------------------------------------------------------------
 // CLASSE PointRecharge
 // Contient toutes les requêtes SQL liées aux pts de recharge
 // --------------------------------------------------------------
 class PointRecharge {
-
     private $db ;
 
-    // -------------------------------------------------------
-    // CONSTRUCTEUR : initialise la co à la BDD
-    // -----------------------------------------------------
-    public function __construct() {
-        $database = new Database() ;
-        $this->db = $database->getConnexion() ;
+    public function __construct($db) {
+        $this->db = $db ;
     }
 
     // -------------------------------------------------------
@@ -319,7 +312,7 @@ class PointRecharge {
     }
 
     // -------------------------------------------------------
-    //cSUPPRIMER : supprime un point de recharge par son id
+    // SUPPRIMER : supprime un point de recharge par son id
     // ordre de suppression : prises, paiements, point, station (si vide), acteur (si plus de stations)
     // -------------------------------------------------------
     public function supprimer($id) {
@@ -364,7 +357,7 @@ class PointRecharge {
             }
         }
 
-    return true ;
-}
+        return true ;
+    }
 }
 ?>
