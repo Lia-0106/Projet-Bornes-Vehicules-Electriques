@@ -15,7 +15,9 @@ if ($id <= 0) {
     exit;
 }
 
-$pointRecharge = new PointRecharge();
+$database = new Database() ;
+$db = $database->getConnexion() ;
+$pointRecharge = new PointRecharge($db) ;
 $p = $pointRecharge->getDetails($id);
 
 if (!$p) {

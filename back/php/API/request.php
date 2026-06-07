@@ -15,7 +15,7 @@ require_once('Carte.php') ;
 require_once('Resultats.php') ;
 require_once('PointRecharge.php') ;
 
-//connexion à la base et si ça échoue ; erreur 503
+// Connexion à la base de données
 $database = new Database() ;
 $db = $database->getConnexion() ;
 
@@ -24,39 +24,40 @@ if (!$db) {
     exit ;
 }
 
-//lecture de la requête php 
+// Lecture de la requête php 
 $requestMethod = $_SERVER['REQUEST_METHOD'] ;
 $request = substr($_SERVER['PATH_INFO'], 1) ;
 $request = explode('/', $request) ;
 $ressource = array_shift($request) ;
 
+
 // -----------------------------------------------------------------------------------------------------
 // ROUTAGE DES REQUÊTES GET
-// chaque bloc vérifie la ressource et appelle la méthode qui correspond et retourne le résultat en JSON
+// Chaque bloc vérifie la ressource et appelle la méthode qui correspond + retourne le résultat en JSON
 // -----------------------------------------------------------------------------------------------------
 
-// GET :stats: chiffres clés pour la page d'accueil
+// GET (stats) - Chiffres clés pour la page d'accueil
 if ($requestMethod === 'GET' && $ressource === 'stats') {
     $stats = new Stats($db) ;
     $data = $stats->getStats() ;
     echo json_encode($data) ;
 }
 
-// GET: recherche:listes des filtres (aménageurs, prises, départements)
+// GET (recherche) - Listes des filtres (aménageurs, prises, départements)
 if ($requestMethod === 'GET' && $ressource === 'recherche') {
     $recherche = new Recherche($db) ;
     $data = $recherche->getRecherche() ;
     echo json_encode($data) ;
 }
 
-// GET  : carte : listes des filtres pour la carte (années, départements)
+// GET (carte) - Listes des filtres pour la carte (années, départements)
 if ($requestMethod === 'GET' && $ressource === 'carte') {
     $carte = new Carte($db) ;
     $data = $carte->getRechercheCarte() ;
     echo json_encode($data) ;
 }
 
-// GET : marqueurs par annee et par dep :  points de recharge avec coordonnées GPS
+// GET (marqueurs) - Points de recharge avec coordonnées GPS, filtrés par année et/ou département
 if ($requestMethod === 'GET' && $ressource === 'marqueurs') {
     $annee = isset($_GET['annee']) ? $_GET['annee'] : '' ;
     $dep = isset($_GET['dep']) ? $_GET['dep'] : '' ;
@@ -65,7 +66,7 @@ if ($requestMethod === 'GET' && $ressource === 'marqueurs') {
     echo json_encode($data) ;
 }
 
-// GET : marqueurs par annee et dep :  points de recharge avec coordonnées GPS
+// GET (resultats) - Points de recharge filtrés par aménageur, type de prise et/ou département
 if ($requestMethod === 'GET' && $ressource === 'resultats') {
     $resultats = new Resultats($db) ;
     $amenageur = $_GET['amenageur'] ;
@@ -75,10 +76,11 @@ if ($requestMethod === 'GET' && $ressource === 'resultats') {
     echo json_encode($data) ;
 }
 
-// GET  : point-recharge :  détail complet d'un point de recharge
+// GET (point-recharge) - Détail complet d'un point de recharge d'après son id
 if ($requestMethod === 'GET' && $ressource === 'point-recharge') {
     $PointRecharge = new PointRecharge($db) ;
-    $data = $PointRecharge->getDetails() ;
+    $id = isset($_GET['id']) ? $_GET['id'] : 0 ;
+    $data = $PointRecharge->getDetails($id) ;
     echo json_encode($data) ;
 }
 

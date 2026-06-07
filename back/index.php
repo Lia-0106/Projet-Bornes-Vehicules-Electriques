@@ -16,7 +16,11 @@ $page = isset($_GET['page']) ? (int)$_GET['page'] : 1 ;
 if ($page < 1) $page = 1 ;
 $offset = ($page - 1) * $parPage ;
 
-$point = new PointRecharge() ;
+$database = new Database() ;
+$db = $database->getConnexion() ;
+
+$point = new PointRecharge($db) ;
+
 $recherche = isset($_GET['recherche']) ? trim($_GET['recherche']) : '' ; 
 $liste = $point->getListe($parPage, $offset, $recherche) ;
 $total = $point->getTotal() ;

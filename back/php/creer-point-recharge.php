@@ -162,11 +162,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" name="adresse_station" required placeholder="Ex : 4 allée de la Robiquette, 35000 Rennes" class="filter-input" />
         </div>
         <div class="field">
-          <label>Département</label>
+          <label>Commune</label>
           <input type="text" name="commune" required placeholder="Ex : Rennes" class="filter-input" />
         </div>
         <div class="field">
-          <label>Commune</label>
+          <label>Département</label>
           <input type="text" name="departement" required placeholder="Ex : 35" class="filter-input" />
         </div>
         <div class="field">
