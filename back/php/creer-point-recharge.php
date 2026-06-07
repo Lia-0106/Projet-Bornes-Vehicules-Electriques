@@ -234,7 +234,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
         <div class="field span-2">
-          <label>Types de prises</label>
+          <label>Types de prises <span>*</span></label>
           <div class="checkline mt-1">
             <label><input type="checkbox" name="types_prises" value="T2" /> T2</label>
             <label><input type="checkbox" name="types_prises" value="Combo CCS" /> Combo CCS</label>

@@ -248,11 +248,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <label>Tarification</label>
           <input type="text" name="tarification"
                  value="<?= htmlspecialchars(isset($point['tarification']) ? $point['tarification'] : '') ?>"
-                 placeholder="Gratuit / payant" class="filter-input" />
+                 class="filter-input" />
         </div>
 
         <div class="field span-2">
-          <label>Types de prises</label>
+          <label>Types de prises <span>*</span></label>
           <div class="checkline mt-1">
             <?php foreach (['T2', 'Combo CCS', 'CHAdeMO', 'EF', 'Autre'] as $prise) : ?>
             <label>
