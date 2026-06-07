@@ -17,8 +17,8 @@ require_once ('API/PointRecharge.php') ;
 
 // -------------------------------------------------------
 // TRAITEMENT DU FORMULAIRE
-// Récupère les données POST, crée les acteurs et l'enseigne
-// si nécessaire, puis insère le point en base
+// Récupère les données POST, crée les acteurs et l'enseigne si nécessaire
+// Insère le point en base
 // Redirige vers l'accueil après création
 // -------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -34,7 +34,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         isset($_POST['siren_amenageur']) ? $_POST['siren_amenageur'] : '',
         'amenageur'
     ) ;
-
     $idOperateur = $pointRecharge->getOuCreerActeur(
         isset($_POST['operateur']) ? $_POST['operateur'] : '',
         isset($_POST['contact_operateur']) ? $_POST['contact_operateur'] : '',
@@ -91,21 +90,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav class="ev-nav">
   <a href="/back/index.php" class="brand">
     <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo"/>
-    <span class="brand-name">EliVolt <span class="text-muted fw-normal" style="font-size:14px">Admin</span></span>
+    <span class="brand-name">EliVolt <span class="text-muted fw-normal">Admin</span></span>
   </a>
-<!-- Nav desktop -->
 <div class="nav-links">
   <a href="/back/index.php">Accueil</a>
   <a href="/front/html/recherche.html">Recherche</a>
   <a href="/front/html/carte.html">Carte</a>
   <a href="/front/index.html" class="site">Aller au site</a>
 </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <i class="fa fa-bars"></i>
+  </button>
 </nav>
 
-<!-- Nav mobile -->
+<!-- NAVIGATION MOBILE -->
 <div class="nav-mobile" id="navMobile">
   <a href="/back/index.php">Accueil</a>
   <a href="/front/html/recherche.html">Recherche</a>
@@ -119,9 +121,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <i class="fa fa-arrow-left"></i> Retour à l'accueil
   </a>
 
+  <!-- EN-TÊTE DE PAGE -->
   <div class="bc-card p-4 mb-4">
     <div class="d-flex align-items-center gap-3">
-      <div class="bc-logo-box-lg" style="background:var(--accent);">
+      <div class="bc-logo-box-lg">
         <i class="fa fa-plus text-white fs-5"></i>
       </div>
       <div>
@@ -132,9 +135,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 
-  <form method="POST" action="creer-point-recharge.php" class="form-grid">
+  <form method="POST" action="" class="form-grid">
 
-    <!-- ── IDENTIFICATION ─────────────────────────────── -->
+    <!-- IDENTIFICATION -->
     <fieldset>
       <legend>Identification</legend>
       <div class="grid-2 mt-3">
@@ -154,7 +157,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="field">
           <label>SIREN aménageur <span>*</span></label>
-          <input type="text" name="siren_amenageur" placeholder="Ex : 785412369" class="filter-input" />
+          <input type="text" name="siren_amenageur" required placeholder="Ex : 785412369" class="filter-input" />
         </div>
         <div class="field">
           <label>Contact aménageur</label>
@@ -163,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </fieldset>
 
-    <!-- ── LOCALISATION ───────────────────────────────── -->
+    <!-- LOCALISATION -->
     <fieldset>
       <legend>Localisation</legend>
       <div class="grid-2 mt-3">
@@ -174,11 +177,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="field">
           <label>Commune</label>
-          <input type="text" name="commune" required placeholder="Ex : Rennes" class="filter-input" />
+          <input type="text" name="commune" placeholder="Ex : Rennes" class="filter-input" />
         </div>
         <div class="field">
           <label>Département</label>
-          <input type="text" name="departement" required placeholder="Ex : 35" class="filter-input" />
+          <input type="text" name="departement" placeholder="Ex : 35" class="filter-input" />
         </div>
         <div class="field">
           <label>Latitude <span>*</span></label>
@@ -190,8 +193,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <div class="field filter-select-wrap">
           <label>Implantation <span>*</span></label>
-          <select name="implantation_station">
-            <option value="">— Choisir —</option>
+          <select name="implantation_station" required>
+            <option value="">-- Choisir --</option>
             <option value="Parking public">Parking public</option>
             <option value="Parking privé à usage public">Parking privé à usage public</option>
             <option value="Parking privé réservé à la clientèle">Parking privé réservé à la clientèle</option>
@@ -203,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </fieldset>
 
-    <!-- ── CARACTÉRISTIQUES ───────────────────────────── -->
+    <!-- CARACTÉRISTIQUES -->
     <fieldset>
       <legend>Caractéristiques</legend>
       <div class="grid-2 mt-3">
@@ -213,7 +216,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" name="horaires" required placeholder="Ex : 24/7" class="filter-input" />
         </div>
         <div class="field">
-          <label>Puissance max (kW) *</label>
+          <label>Puissance max (kW) <span>*</span></label>
           <input type="number" name="puissance_nominale" required placeholder="Ex : 30.5" class="filter-input" />
         </div>
 
@@ -233,20 +236,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="field span-2">
           <label>Types de prises</label>
           <div class="checkline mt-1">
-            <label><input type="checkbox" name="types_prises[]" value="T2" /> T2</label>
-            <label><input type="checkbox" name="types_prises[]" value="Combo CCS" /> Combo CCS</label>
-            <label><input type="checkbox" name="types_prises[]" value="CHAdeMO" /> CHAdeMO</label>
-            <label><input type="checkbox" name="types_prises[]" value="EF" /> EF</label>
-            <label><input type="checkbox" name="types_prises[]" value="Autre" /> Autre</label>
+            <label><input type="checkbox" name="types_prises" value="T2" /> T2</label>
+            <label><input type="checkbox" name="types_prises" value="Combo CCS" /> Combo CCS</label>
+            <label><input type="checkbox" name="types_prises" value="CHAdeMO" /> CHAdeMO</label>
+            <label><input type="checkbox" name="types_prises" value="EF" /> EF</label>
+            <label><input type="checkbox" name="types_prises" value="Autre" /> Autre</label>
           </div>
         </div>
 
         <div class="field span-2">
           <label>Types de paiement</label>
           <div class="checkline mt-1">
-            <label><input type="checkbox" name="types_paiement[]" value="CB" /> CB</label>
-            <label><input type="checkbox" name="types_paiement[]" value="Acte" /> Acte</label>
-            <label><input type="checkbox" name="types_paiement[]" value="Autre" /> Autre</label>
+            <label><input type="checkbox" name="types_paiement" value="CB" /> CB</label>
+            <label><input type="checkbox" name="types_paiement" value="Acte" /> Acte</label>
+            <label><input type="checkbox" name="types_paiement" value="Autre" /> Autre</label>
           </div>
         </div>
 
@@ -261,7 +264,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </fieldset>
 
-    <!-- ── EXPLOITATION ───────────────────────────────── -->
+    <!-- EXPLOITATION -->
     <fieldset>
       <legend>Exploitation</legend>
       <div class="grid-2 mt-3">
@@ -271,16 +274,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <input type="text" name="nom_enseigne" required placeholder="Ex : IZIVIA" class="filter-input" />
         </div>
         <div class="field">
-          <label>Date de mise en service *</label>
-          <input type="date" name="date_mise_en_service" required class="filter-input" />
+          <label>Date de mise en service</label>
+          <input type="date" name="date_mise_en_service" class="filter-input" />
         </div>
         <div class="field">
           <label>Opérateur <span>*</span></label>
-          <input type="text" name="operateur" placeholder="Nom de l'opérateur" class="filter-input" />
+          <input type="text" name="operateur" placeholder="Nom de l'opérateur" required class="filter-input" />
         </div>
         <div class="field">
           <label>Contact opérateur <span>*</span></label>
-          <input type="text" name="contact_operateur" placeholder="Ex : contact@operateur.fr" class="filter-input" />
+          <input type="text" name="contact_operateur" placeholder="Ex : contact@operateur.fr" required class="filter-input" />
         </div>
         <div class="field">
           <label>Téléphone opérateur</label>
@@ -289,7 +292,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </fieldset>
 
-    <!-- ── ACTIONS ────────────────────────────────────── -->
+    <!-- ACTIONS -->
     <div class="form-actions mt-2 border-top pt-4">
       <button type="submit" class="btn-prim">Enregistrer le point</button>
       <a class="btn-sec" href="../index.php">Annuler</a>
@@ -298,6 +301,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </form>
 </main>
 
+<!-- FOOTER -->
 <footer class="ev-footer">
   <span>FEUARDENT Emma / ZADOROZNYJ Lia — Groupe CIN2</span>
   <span>2026</span>

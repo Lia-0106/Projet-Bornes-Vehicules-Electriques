@@ -8,6 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <link href="css/style-front.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
+<script src="js/charts.js" defer></script>
 <script src="js/stats.js" defer></script>
 </head>
 <body>
@@ -71,22 +74,30 @@
     <div class="stat-row stat-row-2">
       <div class="stat-bloc">
         <div class="stat-bloc-label">Points installés par année</div>
-        <div class="stat-list-wrap" id="stat-annee-list"></div>
+        <div class="chart-wrap">
+          <canvas id="chart-annee"></canvas>
+        </div>
       </div>
       <div class="stat-bloc">
         <div class="stat-bloc-label">Points par département</div>
-        <div class="stat-list-wrap" id="stat-dep-list"></div>
+        <div class="chart-wrap">
+          <canvas id="chart-dep"></canvas>
+        </div>
       </div>
     </div>
 
     <div class="stat-row stat-row-2">
       <div class="stat-bloc">
-        <div class="stat-bloc-label">Points par année / département</div>
-        <div class="stat-list-wrap" id="stat-year-dep-list"></div>
+        <div class="stat-bloc-label">Types de prises</div>
+        <div class="chart-wrap">
+          <canvas id="chart-prises"></canvas>
+        </div>
       </div>
       <div class="stat-bloc">
-        <div class="stat-bloc-label">Types de prises</div>
-        <div class="stat-list-wrap" id="stat-prises-list"></div>
+        <div class="stat-bloc-label">Points par année / département</div>
+        <div class="chart-wrap">
+          <canvas id="chart-annee-dep"></canvas>
+        </div>
       </div>
     </div>
   </div>
@@ -114,7 +125,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   const toggle = document.getElementById('navToggle');
-  const menu   = document.getElementById('navMobile');
+  const menu = document.getElementById('navMobile');
   toggle.addEventListener('click', () => menu.classList.toggle('open'));
 </script>
 </body>

@@ -344,6 +344,23 @@ main {
   font-size: 14px ;
 }
 
+.chart-wrap {
+  height: 300px ;
+  position: relative ;
+  width: 100% ;
+  overflow: hidden ;
+  display: flex ;
+  justify-content: center ;
+  align-items: center ;
+}
+
+.chart-wrap canvas {
+  display: block ;
+  width: 100% !important ;
+  height: 300px !important ;
+
+}
+
 
 /* ---------------------------------  
 ------------- FILTRES --------------

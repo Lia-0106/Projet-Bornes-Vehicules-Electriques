@@ -52,21 +52,24 @@ if (!$point) {
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav class="ev-nav">
   <a href="/back/index.php" class="brand">
     <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo"/>
-    <span class="brand-name">EliVolt <span class="text-muted fw-normal" style="font-size:14px">Admin</span></span>
+    <span class="brand-name">EliVolt <span class="text-muted fw-normal fs-sm">Admin</span></span>
   </a>
-<!-- Nav desktop -->
-<div class="nav-links">
-  <a href="/back/index.php">Accueil</a>
-  <a href="/front/html/recherche.html">Recherche</a>
-  <a href="/front/html/carte.html">Carte</a>
-  <a href="/front/index.html" class="site">Aller au site</a>
-</div>
+  <div class="nav-links">
+    <a href="/back/index.php">Accueil</a>
+    <a href="/front/html/recherche.html">Recherche</a>
+    <a href="/front/html/carte.html">Carte</a>
+    <a href="/front/index.html" class="site">Aller au site</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <i class="fa fa-bars"></i>
+  </button>
 </nav>
 
-<!-- Nav mobile -->
+<!-- NAVIGATION MOBILE -->
 <div class="nav-mobile" id="navMobile">
   <a href="/back/index.php">Accueil</a>
   <a href="/front/html/recherche.html">Recherche</a>
@@ -80,88 +83,103 @@ if (!$point) {
     <i class="fa fa-arrow-left"></i> Retour aux résultats
   </a>
 
+  <!-- EN-TÊTE DE PAGE -->
   <div class="bc-card p-4 mb-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
     <div class="d-flex align-items-center gap-3">
       <div class="bc-logo-box-lg"><i class="fa fa-bolt text-white fs-5"></i></div>
       <div>
         <div class="details-subtitle">Détails du point de recharge</div>
-        <div class="details-title"><?= htmlspecialchars($p['id_station_itinerance']) ?></div>
+        <div class="details-title"><?= htmlspecialchars($point['id_station_itinerance']) ?></div>
       </div>
     </div>
-    <a class="btn-prim" href="modifier-point-recharge.php?id=<?= $p['id'] ?>"><i class="fa fa-pen"></i> Modifier ce point</a>
+    <a class="btn-prim" href="modifier-point-recharge.php?id=<?= $point['id'] ?>"><i class="fa fa-pen"></i> Modifier ce point</a>
   </div>
 
   <div class="row g-4">
+
+    <!-- IDENTIFICATION -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
           <span class="fw-semibold">IDENTIFICATION</span>
         </div>
         <hr>
-        <div class="info-row"><span class="info-label">Identifiant station</span><span><?= htmlspecialchars($p['id_station_itinerance']) ?></span></div>
-        <div class="info-row"><span class="info-label">Aménageur</span><span><?= htmlspecialchars($p['nom_amenageur']) ?></span></div>
-        <div class="info-row"><span class="info-label">Siren aménageur</span><span><?= htmlspecialchars($p['siren_amenageur'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Contact aménageur</span>
+        <div class="info-row"><span class="info-label">Identifiant station</span><span><?= htmlspecialchars($point['id_station_itinerance']) ?></span></div>
+        <div class="info-row"><span class="info-label">Aménageur</span><span><?= htmlspecialchars($point['nom_amenageur']) ?></span></div>
+        <div class="info-row"><span class="info-label">Siren aménageur</span><span><?= htmlspecialchars(isset($point['siren_amenageur']) ? $point['siren_amenageur'] : '—') ?></span></div>
+        <div class="info-row">
+          <span class="info-label">Contact aménageur</span>
           <span>
-            <?php if (!empty($p['contact_amenageur'])): ?>
-              <a href="mailto:<?= htmlspecialchars($p['contact_amenageur']) ?>" class="text-decoration-none" style="color:var(--accent);"><?= htmlspecialchars($p['contact_amenageur']) ?></a>
-            <?php else: ?>—<?php endif; ?>
+            <?php if (!empty($point['contact_amenageur'])) : ?>
+              <a href="mailto:<?= htmlspecialchars($point['contact_amenageur']) ?>" class="ev-link"><?= htmlspecialchars($point['contact_amenageur']) ?></a>
+            <?php else : ?>—<?php endif ; ?>
           </span>
         </div>
       </div>
     </div>
 
+    <!-- LOCALISATION -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
           <span class="fw-semibold">LOCALISATION</span>
         </div>
         <hr>
-        <div class="info-row"><span class="info-label">Adresse</span><span><?= htmlspecialchars($p['adresse_station']) ?></span></div>
-        <div class="info-row"><span class="info-label">Commune</span><span><?= htmlspecialchars($p['nom_commune']) ?></span></div>
-        <div class="info-row"><span class="info-label">Département</span><span><?= htmlspecialchars($p['nom_departement']) ?></span></div>
-        <div class="info-row"><span class="info-label">Coordonnées</span><span><?= $p['consolidated_latitude'] ?> / <?= $p['consolidated_longitude'] ?></span></div>
-        <div class="info-row"><span class="info-label">Implantation</span><span><?= htmlspecialchars($p['implantation_station'] ?? '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Adresse</span><span><?= htmlspecialchars($point['adresse_station']) ?></span></div>
+        <div class="info-row"><span class="info-label">Commune</span><span><?= htmlspecialchars($point['nom_commune']) ?></span></div>
+        <div class="info-row"><span class="info-label">Département</span><span><?= htmlspecialchars($point['nom_departement']) ?></span></div>
+        <div class="info-row"><span class="info-label">Coordonnées</span><span><?= $point['consolidated_latitude'] ?> / <?= $point['consolidated_longitude'] ?></span></div>
+        <div class="info-row"><span class="info-label">Implantation</span><span><?= htmlspecialchars(isset($point['implantation_station']) ? $point['implantation_station'] : '—') ?></span></div>
       </div>
     </div>
 
+    <!-- CARACTÉRISTIQUES -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
           <span class="fw-semibold">CARACTÉRISTIQUES</span>
         </div>
         <hr>
-        <div class="info-row"><span class="info-label">Horaires</span><span><?= htmlspecialchars($p['horaires'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Puissance</span><span><?= htmlspecialchars($p['puissance_nominale']) ?> kW</span></div>
-        <div class="info-row"><span class="info-label">Type(s) de prise</span><span><?= htmlspecialchars($p['types_prises'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Condition d'accès</span><span><?= htmlspecialchars($p['condition_acces'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Gratuit</span><span><?= $p['gratuit'] ? 'Oui' : 'Non' ?></span></div>
-        <div class="info-row"><span class="info-label">Tarification</span><span><?= htmlspecialchars($p['tarification'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Type(s) de paiement</span><span><?= htmlspecialchars($p['types_paiement'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Câble T2 attaché</span><span><?= $p['cable_t2_attache'] ? 'Oui' : 'Non' ?></span></div>
+        <div class="info-row"><span class="info-label">Horaires</span><span><?= htmlspecialchars(isset($point['horaires']) ? $point['horaires'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Puissance</span><span><?= htmlspecialchars($point['puissance_nominale']) ?> kW</span></div>
+        <div class="info-row"><span class="info-label">Type(s) de prise</span><span><?= htmlspecialchars(isset($point['types_prises']) ? $point['types_prises'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Condition d'accès</span><span><?= htmlspecialchars(isset($point['condition_acces']) ? $point['condition_acces'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Gratuit</span><span><?= $point['gratuit'] ? 'Oui' : 'Non' ?></span></div>
+        <div class="info-row"><span class="info-label">Tarification</span><span><?= htmlspecialchars(isset($point['tarification']) ? $point['tarification'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Type(s) de paiement</span><span><?= htmlspecialchars(isset($point['types_paiement']) ? $point['types_paiement'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Câble T2 attaché</span><span><?= $point['cable_t2_attache'] ? 'Oui' : 'Non' ?></span></div>
       </div>
     </div>
 
+    <!-- EXPLOITATION -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">
           <span class="fw-semibold">EXPLOITATION</span>
         </div>
         <hr>
-        <div class="info-row"><span class="info-label">Enseigne</span><span><?= htmlspecialchars($p['nom_enseigne'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Mise en service</span><span><?= htmlspecialchars($p['date_mise_en_service'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Opérateur</span><span><?= htmlspecialchars($p['nom_operateur'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Contact opérateur</span><span><?= htmlspecialchars($p['contact_operateur'] ?? '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Tel. opérateur</span><span><?= htmlspecialchars($p['telephone_operateur'] ?? '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Enseigne</span><span><?= htmlspecialchars(isset($point['nom_enseigne']) ? $point['nom_enseigne'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Mise en service</span><span><?= htmlspecialchars(isset($point['date_mise_en_service']) ? $point['date_mise_en_service'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Opérateur</span><span><?= htmlspecialchars(isset($point['nom_operateur']) ? $point['nom_operateur'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Contact opérateur</span><span><?= htmlspecialchars(isset($point['contact_operateur']) ? $point['contact_operateur'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Tel. opérateur</span><span><?= htmlspecialchars(isset($point['telephone_operateur']) ? $point['telephone_operateur'] : '—') ?></span></div>
       </div>
     </div>
+
   </div>
 </main>
 
+<!-- FOOTER -->
 <footer class="ev-footer">
   <span>FEUARDENT Emma / ZADOROZNYJ Lia — Groupe CIN2</span>
   <span>2026</span>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  const toggle = document.getElementById('navToggle') ;
+  const menu = document.getElementById('navMobile') ;
+  if (toggle && menu) toggle.addEventListener('click', () => menu.classList.toggle('open')) ;
+</script>
 </body>
 </html>

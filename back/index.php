@@ -10,9 +10,10 @@ if (!isset($_SESSION['admin'])) {
     exit ;
 }
 
-require_once 'php/API/Database.php';
-require_once 'php/API/constantes.php';
-require_once 'php/API/PointRecharge.php';
+require_once 'php/API/Database.php' ;
+require_once 'php/API/constantes.php' ;
+require_once 'php/API/PointRecharge.php' ;
+require_once 'php/fonctions.php' ;
 
 
 // -------------------------------------------------------
@@ -35,11 +36,11 @@ $offset = ($page - 1) * $parPage ;
 // -------------------------------------------------------
 $database = new Database() ;
 $db = $database->getConnexion() ;
-$point = new PointRecharge($db) ;
+$pointRecharge = new PointRecharge($db) ;
 
-$recherche = isset($_GET['recherche']) ? $_GET['recherche'] : '' ; 
-$liste = $point->getListe($parPage, $offset, $recherche) ;
-$total = $point->getTotal($recherche) ;
+$recherche = isset($_GET['recherche']) ? $_GET['recherche'] : '' ;
+$liste = $pointRecharge->getListe($parPage, $offset, $recherche) ;
+$total = $pointRecharge->getTotal($recherche) ;
 $nbPages = ceil($total / $parPage) ;
 
 ?>
@@ -58,21 +59,24 @@ $nbPages = ceil($total / $parPage) ;
 </head>
 <body>
 
+<!-- NAVIGATION -->
 <nav class="ev-nav">
   <a href="index.php" class="brand">
-    <img src="../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo"/>
-    <span class="brand-name">EliVolt <span class="text-muted fw-normal" style="font-size:14px">Admin</span></span>
+    <img src="../ressources/img/logo.jpeg" alt="Logo EliVolt" class="brand-logo" />
+    <span class="brand-name">EliVolt <span class="text-muted fw-normal">Admin</span></span>
   </a>
-<!-- Nav desktop -->
-<div class="nav-links">
-  <a href="/back/index.php">Accueil</a>
-  <a href="/front/html/recherche.html">Recherche</a>
-  <a href="/front/html/carte.html">Carte</a>
-  <a href="/front/index.html" class="site">Aller au site</a>
-</div>
+  <div class="nav-links">
+    <a href="/back/index.php">Accueil</a>
+    <a href="/front/html/recherche.html">Recherche</a>
+    <a href="/front/html/carte.html">Carte</a>
+    <a href="/front/index.html" class="site">Aller au site</a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <i class="fa fa-bars"></i>
+  </button>
 </nav>
 
-<!-- Nav mobile -->
+<!-- NAVIGATION MOBILE -->
 <div class="nav-mobile" id="navMobile">
   <a href="/back/index.php">Accueil</a>
   <a href="/front/html/recherche.html">Recherche</a>
@@ -80,24 +84,24 @@ $nbPages = ceil($total / $parPage) ;
   <a href="/front/index.html" class="site">Aller au site</a>
 </div>
 
+<!-- MESSAGE DU SUCCÈS -->
 <?php if (isset($_GET['succes'])) : ?>
-    <?php if ($_GET['succes'] === 'creation') : ?>
-        <div class="alert-succes">Point de recharge créé avec succès !</div>
-    <?php elseif ($_GET['succes'] === 'modification') : ?>
-        <div class="alert-succes">Point de recharge modifié avec succès !</div>
-    <?php elseif ($_GET['succes'] === 'suppression') : ?>
-        <div class="alert-succes">Point de recharge supprimé avec succès !</div>
-    <?php endif ; ?>
+  <?php if ($_GET['succes'] === 'creation') : ?>
+    <div class="alert-succes">Point de recharge créé avec succès !</div>
+  <?php elseif ($_GET['succes'] === 'modification') : ?>
+    <div class="alert-succes">Point de recharge modifié avec succès !</div>
+  <?php elseif ($_GET['succes'] === 'suppression') : ?>
+    <div class="alert-succes">Point de recharge supprimé avec succès !</div>
+  <?php endif ; ?>
 <?php endif ; ?>
 
-
 <main class="container-xl px-4 pt-4 pb-5 flex-grow-1">
-  
+  <!-- PRESENTATION -->
   <div class="hero-block">
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1>Présentation du site</h1>
-      <p>Bienvenue sur le back-office EliVolt. Depuis cette interface de gestion, vous pouvez consulter, créer, modifier et supprimer les infrastructures de recharge pour véhicules électriques en région Bretagne.</p>
+      <p>Bienvenue sur le back-office EliVolt. Depuis cette interface de gestion, vous pouvez consulter, créer, modifier et supprimer les bornes de recharge pour véhicules électriques en Bretagne.</p>
     </div>
   </div>
 
@@ -109,36 +113,46 @@ $nbPages = ceil($total / $parPage) ;
     <a class="btn-prim" href="php/creer-point-recharge.php"><i class="fa fa-plus"></i> Créer un point</a>
   </div>
 
+  <!-- FILTRES -->
   <div class="bc-card p-4 mb-4">
-    <form method="GET" action="index.php" class="filter-row align-items-end flex-wrap">
-      <div class="filter-group" style="flex: 0 0 auto; width: 130px;">
+    <form method="GET" action="" class="filter-row align-items-end flex-wrap">
+
+      <!-- NB LIGNES PAR PAGE -->
+      <div class="filter-group filter-col-sm">
         <span class="filter-label">Affichage</span>
         <div class="filter-select-wrap">
-          <select name="par_page" onchange="this.form.submit()">
-            <option value="10"  <?= $parPage == 10  ? 'selected' : '' ?>>10 par page</option>
-            <option value="25"  <?= $parPage == 25  ? 'selected' : '' ?>>25 par page</option>
-            <option value="50"  <?= $parPage == 50  ? 'selected' : '' ?>>50 par page</option>
-            <option value="100" <?= $parPage == 100 ? 'selected' : '' ?>>100 par page</option>
+          <select name="par_page">
+            <option value="10" <?= $parPage == 10  ? 'selected' : '' ?> >10 par page</option>
+            <option value="25" <?= $parPage == 25  ? 'selected' : '' ?> >25 par page</option>
+            <option value="50" <?= $parPage == 50  ? 'selected' : '' ?> >50 par page</option>
+            <option value="100" <?= $parPage == 100 ? 'selected' : '' ?> >100 par page</option>
           </select>
         </div>
       </div>
-      <div class="filter-group" style="flex: 1; min-width: 200px;">
+
+      <!-- RECHERCHE PAR ID STATION -->
+      <div class="filter-group filter-col-grow">
         <span class="filter-label">Rechercher par identifiant</span>
         <input type="text" name="recherche" value="<?= htmlspecialchars($recherche) ?>" class="filter-input" placeholder="Ex: FR-EXX-E0001..." />
       </div>
-      <div class="filter-group" style="flex: 0 0 auto;">
+      <div class="filter-group filter-col-auto">
         <span class="filter-label filter-label--hidden">Action</span>
-        <button type="submit" class="filter-btn"><i class="fa fa-magnifying-glass"></i> Filtrer</button>
+        <button type="submit" class="filter-btn">
+          <i class="fa fa-magnifying-glass"></i> Filtrer
+        </button>
       </div>
+
       <?php if ($recherche) : ?>
-      <div class="filter-group" style="flex: 0 0 auto;">
+      <div class="filter-group filter-col-auto">
         <span class="filter-label filter-label--hidden">Clear</span>
-        <a href="index.php" class="btn-sec" style="height: 38px; justify-content: center;">Effacer</a>
+        <a href="index.php" class="btn-sec btn-effacer">Effacer</a>
       </div>
       <?php endif ; ?>
+
     </form>
   </div>
 
+  <!-- TABLEAU -->
   <div class="bc-card overflow-hidden">
     <div class="table-responsive">
       <table class="table bc-table mb-0">
@@ -155,55 +169,60 @@ $nbPages = ceil($total / $parPage) ;
         <tbody>
           <?php foreach ($liste as $p) : ?>
           <tr>
-            <td class="fw-medium text-dark"><?= htmlspecialchars($p['id_station_itinerance']) ?></td>
+            <td class="fw-medium"><?= htmlspecialchars($p['id_station_itinerance']) ?></td>
             <td><?= htmlspecialchars($p['nom_amenageur']) ?></td>
             <td><?= htmlspecialchars($p['nom_commune']) ?> — <?= htmlspecialchars($p['code_dep']) ?></td>
             <td><?= htmlspecialchars($p['puissance_nominale']) ?> kW</td>
-            <td><?php 
-              if (!empty($p['date_mise_en_service']) && substr($p['date_mise_en_service'], 0, 4) !== '0000') {
-                $date = explode('-', $p['date_mise_en_service']) ;
-                echo $date[2] . '/' . $date[1] . '/' . $date[0] ;
-              } else {
-                echo '—' ;
-              }
-            ?></td>
-            <td class="text-center" style="white-space: nowrap;">
+            <td><?= formatDate($p['date_mise_en_service']) ?></td>
+            <td class="text-center td-actions">
               <a href="php/details-point-recharge.php?id=<?= $p['id'] ?>"><i class="fa fa-eye"></i></a>
               <a href="php/modifier-point-recharge.php?id=<?= $p['id'] ?>"><i class="fa fa-pen"></i></a>
-              <a href="php/supprimer-point-recharge.php?id=<?= $p['id'] ?>" class="action-danger" onclick="return confirm('Voulez-vous vraiment supprimer ce point ?')"><i class="fa fa-trash"></i></a>
+              <a href="php/supprimer-point-recharge.php?id=<?= $p['id'] ?>"
+                 class="action-danger"
+                 onclick="return confirm('Voulez-vous vraiment supprimer ce point ?')">
+                <i class="fa fa-trash"></i>
+              </a>
             </td>
           </tr>
-          <?php endforeach; ?>
+          <?php endforeach ; ?>
         </tbody>
       </table>
     </div>
-    
-    <div class="d-flex justify-content-between align-items-center p-3 border-top" style="border-color: var(--border) !important; background: var(--surface2);">
+
+    <!-- PAGINATION -->
+    <div class="d-flex justify-content-between align-items-center p-3 border-top pagination-bar">
+
       <?php if ($page > 1) : ?>
-        <a href="?page=<?= $page - 1 ?>&par_page=<?= $parPage ?>&recherche=<?= urlencode($recherche) ?>" class="btn-sec"><i class="fa fa-arrow-left"></i> Précédent</a>
-      <?php else: ?>
-        <div style="width:110px;"></div>
+        <a href="?page=<?= $page - 1 ?>&par_page=<?= $parPage ?>&recherche=<?= urlencode($recherche) ?>" class="btn-sec">
+          <i class="fa fa-arrow-left"></i> Précédent
+        </a>
+      <?php else : ?>
+        <div class="pagination-spacer"></div>
       <?php endif ; ?>
 
-      <form method="GET" action="index.php" class="d-flex align-items-center gap-2 m-0">
+      <form method="GET" action="" class="d-flex align-items-center gap-2 m-0">
         <input type="hidden" name="par_page" value="<?= $parPage ?>" />
         <input type="hidden" name="recherche" value="<?= htmlspecialchars($recherche) ?>" />
-        <span class="muted" style="font-size:13px;">Page</span>
-        <input type="number" name="page" min="1" max="<?= $nbPages ?>" value="<?= $page ?>" class="filter-input" style="width:70px; text-align:center; padding: 6px;" />
-        <span class="muted" style="font-size:13px;">/ <?= $nbPages ?></span>
-        <button type="submit" class="btn-sec" style="padding: 6px 12px;">Aller</button>
+        <span class="muted">Page</span>
+        <input type="number" name="page" min="1" max="<?= $nbPages ?>" value="<?= $page ?>" class="filter-input page-input" />
+        <span class="muted">/ <?= $nbPages ?></span>
+        <button type="submit" class="btn-sec btn-aller">Aller</button>
       </form>
 
       <?php if ($page < $nbPages) : ?>
-        <a href="?page=<?= $page + 1 ?>&par_page=<?= $parPage ?>&recherche=<?= urlencode($recherche) ?>" class="btn-prim">Suivant <i class="fa fa-arrow-right"></i></a>
-      <?php else: ?>
-        <div style="width:110px;"></div>
+        <a href="?page=<?= $page + 1 ?>&par_page=<?= $parPage ?>&recherche=<?= $recherche ?>" class="btn-prim">
+          Suivant <i class="fa fa-arrow-right"></i>
+        </a>
+      <?php else : ?>
+        <div class="pagination-spacer"></div>
       <?php endif ; ?>
+
     </div>
   </div>
 
 </main>
 
+<!-- FOOTER -->
 <footer class="ev-footer">
   <span>FEUARDENT Emma / ZADOROZNYJ Lia — Groupe CIN2</span>
   <span>2026</span>
@@ -211,9 +230,9 @@ $nbPages = ceil($total / $parPage) ;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-  const toggle = document.getElementById('navToggle');
-  const menu   = document.getElementById('navMobile');
-  if(toggle && menu) toggle.addEventListener('click', () => menu.classList.toggle('open'));
+  const toggle = document.getElementById('navToggle') ;
+  const menu = document.getElementById('navMobile') ;
+  if (toggle && menu) toggle.addEventListener('click', () => menu.classList.toggle('open')) ;
 </script>
 </body>
 </html>
