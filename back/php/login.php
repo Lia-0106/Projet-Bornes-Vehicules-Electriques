@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="form-actions mt-3 flex-column">
                     <button type="submit" class="btn-prim w-100 justify-content-center py-2" style="font-size:14px;">Se connecter</button>
-                    <a class="btn-sec w-100 justify-content-center py-2" href="/" style="font-size:14px;">Retour au site public</a>
+                    <a class="btn-sec w-100 justify-content-center py-2" href="../../front/index.html" style="font-size:14px;">Retour au site public</a>
                 </div>
             </form>
         </section>
