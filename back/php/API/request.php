@@ -4,7 +4,6 @@
 // POINT D'ENTRÉE DE L'API
 // Reçoit toutes les requêtes HTTP et les redirige vers la bonne classe selon la ressource demandée
 // --------------------------------------------------------------------------------------------------------
-
 header('Content-Type: application/json; charset=utf-8') ;
 header('Access-Control-Allow-Origin: *') ;
 
@@ -29,6 +28,7 @@ $requestMethod = $_SERVER['REQUEST_METHOD'] ;
 $request = substr($_SERVER['PATH_INFO'], 1) ;
 $request = explode('/', $request) ;
 $ressource = array_shift($request) ;
+
 
 
 // -----------------------------------------------------------------------------------------------------

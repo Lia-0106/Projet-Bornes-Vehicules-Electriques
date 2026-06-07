@@ -27,36 +27,36 @@ class Stats {
 
             // STAT 2 : Nb de points de recharge par an
             $statement = $this->db->query("SELECT YEAR(date_mise_en_service) AS annee, COUNT(p.id) AS nb_points
-                                    FROM point_de_recharge p
-                                    JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
-                                    WHERE s.date_mise_en_service IS NOT NULL
-                                    AND YEAR(s.date_mise_en_service) > 0
-                                    GROUP BY YEAR(date_mise_en_service)
-                                    ORDER BY annee DESC") ;
+                                           FROM point_de_recharge p
+                                           JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
+                                           WHERE s.date_mise_en_service IS NOT NULL
+                                           AND YEAR(s.date_mise_en_service) > 0
+                                           GROUP BY YEAR(date_mise_en_service)
+                                           ORDER BY annee DESC") ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $stats["points_annee"] = $result ;
 
             // STAT 3 : Nb de points de recharge par département
             $statement = $this->db->query("SELECT d.nom_departement, d.code_dep, COUNT(p.id) AS nb_points
-                                    FROM point_de_recharge p
-                                    JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
-                                    JOIN commune c ON s.code_insee_commune = c.code_insee_commune
-                                    JOIN departement d ON c.code_dep = d.code_dep
-                                    GROUP BY d.code_dep, d.nom_departement
-                                    ORDER BY d.code_dep") ;
+                                           FROM point_de_recharge p
+                                           JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
+                                           JOIN commune c ON s.code_insee_commune = c.code_insee_commune
+                                           JOIN departement d ON c.code_dep = d.code_dep
+                                           GROUP BY d.code_dep, d.nom_departement
+                                           ORDER BY d.code_dep") ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $stats["points_par_dep"] = $result ;
 
             // STAT 4 : Nb de points de recharge par département et par année
             $statement = $this->db->query("SELECT YEAR(s.date_mise_en_service) AS annee, d.nom_departement, d.code_dep, COUNT(p.id) AS nb_points
-                                    FROM point_de_recharge p
-                                    JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
-                                    JOIN commune c ON s.code_insee_commune = c.code_insee_commune
-                                    JOIN departement d ON c.code_dep = d.code_dep
-                                    WHERE s.date_mise_en_service IS NOT NULL
-                                    AND YEAR(s.date_mise_en_service) > 0
-                                    GROUP BY YEAR(s.date_mise_en_service), d.code_dep, d.nom_departement
-                                    ORDER BY annee DESC, d.code_dep") ;
+                                           FROM point_de_recharge p
+                                           JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
+                                           JOIN commune c ON s.code_insee_commune = c.code_insee_commune
+                                           JOIN departement d ON c.code_dep = d.code_dep
+                                           WHERE s.date_mise_en_service IS NOT NULL
+                                           AND YEAR(s.date_mise_en_service) > 0
+                                           GROUP BY YEAR(s.date_mise_en_service), d.code_dep, d.nom_departement
+                                           ORDER BY annee DESC, d.code_dep") ;
             $result = $statement->fetchAll(PDO::FETCH_ASSOC) ;
             $stats["points_par_dep_annee"] = $result ;
 

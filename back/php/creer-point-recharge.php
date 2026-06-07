@@ -1,68 +1,83 @@
 <?php
+
+// -------------------------------------------------------
+// VÉRIFICATION DE SESSION
+// Redirige vers login.php si l'admin n'est pas connecté
+// -------------------------------------------------------
 session_start() ;
 if (!isset($_SESSION['admin'])) {
     header('Location: ../php/login.php') ;
     exit ;
 }
 
-require_once __DIR__ . '/API/Database.php' ;
-require_once __DIR__ . '/API/constantes.php' ;
-require_once __DIR__ . '/API/PointRecharge.php' ;
-$erreur = '' ;
+require_once ('API/Database.php') ;
+require_once ('API/constantes.php') ;
+require_once ('API/PointRecharge.php') ;
 
+
+// -------------------------------------------------------
+// TRAITEMENT DU FORMULAIRE
+// Récupère les données POST, crée les acteurs et l'enseigne
+// si nécessaire, puis insère le point en base
+// Redirige vers l'accueil après création
+// -------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $pointRecharge = new PointRecharge() ;
+    $database = new Database() ;
+    $db = $database->getConnexion() ;
+    $pointRecharge = new PointRecharge($db) ;
 
+    // Récupération ou création de l'aménageur et de l'opérateur
     $idActeur = $pointRecharge->getOuCreerActeur(
         isset($_POST['amenageur']) ? $_POST['amenageur'] : '',
         isset($_POST['contact_amenageur']) ? $_POST['contact_amenageur'] : '',
-        isset($_POST['telephone_amenageur']) ? $_POST['telephone_amenageur'] : '',
-        isset($_POST['siren_amenageur']) ? $_POST['siren_amenageur'] : ''
+        '',
+        isset($_POST['siren_amenageur']) ? $_POST['siren_amenageur'] : '',
+        'amenageur'
     ) ;
 
     $idOperateur = $pointRecharge->getOuCreerActeur(
         isset($_POST['operateur']) ? $_POST['operateur'] : '',
         isset($_POST['contact_operateur']) ? $_POST['contact_operateur'] : '',
         isset($_POST['telephone_operateur']) ? $_POST['telephone_operateur'] : '',
-        ''
+        '',
+        'operateur'
     ) ;
 
-    $codeInsee = $pointRecharge->getOuCreerCommune(
-        isset($_POST['commune']) ? $_POST['commune'] : ''
-    ) ;
-
+    // Récupération ou création de l'enseigne
     $pointRecharge->getOuCreerEnseigne(
         isset($_POST['nom_enseigne']) ? $_POST['nom_enseigne'] : ''
     ) ;
 
-    $data = array(
-        'id_station_itinerance'  => isset($_POST['id_station_itinerance']) ? $_POST['id_station_itinerance'] : '',
-        'nom_station'            => isset($_POST['nom_station']) ? $_POST['nom_station'] : '',
-        'adresse_station'        => isset($_POST['adresse_station']) ? $_POST['adresse_station'] : '',
-        'nbre_pdc'               => isset($_POST['nbre_pdc']) ? $_POST['nbre_pdc'] : 1,
-        'date_mise_en_service'   => isset($_POST['date_mise_en_service']) ? $_POST['date_mise_en_service'] : '',
-        'code_insee_commune'     => $codeInsee,
-        'id_acteur'              => $idActeur,
-        'id_operateur'           => $idOperateur,
-        'horaires'               => isset($_POST['horaires']) ? $_POST['horaires'] : '',
-        'nom_enseigne'           => isset($_POST['nom_enseigne']) ? $_POST['nom_enseigne'] : '',
-        'implantation_station'   => isset($_POST['implantation_station']) ? $_POST['implantation_station'] : '',
-        'puissance_nominale'     => isset($_POST['puissance_nominale']) ? $_POST['puissance_nominale'] : 0,
-        'cable_t2_attache'       => isset($_POST['cable_t2_attache']) ? 1 : 0,
-        'gratuit'                => isset($_POST['gratuit']) ? 1 : 0,
-        'tarification'           => isset($_POST['tarification']) ? $_POST['tarification'] : '',
-        'consolidated_longitude' => isset($_POST['consolidated_longitude']) ? $_POST['consolidated_longitude'] : 0,
-        'consolidated_latitude'  => isset($_POST['consolidated_latitude']) ? $_POST['consolidated_latitude'] : 0,
-        'condition_acces'        => isset($_POST['condition_acces']) ? $_POST['condition_acces'] : '',
-        'types_prises'           => isset($_POST['types_prises']) ? $_POST['types_prises'] : array(),
-        'types_paiement'         => isset($_POST['types_paiement']) ? $_POST['types_paiement'] : array(),
-    ) ;
+    // Construction du tableau de données à insérer
+    $data = [ 'id_station_itinerance'  => isset($_POST['id_station_itinerance']) ? $_POST['id_station_itinerance'] : '',
+              'nom_station'            => isset($_POST['nom_station']) ? $_POST['nom_station'] : '',
+              'adresse_station'        => isset($_POST['adresse_station']) ? $_POST['adresse_station'] : '',
+              'nbre_pdc'               => isset($_POST['nbre_pdc']) ? $_POST['nbre_pdc'] : 1,
+              'date_mise_en_service'   => isset($_POST['date_mise_en_service']) ? $_POST['date_mise_en_service'] : '',
+              'code_insee_commune'     => isset($_POST['code_insee_commune']) ? $_POST['code_insee_commune'] : '',
+              'id_acteur'              => $idActeur,
+              'id_operateur'           => $idOperateur,
+              'horaires'               => isset($_POST['horaires']) ? $_POST['horaires'] : '',
+              'nom_enseigne'           => isset($_POST['nom_enseigne']) ? $_POST['nom_enseigne'] : '',
+              'implantation_station'   => isset($_POST['implantation_station']) ? $_POST['implantation_station'] : '',
+              'puissance_nominale'     => isset($_POST['puissance_nominale']) ? $_POST['puissance_nominale'] : 0,
+              'cable_t2_attache'       => isset($_POST['cable_t2_attache']) ? 1 : 0,
+              'gratuit'                => isset($_POST['gratuit']) ? 1 : 0,
+              'tarification'           => isset($_POST['tarification']) ? $_POST['tarification'] : '',
+              'consolidated_longitude' => isset($_POST['consolidated_longitude']) ? $_POST['consolidated_longitude'] : 0,
+              'consolidated_latitude'  => isset($_POST['consolidated_latitude']) ? $_POST['consolidated_latitude'] : 0,
+              'condition_acces'        => isset($_POST['condition_acces']) ? $_POST['condition_acces'] : '',
+              'types_prises'           => isset($_POST['types_prises']) ? $_POST['types_prises'] : [] ,
+              'types_paiement'         => isset($_POST['types_paiement']) ? $_POST['types_paiement'] : [] ] ;
 
     $pointRecharge->create($data) ;
-    header('Location: ../index.php') ;
+    header('Location: ../index.php?succes=creation') ;
     exit ;
 }
+
 ?>
+
+
 <!doctype html>
 <html lang="fr">
 <head>
@@ -116,10 +131,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       </div>
     </div>
   </div>
-
-  <?php if ($erreur) : ?>
-    <div class="alert alert-danger mb-4" style="font-size:13px;border-radius:10px;"><?= htmlspecialchars($erreur) ?></div>
-  <?php endif ; ?>
 
   <form method="POST" action="creer-point-recharge.php" class="form-grid">
 

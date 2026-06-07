@@ -19,7 +19,7 @@ class Resultats {
     public function getResultats($amenageur, $type_prise, $code_dep) {
         try {
             $request = "SELECT s.date_mise_en_service, s.nbre_pdc AS nb_points, p.puissance_nominale AS puissance,
-                        s.adresse_station, c.code_postal, c.nom_commune, p.id AS point_id,
+                               s.adresse_station, c.code_postal, c.nom_commune, p.id AS point_id,
                         GROUP_CONCAT(DISTINCT p_prise.type_prise SEPARATOR ', ') AS types_prises
                         FROM point_de_recharge p
                         JOIN station s ON p.id_station_itinerance = s.id_station_itinerance 

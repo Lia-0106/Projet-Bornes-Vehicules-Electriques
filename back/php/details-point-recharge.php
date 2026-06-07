@@ -1,30 +1,44 @@
 <?php
+
+// -------------------------------------------------------
+// VÉRIFICATION DE SESSION
+// Redirige vers login.php si l'admin n'est pas connecté
+// -------------------------------------------------------
 session_start() ;
 if (!isset($_SESSION['admin'])) {
     header('Location: ../php/login.php') ;
     exit ;
 }
 
-require_once __DIR__ . '/API/Database.php' ;
-require_once __DIR__ . '/API/constantes.php' ;
-require_once __DIR__ . '/API/PointRecharge.php' ;
+require_once ('API/Database.php') ;
+require_once ('API/constantes.php') ;
+require_once ('API/PointRecharge.php') ;
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// -------------------------------------------------------
+// RÉCUPÉRATION DU POINT DE RECHARGE
+// $id : récupéré depuis l'URL
+// $point : tableau associatif avec toutes les infos du point
+// -------------------------------------------------------
+$id = isset($_GET['id']) ? $_GET['id'] : 0 ;
 if ($id <= 0) {
-    header('Location: ../index.php');
-    exit;
+    header('Location: ../index.php') ;
+    exit ;
 }
 
 $database = new Database() ;
 $db = $database->getConnexion() ;
 $pointRecharge = new PointRecharge($db) ;
-$p = $pointRecharge->getDetails($id);
+$point = $pointRecharge->getDetails($id) ;
 
-if (!$p) {
-    header('Location: ../index.php');
-    exit;
+if (!$point) {
+  header('Location: ../index.php') ;
+  exit ;
 }
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>

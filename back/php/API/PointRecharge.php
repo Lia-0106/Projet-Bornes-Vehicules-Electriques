@@ -46,8 +46,17 @@ class PointRecharge {
     // TOTAL : Compte le nombre total de points de recharge
     // Utilisé pour le calcul de la pagination
     // ------------------------------------------------------
-    public function getTotal() {
-        $statement = $this->db->query("SELECT COUNT(*) AS total_points FROM point_de_recharge") ;
+    public function getTotal($recherche = '') {
+        $request = "SELECT COUNT(*) AS total_points
+                    FROM point_de_recharge p
+                    JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
+                    WHERE (:recherche = '' OR s.id_station_itinerance LIKE :recherche_like)" ;
+
+        $statement = $this->db->prepare($request) ;
+        $statement->bindParam(':recherche', $recherche, PDO::PARAM_STR) ;
+        $rechercheLike = '%' . $recherche . '%' ;
+        $statement->bindParam(':recherche_like', $rechercheLike, PDO::PARAM_STR) ;
+        $statement->execute() ;
         $result = $statement->fetch(PDO::FETCH_ASSOC) ;
         return $result['total_points'] ;
     }
@@ -60,22 +69,22 @@ class PointRecharge {
     // ---------------------------------------------------------
     public function getDetails($id) {
         $request= "SELECT p.id, p.puissance_nominale, p.cable_t2_attache, p.gratuit, p.tarification, p.consolidated_longitude,
-               p.consolidated_latitude, p.condition_acces, s.id_station_itinerance, s.nom_station, s.adresse_station,
-               s.date_mise_en_service, s.nbre_pdc, s.horaires, s.nom_enseigne, c.nom_commune, d.nom_departement,
-               a.nom AS nom_amenageur, a.contact AS contact_amenageur, a.siren AS siren_amenageur, op.nom AS nom_operateur,
-               op.telephone AS telephone_operateur,
-               GROUP_CONCAT(DISTINCT p_prise.type_prise SEPARATOR ', ') AS types_prises,
-               GROUP_CONCAT(DISTINCT p_paie.type_paiement SEPARATOR ', ') AS types_paiement
-               FROM point_de_recharge p
-               LEFT JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
-               LEFT JOIN commune c ON s.code_insee_commune = c.code_insee_commune
-               LEFT JOIN departement d ON c.code_dep = d.code_dep
-               LEFT JOIN acteur a ON s.id_acteur = a.id_acteur
-               LEFT JOIN acteur op ON s.id_acteur_operateur = op.id_acteur
-               LEFT JOIN point_recharge_prise p_prise ON p.id = p_prise.id
-               LEFT JOIN point_recharge_paiement p_paie ON p.id = p_paie.id
-               WHERE p.id = :id
-               GROUP BY p.id" ;
+                          p.consolidated_latitude, p.condition_acces, s.id_station_itinerance, s.nom_station, s.adresse_station,
+                          s.date_mise_en_service, s.nbre_pdc, s.horaires, s.nom_enseigne, c.nom_commune, d.nom_departement,
+                          a.nom AS nom_amenageur, a.contact AS contact_amenageur, a.siren AS siren_amenageur, op.nom AS nom_operateur,
+                          op.telephone AS telephone_operateur,
+                   GROUP_CONCAT(DISTINCT p_prise.type_prise SEPARATOR ', ') AS types_prises,
+                   GROUP_CONCAT(DISTINCT p_paie.type_paiement SEPARATOR ', ') AS types_paiement
+                   FROM point_de_recharge p
+                   LEFT JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
+                   LEFT JOIN commune c ON s.code_insee_commune = c.code_insee_commune
+                   LEFT JOIN departement d ON c.code_dep = d.code_dep
+                   LEFT JOIN acteur a ON s.id_acteur = a.id_acteur
+                   LEFT JOIN acteur op ON s.id_acteur_operateur = op.id_acteur
+                   LEFT JOIN point_recharge_prise p_prise ON p.id = p_prise.id
+                   LEFT JOIN point_recharge_paiement p_paie ON p.id = p_paie.id
+                   WHERE p.id = :id
+                   GROUP BY p.id" ;
 
         $statement = $this->db->prepare($request) ;
         $statement->bindParam(':id', $id, PDO::PARAM_INT) ;
@@ -94,9 +103,9 @@ class PointRecharge {
     public function create($data) {
         // ÉTAPE 1 : insertion dans station
         $requestStation = "INSERT INTO station (id_station_itinerance, nom_station, adresse_station, nbre_pdc, date_mise_en_service,
-                                            code_insee_commune, id_acteur, id_acteur_operateur, horaires, nom_enseigne, implantation_station)
-                       VALUES (:id_station_itinerance, :nom_station, :adresse_station, :nbre_pdc, :date_mise_en_service,
-                               :code_insee_commune, :id_acteur, :id_acteur_operateur, :horaires, :nom_enseigne, :implantation_station)" ;
+                                       code_insee_commune, id_acteur, id_acteur_operateur, horaires, nom_enseigne, implantation_station)
+                           VALUES (:id_station_itinerance, :nom_station, :adresse_station, :nbre_pdc, :date_mise_en_service,
+                                   :code_insee_commune, :id_acteur, :id_acteur_operateur, :horaires, :nom_enseigne, :implantation_station)" ;
 
         $stmtStation = $this->db->prepare($requestStation) ;
         $stmtStation->bindParam(':id_station_itinerance', $data['id_station_itinerance'], PDO::PARAM_STR) ;
@@ -119,9 +128,9 @@ class PointRecharge {
 
         // ÉTAPE 3 : insertion dans point_de_recharge
         $requestPoint = "INSERT INTO point_de_recharge (id, puissance_nominale, cable_t2_attache, gratuit, tarification,
-                                 consolidated_longitude, consolidated_latitude, id_station_itinerance, condition_acces)
-                     VALUES (:id, :puissance_nominale, :cable_t2_attache, :gratuit, :tarification, :consolidated_longitude,
-                             :consolidated_latitude, :id_station_itinerance, :condition_acces)" ;
+                                     consolidated_longitude, consolidated_latitude, id_station_itinerance, condition_acces)
+                         VALUES (:id, :puissance_nominale, :cable_t2_attache, :gratuit, :tarification, :consolidated_longitude,
+                                 :consolidated_latitude, :id_station_itinerance, :condition_acces)" ;
 
         $stmtPoint = $this->db->prepare($requestPoint) ;
         $stmtPoint->bindParam(':id', $idPoint, PDO::PARAM_INT) ;
@@ -187,7 +196,7 @@ class PointRecharge {
                                           implantation_station = :implantation_station,
                                           id_acteur = :id_acteur,
                                           id_acteur_operateur = :id_acteur_operateur
-                       WHERE id_station_itinerance = :id_station_itinerance" ;
+                           WHERE id_station_itinerance = :id_station_itinerance" ;
 
         $stmtStation = $this->db->prepare($requestStation) ;
         $stmtStation->bindParam(':nom_station', $data['nom_station'], PDO::PARAM_STR) ;
@@ -209,7 +218,7 @@ class PointRecharge {
                                                   condition_acces = :condition_acces,
                                                   consolidated_latitude = :consolidated_latitude,
                                                   consolidated_longitude = :consolidated_longitude
-                     WHERE id = :id" ;
+                         WHERE id = :id" ;
 
         $stmtPoint = $this->db->prepare($requestPoint) ;
         $stmtPoint->bindParam(':puissance_nominale', $data['puissance_nominale'], PDO::PARAM_STR) ;

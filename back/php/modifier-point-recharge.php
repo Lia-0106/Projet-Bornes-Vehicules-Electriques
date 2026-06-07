@@ -1,67 +1,80 @@
 <?php
+
+// -------------------------------------------------------
+// VÉRIFICATION DE SESSION
+// Redirige vers login.php si l'admin n'est pas connecté
+// -------------------------------------------------------
 session_start() ;
 if (!isset($_SESSION['admin'])) {
     header('Location: ../php/login.php') ;
     exit ;
 }
 
-require_once __DIR__ . '/API/Database.php' ;
-require_once __DIR__ . '/API/constantes.php' ;
-require_once __DIR__ . '/API/PointRecharge.php' ;
+require_once ('API/Database.php') ;
+require_once ('API/constantes.php') ;
+require_once ('API/PointRecharge.php') ;
 
-$id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// -------------------------------------------------------
+// RÉCUPÉRATION DU POINT DE RECHARGE
+// $id : récupéré depuis l'URL
+// $point : tableau associatif avec toutes les infos du point
+// -------------------------------------------------------
+$id = isset($_GET['id']) ? $_GET['id'] : 0 ;
 if ($id <= 0) {
-    header('Location: /back/index.php');
-    exit;
+    header('Location: /back/index.php') ;
+    exit ;
 }
 
 $database = new Database() ;
 $db = $database->getConnexion() ;
 $pointRecharge = new PointRecharge($db) ;
-$p = $pointRecharge->getDetails($id);
+$point = $pointRecharge->getDetails($id) ;
 
-if (!$p) {
-    header('Location: /back/index.php');
-    exit;
+if (!$point) {
+    header('Location: /back/index.php') ;
+    exit ;
 }
 
+
+// -------------------------------------------------------
+// TRAITEMENT DU FORMULAIRE
+// Récupère les données POST et met à jour le point en base
+// Redirige vers la page détail avec message de succès
+// -------------------------------------------------------
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $data = [
-        'nom_station'          => $_POST['nom_station']          ?? '',
-        'adresse_station'      => $_POST['adresse_station']      ?? '',
-        'date_mise_en_service' => $_POST['date_mise_en_service'] ?? '',
-        'horaires'             => $_POST['horaires']             ?? '',
-        'nom_enseigne'         => $_POST['nom_enseigne']         ?? '',
-        'puissance_nominale'   => $_POST['puissance_nominale']   ?? 0,
-        'cable_t2_attache'     => isset($_POST['cable_t2_attache']) ? 1 : 0,
-        'gratuit'              => isset($_POST['gratuit'])          ? 1 : 0,
-        'tarification'         => $_POST['tarification']         ?? '',
-        'condition_acces'      => $_POST['condition_acces']      ?? '',
-        'implantation_station' => $_POST['implantation_station'] ?? '',
-        'consolidated_latitude'  => $_POST['consolidated_latitude']  ?? 0,
-        'consolidated_longitude' => $_POST['consolidated_longitude'] ?? 0,
-        'nom_amenageur'        => $_POST['nom_amenageur']        ?? '',
-        'siren_amenageur'      => $_POST['siren_amenageur']      ?? '',
-        'contact_amenageur'    => $_POST['contact_amenageur']    ?? '',
-        'telephone_amenageur'  => $_POST['telephone_amenageur']  ?? '',
-        'nom_operateur'        => $_POST['nom_operateur']        ?? '',
-        'contact_operateur'    => $_POST['contact_operateur']    ?? '',
-        'telephone_operateur'  => $_POST['telephone_operateur']  ?? '',
-        'types_prises'         => $_POST['types_prises']         ?? [],
-        'types_paiement'       => $_POST['types_paiement']       ?? [],
-    ];
+    $data = [ 'nom_station'            => isset($_POST['nom_station']) ? $_POST['nom_station'] : '',
+              'adresse_station'        => isset($_POST['adresse_station']) ? $_POST['adresse_station'] : '',
+              'date_mise_en_service'   => isset($_POST['date_mise_en_service']) ? $_POST['date_mise_en_service'] : '',
+              'horaires'               => isset($_POST['horaires']) ? $_POST['horaires'] : '',
+              'nom_enseigne'           => isset($_POST['nom_enseigne']) ? $_POST['nom_enseigne'] : '',
+              'puissance_nominale'     => isset($_POST['puissance_nominale']) ? $_POST['puissance_nominale'] : 0,
+              'cable_t2_attache'       => isset($_POST['cable_t2_attache']) ? 1 : 0,
+              'gratuit'                => isset($_POST['gratuit']) ? 1  : 0,
+              'tarification'           => isset($_POST['tarification']) ? $_POST['tarification'] : '',
+              'condition_acces'        => isset($_POST['condition_acces']) ? $_POST['condition_acces'] : '',
+              'implantation_station'   => isset($_POST['implantation_station']) ? $_POST['implantation_station'] : '',
+              'consolidated_latitude'  => isset($_POST['consolidated_latitude']) ? $_POST['consolidated_latitude'] : 0,
+              'consolidated_longitude' => isset($_POST['consolidated_longitude']) ? $_POST['consolidated_longitude'] : 0,
+              'nom_amenageur'          => isset($_POST['nom_amenageur']) ? $_POST['nom_amenageur'] : '',
+              'siren_amenageur'        => isset($_POST['siren_amenageur']) ? $_POST['siren_amenageur'] : '',
+              'contact_amenageur'      => isset($_POST['contact_amenageur']) ? $_POST['contact_amenageur'] : '',
+              'telephone_amenageur'    => isset($_POST['telephone_amenageur']) ? $_POST['telephone_amenageur'] : '',
+              'nom_operateur'          => isset($_POST['nom_operateur']) ? $_POST['nom_operateur'] : '',
+              'contact_operateur'      => isset($_POST['contact_operateur']) ? $_POST['contact_operateur'] : '',
+              'telephone_operateur'    => isset($_POST['telephone_operateur']) ? $_POST['telephone_operateur'] : '',
+              'types_prises'           => isset($_POST['types_prises']) ? $_POST['types_prises'] : [],
+              'types_paiement'         => isset($_POST['types_paiement']) ? $_POST['types_paiement'] : [],
+    ] ;
 
-    $pointRecharge->update($id, $data);
-    header('Location: /back/php/details-point-recharge.php?id=' . $id);
-    exit;
+    $pointRecharge->update($id, $data) ;
+    header('Location: /back/php/details-point-recharge.php?id=' . $id . '&succes=modification') ;
+    exit ;
 }
 
-// Helper : est-ce qu'une valeur est dans la liste CSV stockée ?
-function inList(?string $list, string $val): bool {
-    if (!$list) return false;
-    return in_array($val, array_map('trim', explode(',', $list)));
-}
 ?>
+
+
 <!doctype html>
 <html lang="fr">
 <head>

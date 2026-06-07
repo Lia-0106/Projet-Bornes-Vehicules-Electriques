@@ -1,4 +1,9 @@
 <?php
+
+// -------------------------------------------------------
+// VÉRIFICATION DE SESSION
+// Redirige vers login.php si l'admin n'est pas connecté
+// -------------------------------------------------------
 session_start() ;
 if (!isset($_SESSION['admin'])) {
     header('Location: php/login.php') ;
@@ -9,23 +14,37 @@ require_once 'php/API/Database.php';
 require_once 'php/API/constantes.php';
 require_once 'php/API/PointRecharge.php';
 
-// Pagination : nombre d'éléments par page (modifiable)
-$parPage = isset($_GET['par_page']) ? (int)$_GET['par_page'] : 50 ;
+
+// -------------------------------------------------------
+// PAGINATION
+// $parPage : nb de points par page (défaut 50)
+// $page : page courante
+// $offset : nb de points à sauter pour atteindre la page
+// -------------------------------------------------------
+$parPage = isset($_GET['par_page']) ? $_GET['par_page'] : 50 ;
 if ($parPage < 1) $parPage = 50 ;
-$page = isset($_GET['page']) ? (int)$_GET['page'] : 1 ;
+$page = isset($_GET['page']) ? $_GET['page'] : 1 ;
 if ($page < 1) $page = 1 ;
 $offset = ($page - 1) * $parPage ;
 
+
+// -------------------------------------------------------
+// RÉCUPÉRATION DES DONNÉES
+// $recherche : filtre optionnel par identifiant station
+// $total : tient compte du filtre pour la pagination
+// -------------------------------------------------------
 $database = new Database() ;
 $db = $database->getConnexion() ;
-
 $point = new PointRecharge($db) ;
 
-$recherche = isset($_GET['recherche']) ? trim($_GET['recherche']) : '' ; 
+$recherche = isset($_GET['recherche']) ? $_GET['recherche'] : '' ; 
 $liste = $point->getListe($parPage, $offset, $recherche) ;
-$total = $point->getTotal() ;
+$total = $point->getTotal($recherche) ;
 $nbPages = ceil($total / $parPage) ;
+
 ?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -60,6 +79,16 @@ $nbPages = ceil($total / $parPage) ;
   <a href="/front/html/carte.html">Carte</a>
   <a href="/front/index.html" class="site">Aller au site</a>
 </div>
+
+<?php if (isset($_GET['succes'])) : ?>
+    <?php if ($_GET['succes'] === 'creation') : ?>
+        <div class="alert-succes">Point de recharge créé avec succès !</div>
+    <?php elseif ($_GET['succes'] === 'modification') : ?>
+        <div class="alert-succes">Point de recharge modifié avec succès !</div>
+    <?php elseif ($_GET['succes'] === 'suppression') : ?>
+        <div class="alert-succes">Point de recharge supprimé avec succès !</div>
+    <?php endif ; ?>
+<?php endif ; ?>
 
 
 <main class="container-xl px-4 pt-4 pb-5 flex-grow-1">
