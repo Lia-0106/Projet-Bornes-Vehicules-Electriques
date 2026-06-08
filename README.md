@@ -40,6 +40,7 @@ projet-cir2-37/
 │   │   │   └── Stats.php               # Classe requêtes SQL statistiques
 │   │   ├── creer-point-recharge.php    # Page création d'un point
 │   │   ├── details-point-recharge.php  # Page détail d'un point (back)
+│   │   ├── fonctions.php               # Fonctions utilitaires partagées 
 │   │   ├── login.php                   # Page de connexion administrateur
 │   │   └── modifier-point-recharge.php # Page modification d'un point
 │   └── index.php                       # Accueil back-office
@@ -48,6 +49,7 @@ projet-cir2-37/
 │   │   └── style-front.css
 │   ├── html/
 │   │   ├── carte.html                  # Page carte interactive
+│   │   ├── charts.js                   # Graphiques Chart.js (pie départements, doughnut prises, bar année, etc...)
 │   │   ├── recherche.html              # Page recherche + résultats
 │   │   └── point-recharge.html         # Page détail d'un point (front)
 │   ├── js/
@@ -164,6 +166,7 @@ projet-cir2-37/
 
 
 ## VII_ Accès 
+```
     |        Page         |                         URL                      |
     |---------------------|--------------------------------------------------|
     | Front-end           | http://projet-cir2-XX/front/                     |
@@ -172,9 +175,14 @@ projet-cir2-37/
     | Back-office         | http://projet-cir2-XX/back/                      |
     | Connexion admin     | http://projet-cir2-XX/back/php/login.php         |
     | API                 | http://projet-cir2-XX/back/php/API/request.php/  |
+```
 
 ## VIII_ Identifiants administrateur
     |     Champ    |  Valeur |
     |--------------|---------|
     | Login        | cin2    |
     | Mot de passe | cin2mdp |
+
+## IX_ Pour information
+    - Lorsque l'on créait un point de charge avec une donnée déjà existante, alors le champs ne se remplira pas. Ex : si l'on renseigne un aménageur existant, et que 'lon met un numéro de SIREN différent de celui de l'aménageur déjà enregistré, alors le numéro de SIREN sera renseigné comme un champ vide.
+

@@ -1,7 +1,7 @@
 <?php
 
 // -------------------------------------------------------
-// VÉRIFICATION DE SESSION
+// VERIFICATION DE SESSION
 // Redirige vers login.php si l'admin n'est pas connecté
 // -------------------------------------------------------
 session_start() ;
@@ -10,9 +10,9 @@ if (!isset($_SESSION['admin'])) {
     exit ;
 }
 
-require_once ('API/Database.php') ;
-require_once ('API/constantes.php') ;
-require_once ('API/PointRecharge.php') ;
+require_once __DIR__ . '/API/Database.php' ;
+require_once __DIR__ . '/API/constantes.php' ;
+require_once __DIR__ . '/API/PointRecharge.php' ;
 
 
 // -------------------------------------------------------

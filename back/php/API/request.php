@@ -1,7 +1,7 @@
 <?php
 
 // --------------------------------------------------------------------------------------------------------
-// POINT D'ENTRÉE DE L'API
+// POINT D'ENTREEE DE L'API
 // Reçoit toutes les requêtes HTTP et les redirige vers la bonne classe selon la ressource demandée
 // --------------------------------------------------------------------------------------------------------
 header('Content-Type: application/json; charset=utf-8') ;

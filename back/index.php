@@ -1,7 +1,7 @@
 <?php
 
 // -------------------------------------------------------
-// VÉRIFICATION DE SESSION
+// VERIFICATION DE SESSION
 // Redirige vers login.php si l'admin n'est pas connecté
 // -------------------------------------------------------
 session_start() ;
@@ -10,10 +10,10 @@ if (!isset($_SESSION['admin'])) {
     exit ;
 }
 
-require_once 'php/API/Database.php' ;
-require_once 'php/API/constantes.php' ;
-require_once 'php/API/PointRecharge.php' ;
-require_once 'php/fonctions.php' ;
+require_once __DIR__ . '/php/API/Database.php' ;
+require_once __DIR__ . '/php/API/constantes.php' ;
+require_once __DIR__ . '/php/API/PointRecharge.php' ;
+require_once __DIR__ . '/php/fonctions.php' ;
 
 
 // -------------------------------------------------------
@@ -30,7 +30,7 @@ $offset = ($page - 1) * $parPage ;
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DES DONNÉES
+// RECUPERATION DES DONNÉES
 // $recherche : filtre optionnel par identifiant station
 // $total : tient compte du filtre pour la pagination
 // -------------------------------------------------------
@@ -41,7 +41,7 @@ $pointRecharge = new PointRecharge($db) ;
 $recherche = isset($_GET['recherche']) ? $_GET['recherche'] : '' ;
 $liste = $pointRecharge->getListe($parPage, $offset, $recherche) ;
 $total = $pointRecharge->getTotal($recherche) ;
-$nbPages = ceil($total / $parPage) ;
+$nbPages = max(1, ceil($total / $parPage)) ;
 
 ?>
 
@@ -84,7 +84,7 @@ $nbPages = ceil($total / $parPage) ;
   <a href="/front/index.html" class="site">Aller au site</a>
 </div>
 
-<!-- MESSAGE DU SUCCÈS -->
+<!-- MESSAGE DU SUCCES -->
 <?php if (isset($_GET['succes'])) : ?>
   <?php if ($_GET['succes'] === 'creation') : ?>
     <div class="alert-succes">Point de recharge créé avec succès !</div>
@@ -138,7 +138,7 @@ $nbPages = ceil($total / $parPage) ;
       <div class="filter-group filter-col-auto">
         <span class="filter-label filter-label--hidden">Action</span>
         <button type="submit" class="filter-btn">
-          <i class="fa fa-magnifying-glass"></i> Filtrer
+          <i class="fa fa-magnifying-glass"></i> Rechercher
         </button>
       </div>
 

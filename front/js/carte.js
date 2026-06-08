@@ -54,7 +54,7 @@ function displayRechercheCarte(data) {
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DES MARQUEURS
+// RECUPERATION DES MARQUEURS
 // Appel API avec les filtres sélectionnés
 // Paramètres optionnels : annee et dep (vides = tous)
 // -------------------------------------------------------
@@ -104,7 +104,7 @@ function afficherMarqueurs(points) {
 
 
 // -------------------------------------------------------
-// DÉCLENCHEMENT DE LA RECHERCHE
+// DECLENCHEMENT DE LA RECHERCHE
 // Récupère les valeurs des filtres au clic sur le bouton
 // -------------------------------------------------------
 document.querySelector('.filter-btn').addEventListener('click', function() {

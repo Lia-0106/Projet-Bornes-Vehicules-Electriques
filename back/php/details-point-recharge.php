@@ -1,7 +1,7 @@
 <?php
 
 // -------------------------------------------------------
-// VÉRIFICATION DE SESSION
+// VERIFICATION DE SESSION
 // Redirige vers login.php si l'admin n'est pas connecté
 // -------------------------------------------------------
 session_start() ;
@@ -10,13 +10,13 @@ if (!isset($_SESSION['admin'])) {
     exit ;
 }
 
-require_once ('API/Database.php') ;
-require_once ('API/constantes.php') ;
-require_once ('API/PointRecharge.php') ;
+require_once __DIR__ . '/API/Database.php' ;
+require_once __DIR__ . '/API/constantes.php' ;
+require_once __DIR__ . '/API/PointRecharge.php' ;
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DU POINT DE RECHARGE
+// RECUPERATION DU POINT DE RECHARGE
 // $id : récupéré depuis l'URL
 // $point : tableau associatif avec toutes les infos du point
 // -------------------------------------------------------
@@ -109,11 +109,7 @@ if (!$point) {
         <div class="info-row"><span class="info-label">Siren aménageur</span><span><?= htmlspecialchars(isset($point['siren_amenageur']) ? $point['siren_amenageur'] : '—') ?></span></div>
         <div class="info-row">
           <span class="info-label">Contact aménageur</span>
-          <span>
-            <?php if (!empty($point['contact_amenageur'])) : ?>
-              <a href="mailto:<?= htmlspecialchars($point['contact_amenageur']) ?>" class="ev-link"><?= htmlspecialchars($point['contact_amenageur']) ?></a>
-            <?php else : ?>—<?php endif ; ?>
-          </span>
+          <span><?= htmlspecialchars(isset($point['contact_amenageur']) ? $point['contact_amenageur'] : '—') ?></span>
         </div>
       </div>
     </div>
@@ -133,7 +129,7 @@ if (!$point) {
       </div>
     </div>
 
-    <!-- CARACTÉRISTIQUES -->
+    <!-- CARACTERISTIQUES -->
     <div class="col-md-6">
       <div class="bc-card p-4 h-100">
         <div class="d-flex align-items-center gap-2 mb-3">

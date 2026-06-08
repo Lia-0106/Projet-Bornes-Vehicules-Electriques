@@ -4,7 +4,7 @@
 
 
 
-/* ---------------------------------  
+/* ------------------------------  
 ---------- VARIABLES ------------
 --------------------------------- */
 :root {
@@ -462,6 +462,7 @@ main {
   justify-content: space-between ;
   padding: 0.9rem 1.25rem ;
   border-bottom: 1px solid var(--border) ;
+  background: var(--surface2) ;
 }
 
 .table-title { 
@@ -473,8 +474,8 @@ main {
 .table-badge {
   font-size: 11px ;
   font-weight: 500 ;
-  background: var(--accent-dim) ;
-  color: var(--accent) ;
+  background: var(--accent) ;
+  color: var(--text) ;
   border: 1px solid var(--accent-border) ;
   border-radius: 20px ;
   padding: 3px 10px ;
@@ -483,11 +484,12 @@ main {
 .bc-table { 
   width: 100% ; 
   border-collapse: collapse ; 
+  --bs-table-bg: transparent ; 
 }
 
 .bc-table thead th {
   background: var(--surface2) ;
-  color: var(--muted) ;
+  color: var(--text) ;
   font-size: 11px ;
   font-weight: 600 ;
   text-transform: uppercase ;
@@ -569,7 +571,6 @@ main {
 .bc-table th:nth-child(5), .bc-table td:nth-child(5) {
   text-align: center ; 
 }
-
 
 /* ---------------------------------  
 -------------- CARTE ---------------

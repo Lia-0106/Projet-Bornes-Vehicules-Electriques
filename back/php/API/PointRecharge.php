@@ -72,7 +72,7 @@ class PointRecharge {
                           p.consolidated_latitude, p.condition_acces, s.id_station_itinerance, s.nom_station, s.adresse_station,
                           s.date_mise_en_service, s.nbre_pdc, s.horaires, s.nom_enseigne, c.nom_commune, d.nom_departement,
                           a.nom AS nom_amenageur, a.contact AS contact_amenageur, a.siren AS siren_amenageur, op.nom AS nom_operateur,
-                          op.telephone AS telephone_operateur,
+                          op.contact AS contact_operateur, op.telephone AS telephone_operateur, s.implantation_station,
                    GROUP_CONCAT(DISTINCT p_prise.type_prise SEPARATOR ', ') AS types_prises,
                    GROUP_CONCAT(DISTINCT p_paie.type_paiement SEPARATOR ', ') AS types_paiement
                    FROM point_de_recharge p
@@ -96,37 +96,20 @@ class PointRecharge {
 
     // ------------------------------------------------------------------------------------------------------------------------------------------
     // CREER : insère un nouveau pt de recharge
-    // Ordre d'insertion : station → point → prises → paiements
-    // On insère dans cet ordre car chaque table référence la précédente : station (id_station) → point (id) → prises et paiements (id du point)
+    // Ordre d'insertion : station / point / prises / paiements
+    // On insère dans cet ordre car chaque table référence la précédente : station (id_station) / point (id) / prises et paiements (id du point)
     // Utilisé sur la page créer du back
     // ------------------------------------------------------------------------------------------------------------------------------------------
     public function create($data) {
         // ÉTAPE 1 : insertion dans station
-        $requestStation = "INSERT INTO station (id_station_itinerance, nom_station, adresse_station, nbre_pdc, date_mise_en_service,
-                                       code_insee_commune, id_acteur, id_acteur_operateur, horaires, nom_enseigne, implantation_station)
-                           VALUES (:id_station_itinerance, :nom_station, :adresse_station, :nbre_pdc, :date_mise_en_service,
-                                   :code_insee_commune, :id_acteur, :id_acteur_operateur, :horaires, :nom_enseigne, :implantation_station)" ;
+        $this->getOuCreerStation($data) ;
 
-        $stmtStation = $this->db->prepare($requestStation) ;
-        $stmtStation->bindParam(':id_station_itinerance', $data['id_station_itinerance'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':nom_station', $data['nom_station'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':adresse_station', $data['adresse_station'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':nbre_pdc', $data['nbre_pdc'], PDO::PARAM_INT) ;
-        $stmtStation->bindParam(':date_mise_en_service', $data['date_mise_en_service'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':code_insee_commune', $data['code_insee_commune'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':id_acteur', $data['id_acteur'], PDO::PARAM_INT) ;
-        $stmtStation->bindParam(':id_acteur_operateur', $data['id_operateur'], PDO::PARAM_INT) ;
-        $stmtStation->bindParam(':horaires', $data['horaires'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':nom_enseigne', $data['nom_enseigne'], PDO::PARAM_STR) ;
-        $stmtStation->bindParam(':implantation_station', $data['implantation_station'], PDO::PARAM_STR) ;
-        $stmtStation->execute() ;
-
-        // ÉTAPE 2 : calcul du prochain id disponible
+        // ETAPE 2 : calcul du prochain id disponible
         $stmtId = $this->db->query("SELECT MAX(id) + 1 AS prochain_id FROM point_de_recharge") ;
         $resultat = $stmtId->fetch(PDO::FETCH_ASSOC) ;
         $idPoint = $resultat['prochain_id'] ;
 
-        // ÉTAPE 3 : insertion dans point_de_recharge
+        // ETAPE 3 : insertion dans point_de_recharge
         $requestPoint = "INSERT INTO point_de_recharge (id, puissance_nominale, cable_t2_attache, gratuit, tarification,
                                      consolidated_longitude, consolidated_latitude, id_station_itinerance, condition_acces)
                          VALUES (:id, :puissance_nominale, :cable_t2_attache, :gratuit, :tarification, :consolidated_longitude,
@@ -144,7 +127,7 @@ class PointRecharge {
         $stmtPoint->bindParam(':condition_acces', $data['condition_acces'], PDO::PARAM_STR) ;
         $stmtPoint->execute() ;
 
-        // ÉTAPE 4 : insertion des types de prises
+        // ETAPE 4 : insertion des types de prises
         if (!empty($data['types_prises'])) {
             $stmtPrise = $this->db->prepare("INSERT INTO point_recharge_prise (id, type_prise) VALUES (:id, :type_prise)") ;
             foreach ($data['types_prises'] as $typePrise) {
@@ -154,7 +137,7 @@ class PointRecharge {
             }
         }
 
-        // ÉTAPE 5 : insertion des types de paiement
+        // ETAPE 5 : insertion des types de paiement
         if (!empty($data['types_paiement'])) {
             $stmtPaiement = $this->db->prepare("INSERT INTO point_recharge_paiement (id, type_paiement) VALUES (:id, :type_paiement)") ;
             foreach ($data['types_paiement'] as $typePaiement) {
@@ -182,12 +165,12 @@ class PointRecharge {
 
         $idStation = $resultat['id_station_itinerance'] ;
 
-        // ÉTAPE 2 : mise à jour ou création de l'aménageur et de l'opérateur
+        // ETAPE 2 : mise à jour ou création de l'aménageur et de l'opérateur
         $idAmenageur = $this->getOuCreerActeur($data['nom_amenageur'], $data['contact_amenageur'], '', $data['siren_amenageur']) ;
         $idOperateur = $this->getOuCreerActeur($data['nom_operateur'], $data['contact_operateur'], $data['telephone_operateur'], '') ;
         $nomEnseigne = $this->getOuCreerEnseigne($data['nom_enseigne']) ;
 
-        // ÉTAPE 3 : mise à jour de la station
+        // ETAPE 3 : mise à jour de la station
         $requestStation = "UPDATE station SET nom_station = :nom_station,
                                           adresse_station = :adresse_station,
                                           date_mise_en_service = :date_mise_en_service,
@@ -210,7 +193,7 @@ class PointRecharge {
         $stmtStation->bindParam(':id_station_itinerance', $idStation, PDO::PARAM_STR) ;
         $stmtStation->execute() ;
 
-        // ÉTAPE 4 : mise à jour du point de recharge
+        // ETAPE 4 : mise à jour du point de recharge
         $requestPoint = "UPDATE point_de_recharge SET puissance_nominale = :puissance_nominale,
                                                   cable_t2_attache = :cable_t2_attache,
                                                   gratuit = :gratuit,
@@ -231,7 +214,7 @@ class PointRecharge {
         $stmtPoint->bindParam(':id', $id, PDO::PARAM_INT) ;
         $stmtPoint->execute() ;
 
-        // ÉTAPE 5 : remplacement des prises et paiements
+        // ETAPE 5 : remplacement des prises et paiements
         $this->remplacerValeurs('point_recharge_prise', 'type_prise', $id, $data['types_prises']) ;
         $this->remplacerValeurs('point_recharge_paiement', 'type_paiement', $id, $data['types_paiement']) ;
 
@@ -311,13 +294,54 @@ class PointRecharge {
         return $nomEnseigne ;
     }
 
+    // -------------------------------------------------------
+    // RECUP OU CREER UNE STATION
+    // Si la station n'existe pas, on la crée
+    // -------------------------------------------------------
+    public function getOuCreerStation($data) {
+        // On vérifie si la station existe déjà
+        $statement = $this->db->prepare("SELECT id_station_itinerance FROM station WHERE id_station_itinerance = :id LIMIT 1") ;
+        $statement->bindParam(':id', $data['id_station_itinerance'], PDO::PARAM_STR) ;
+        $statement->execute() ;
+        $result = $statement->fetch(PDO::FETCH_ASSOC) ;
+
+        if ($result) {
+            $stmtUpdate = $this->db->prepare("UPDATE station SET nbre_pdc = nbre_pdc + 1 WHERE id_station_itinerance = :id") ;
+            $stmtUpdate->bindParam(':id', $data['id_station_itinerance'], PDO::PARAM_STR) ;
+            $stmtUpdate->execute() ;
+            return $result['id_station_itinerance'] ;
+        }
+
+        // Sinon on la crée
+        $request = "INSERT INTO station (id_station_itinerance, nom_station, adresse_station, nbre_pdc,
+                                         date_mise_en_service, code_insee_commune, id_acteur, id_acteur_operateur,
+                                         horaires, nom_enseigne, implantation_station)
+                    VALUES (:id_station_itinerance, :nom_station, :adresse_station, :nbre_pdc,
+                            :date_mise_en_service, :code_insee_commune, :id_acteur, :id_acteur_operateur,
+                            :horaires, :nom_enseigne, :implantation_station)" ;
+
+        $stmt = $this->db->prepare($request) ;
+        $stmt->bindParam(':id_station_itinerance', $data['id_station_itinerance'], PDO::PARAM_STR) ;
+        $stmt->bindParam(':nom_station',           $data['nom_station'],           PDO::PARAM_STR) ;
+        $stmt->bindParam(':adresse_station',       $data['adresse_station'],       PDO::PARAM_STR) ;
+        $stmt->bindParam(':nbre_pdc',              $data['nbre_pdc'],              PDO::PARAM_INT) ;
+        $stmt->bindParam(':date_mise_en_service',  $data['date_mise_en_service'],  PDO::PARAM_STR) ;
+        $stmt->bindParam(':code_insee_commune',    $data['code_insee_commune'],    PDO::PARAM_STR) ;
+        $stmt->bindParam(':id_acteur',             $data['id_acteur'],             PDO::PARAM_INT) ;
+        $stmt->bindParam(':id_acteur_operateur',   $data['id_operateur'],          PDO::PARAM_INT) ;
+        $stmt->bindParam(':horaires',              $data['horaires'],              PDO::PARAM_STR) ;
+        $stmt->bindParam(':nom_enseigne',          $data['nom_enseigne'],          PDO::PARAM_STR) ;
+        $stmt->bindParam(':implantation_station',  $data['implantation_station'],  PDO::PARAM_STR) ;
+        $stmt->execute() ;
+    }
+
 
     // -------------------------------------------------------
     // SUPPRIMER : supprime un point de recharge par son id
-    // Ordre de suppression : prises → paiements → point → station (si vide) → acteur (si plus de stations)
+    // Ordre de suppression : prises / paiements / point / station (si vide) / acteur (si plus de stations)
     // -------------------------------------------------------
     public function delete($id) {
-        // ÉTAPE 1 : suppression des prises et paiements liés au point
+        // ETAPE 1 : suppression des prises et paiements liés au point
         $statement = $this->db->prepare("DELETE FROM point_recharge_prise WHERE id = :id") ;
         $statement->bindParam(':id', $id, PDO::PARAM_INT) ;
         $statement->execute() ;
@@ -326,7 +350,7 @@ class PointRecharge {
         $statement->bindParam(':id', $id, PDO::PARAM_INT) ;
         $statement->execute() ;
 
-        // ÉTAPE 2 : récupération de l'id_station et l'id_acteur avant suppression du point
+        // ETAPE 2 : récupération de l'id_station et l'id_acteur avant suppression du point
         $statement = $this->db->prepare("SELECT s.id_station_itinerance, s.id_acteur
                                          FROM point_de_recharge p
                                          JOIN station s ON p.id_station_itinerance = s.id_station_itinerance
@@ -335,7 +359,7 @@ class PointRecharge {
         $statement->execute() ;
         $result = $statement->fetch(PDO::FETCH_ASSOC) ;
 
-        // ÉTAPE 3 : suppression du point
+        // ETAPE 3 : suppression du point
         $statement = $this->db->prepare("DELETE FROM point_de_recharge WHERE id = :id") ;
         $statement->bindParam(':id', $id, PDO::PARAM_INT) ;
         $statement->execute() ;
@@ -343,7 +367,7 @@ class PointRecharge {
         $idStation = $result['id_station_itinerance'] ;
         $idActeur  = $result['id_acteur'] ;
 
-        // ÉTAPE 4 : suppression de la station si elle n'a plus de points
+        // ETAPE 4 : suppression de la station si elle n'a plus de points
         $statement = $this->db->prepare("SELECT COUNT(*) AS nb FROM point_de_recharge WHERE id_station_itinerance = :id_station") ;
         $statement->bindParam(':id_station', $idStation, PDO::PARAM_STR) ;
         $statement->execute() ;
@@ -354,7 +378,7 @@ class PointRecharge {
             $statement->bindParam(':id_station', $idStation, PDO::PARAM_STR) ;
             $statement->execute() ;
 
-            // ÉTAPE 5 : suppression de l'acteur s'il n'a plus de stations
+            // ETAPE 5 : suppression de l'acteur s'il n'a plus de stations
             $statement = $this->db->prepare("SELECT COUNT(*) AS nb FROM station WHERE id_acteur = :id_acteur OR id_acteur_operateur = :id_acteur") ;
             $statement->bindParam(':id_acteur', $idActeur, PDO::PARAM_INT) ;
             $statement->execute() ;

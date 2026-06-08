@@ -4,7 +4,7 @@ requestStats() ;
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DES STATISTIQUES
+// RECUPERATION DES STATISTIQUES
 // Appel API pour obtenir toutes les statistiques requises
 // -------------------------------------------------------
 async function requestStats() {

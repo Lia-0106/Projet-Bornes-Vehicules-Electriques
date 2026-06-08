@@ -5,7 +5,7 @@
 // session_start() appelé avant tout l'HTML
 // -------------------------------------------------------
 session_start() ;
-require_once('API/constantes.php') ;
+require_once __DIR__ . '/API/constantes.php' ;
 
 
 // -------------------------------------------------------

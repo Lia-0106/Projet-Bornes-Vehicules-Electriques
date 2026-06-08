@@ -1,17 +1,26 @@
 'use strict'
 
-// -------------------------------------------------------
+// --------------------------------------------
+// GESTION DES GRAPHIQUES DE L'ACCUEIL DU SITE
+// DOCUMENTATION : https://www.chartjs.org/
+// --------------------------------------------
+
+
+// --------------------------------------------
 // PALETTE DE COULEURS POUR LES GRAPHIQUES
-// -------------------------------------------------------
+// Avoir un style cohérent
+// --------------------------------------------
 const CHART_COLORS = [
     '#7c5af5', '#9474ff', '#4f86f7', '#f76f4f', '#dbdbdb'
 ] ;
 
 Chart.register(ChartDataLabels) ;
 
-// -------------------------------------------------------
-// GRAPHIQUE PIE — Points de recharge par département
-// -------------------------------------------------------
+
+// --------------------------------------------------------------------------------------------
+// GRAPHIQUE PIE : Points de recharge par département
+// Affiche la répartition des points entre les 4 départements bretons sous forme de camembert
+// --------------------------------------------------------------------------------------------
 function renderChartDepartements(data) {
     const ctx = document.getElementById('chart-dep') ;
     if (!ctx) return ;
@@ -65,7 +74,7 @@ function renderChartDepartements(data) {
                     formatter: (value, ctx) => {
                         const total = ctx.dataset.data.reduce((a, b) => a + b, 0) ;
                         const pct = ((value / total) * 100).toFixed(1) ;
-                        return pct > 5 ? `${pct}%` : '' ; // masque les trop petits
+                        return pct > 5 ? `${pct}%` : '' ;
                     }
                 }
             }
@@ -73,9 +82,11 @@ function renderChartDepartements(data) {
     }) ;
 }
 
-// -------------------------------------------------------
-// GRAPHIQUE DOUGHNUT — Types de prises
-// -------------------------------------------------------
+
+// -----------------------------------------------------------------
+// GRAPHIQUE DOUGHNUT : Types de prises
+// Affiche la répartition des types de prises sous forme d'un donut
+// -----------------------------------------------------------------
 function renderChartPrises(data) {
     const ctx = document.getElementById('chart-prises') ;
     if (!ctx) return ;
@@ -139,9 +150,11 @@ function renderChartPrises(data) {
     }) ;
 }
 
-// -------------------------------------------------------
-// GRAPHIQUE BAR — Points de recharge par année
-// -------------------------------------------------------
+
+// --------------------------------------------------------------------------------------------
+// GRAPHIQUE BAR : Points de recharge par année
+// Affiche l'évolution du nb de points installés chaque année sous forme de barres verticales
+// --------------------------------------------------------------------------------------------
 function renderChartAnnee(data) {
     const ctx = document.getElementById('chart-annee') ;
     if (!ctx) return ;
@@ -201,14 +214,15 @@ function renderChartAnnee(data) {
     }) ;
 }
 
-// -------------------------------------------------------
-// GRAPHIQUE BAR GROUPÉ — Points par année et par département
-// -------------------------------------------------------
+
+// ---------------------------------------------------------------------
+// GRAPHIQUE BAR GROUPE : Points par année et par département
+// Affiche pour chaque année le nb de points installés dans chaque dep
+// ---------------------------------------------------------------------
 function renderChartAnneeDepGrouped(data) {
     const ctx = document.getElementById('chart-annee-dep') ;
     if (!ctx) return ;
 
-    // Récupère les années et départements uniques
     const annees = [...new Set(data.map(d => d.annee))].sort() ;
     const deps   = [...new Set(data.map(d => d.code_dep))].sort() ;
     const depNoms = {} ;
@@ -252,7 +266,7 @@ function renderChartAnneeDepGrouped(data) {
                         label: ctx => ` ${ctx.dataset.label} : ${ctx.parsed.y.toLocaleString('fr-FR')} points`
                     }
                 },
-                datalabels: { display: false } // trop chargé avec les labels
+                datalabels: { display: false } 
             },
             scales: {
                 x: {

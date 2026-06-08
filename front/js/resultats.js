@@ -4,7 +4,7 @@ requestResultats() ;
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DES RÉSULTATS
+// RECUPERATION DES RESULTATS
 // Lit les valeurs des 3 filtres puis appelle l'API
 // -------------------------------------------------------
 async function requestResultats() {
@@ -25,7 +25,7 @@ async function requestResultats() {
 
 
 // -------------------------------------------------------
-// AFFICHAGE DES RÉSULTATS
+// AFFICHAGE DES RESULTATS
 // Remplit le tableau + met à jour le badge avec le nb de résultats
 // -------------------------------------------------------
 function displayResultats(data) {
@@ -80,7 +80,7 @@ function displayResultats(data) {
 
 
 // -------------------------------------------------------
-// DÉCLENCHEMENT DE LA RECHERCHE
+// DECLENCHEMENT DE LA RECHERCHE
 // Au clic sur le bouton filtre
 // -------------------------------------------------------
 document.querySelector('.filter-btn').addEventListener('click', requestResultats) ;

@@ -4,7 +4,7 @@ requestPointRecharge() ;
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DU POINT DE RECHARGE
+// RECUPERATION DU POINT DE RECHARGE
 // Lit l'id dans l'URL puis appelle l'API pour les détails
 // -------------------------------------------------------
 async function requestPointRecharge() {
@@ -44,7 +44,7 @@ function displayPointRecharge(data) {
     document.getElementById('coordonnees').textContent = data.consolidated_longitude + ', ' + data.consolidated_latitude ;
     document.getElementById('implantation').textContent = data.implantation_station || '—' ;
 
-    // CARACTÉRISTIQUES
+    // CARACTERISTIQUES
     document.getElementById('horaires').textContent = data.horaires || '—' ;
     document.getElementById('condition-acces').textContent = data.condition_acces || '—' ;
     document.getElementById('puissance').textContent = data.puissance_nominale + ' kW' ;

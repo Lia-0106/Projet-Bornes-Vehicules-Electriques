@@ -4,7 +4,7 @@ requestRecherche() ;
 
 
 // -------------------------------------------------------
-// RÉCUPÉRATION DES FILTRES
+// RECUPERATION DES FILTRES
 // Appel API vers /recherche pour obtenir les listes des selects
 // -------------------------------------------------------
 async function requestRecherche() {
