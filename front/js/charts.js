@@ -14,7 +14,7 @@ const CHART_COLORS = [
     '#7c5af5', '#9474ff', '#4f86f7', '#f76f4f', '#dbdbdb'
 ] ;
 
-Chart.register(ChartDataLabels) ;
+Chart.register(ChartDataLabels) ; // Plugin qui permet d'afficher les valeurs directement sur les graphiques
 
 
 // --------------------------------------------------------------------------------------------
@@ -23,11 +23,10 @@ Chart.register(ChartDataLabels) ;
 // --------------------------------------------------------------------------------------------
 function renderChartDepartements(data) {
     const ctx = document.getElementById('chart-dep') ;
-    if (!ctx) return ;
 
     const labels = data.map(d => `${d.nom_departement} (${d.code_dep})`) ;
     const values = data.map(d => parseInt(d.nb_points)) ;
-    const colors = CHART_COLORS.slice(0, labels.length) ;
+    const colors = CHART_COLORS.slice(0, labels.length) ; // Prend autant de couleurs qu'il y a de dep
 
     new Chart(ctx, {
         type: 'pie',
@@ -53,30 +52,16 @@ function renderChartDepartements(data) {
                         color: '#a09bc0',
                     }
                 },
-                tooltip: {
-                    backgroundColor: '#1e1b2e',
-                    borderColor: '#2e2a45',
-                    borderWidth: 1,
-                    titleColor: '#ede9ff',
-                    bodyColor: '#a09bc0',
-                    padding: 10,
-                    callbacks: {
-                        label: ctx => {
-                            const total = ctx.dataset.data.reduce((a, b) => a + b, 0) ;
-                            const pct   = ((ctx.parsed / total) * 100).toFixed(1) ;
-                            return ` ${ctx.label} : ${ctx.parsed.toLocaleString('fr-FR')} (${pct}%)` ;
-                        }
-                    }
-                },
                 datalabels: {
                     color: '#fff',
                     font: { size: 11, family: 'Inter', weight: '600' },
                     formatter: (value, ctx) => {
                         const total = ctx.dataset.data.reduce((a, b) => a + b, 0) ;
-                        const pct = ((value / total) * 100).toFixed(1) ;
-                        return pct > 5 ? `${pct}%` : '' ;
+                        const pourcentage = ((value / total) * 100).toFixed(1) ;
+                        return pourcentage > 5 ? `${pourcentage}%` : '' ;
                     }
-                }
+                },
+                tooltip: { enabled: false },
             }
         }
     }) ;
@@ -89,7 +74,6 @@ function renderChartDepartements(data) {
 // -----------------------------------------------------------------
 function renderChartPrises(data) {
     const ctx = document.getElementById('chart-prises') ;
-    if (!ctx) return ;
 
     const labels = data.map(p => `Prise ${p.type_prise}`) ;
     const values = data.map(p => parseInt(p.nb_prises)) ;
@@ -121,30 +105,16 @@ function renderChartPrises(data) {
                         color: '#a09bc0',
                     }
                 },
-                tooltip: {
-                    backgroundColor: '#1e1b2e',
-                    borderColor: '#2e2a45',
-                    borderWidth: 1,
-                    titleColor: '#ede9ff',
-                    bodyColor: '#a09bc0',
-                    padding: 10,
-                    callbacks: {
-                        label: ctx => {
-                            const total = ctx.dataset.data.reduce((a, b) => a + b, 0) ;
-                            const pct   = ((ctx.parsed / total) * 100).toFixed(1) ;
-                            return ` ${ctx.label} : ${ctx.parsed.toLocaleString('fr-FR')} (${pct}%)` ;
-                        }
-                    }
-                },
                 datalabels: {
                     color: '#fff',
                     font: { size: 11, family: 'Inter', weight: '600' },
                     formatter: (value, ctx) => {
                         const total = ctx.dataset.data.reduce((a, b) => a + b, 0) ;
-                        const pct = ((value / total) * 100).toFixed(1) ;
-                        return pct > 5 ? `${pct}%` : '' ;
+                        const pourcentage = ((value / total) * 100).toFixed(1) ;
+                        return pourcentage > 5 ? `${pourcentage}%` : '' ;
                     }
-                }
+                },
+                tooltip: { enabled: false }
             }
         }
     }) ;
@@ -157,8 +127,8 @@ function renderChartPrises(data) {
 // --------------------------------------------------------------------------------------------
 function renderChartAnnee(data) {
     const ctx = document.getElementById('chart-annee') ;
-    if (!ctx) return ;
 
+    // .reverse() car données envoyées par ordre décroissant
     const labels = data.map(d => d.annee).reverse() ;
     const values = data.map(d => parseInt(d.nb_points)).reverse() ;
 
@@ -180,24 +150,13 @@ function renderChartAnnee(data) {
             maintainAspectRatio: false,
             plugins: {
                 legend: { display: false },
-                tooltip: {
-                    backgroundColor: '#1e1b2e',
-                    borderColor: '#2e2a45',
-                    borderWidth: 1,
-                    titleColor: '#ede9ff',
-                    bodyColor: '#a09bc0',
-                    padding: 10,
-                    callbacks: {
-                        label: ctx => ` ${ctx.parsed.y.toLocaleString('fr-FR')} points`
-                    }
-                },
                 datalabels: {
                     anchor: 'end',
                     align: 'top',
                     color: '#a09bc0',
                     font: { size: 10, family: 'Inter', weight: '600' },
-                    formatter: value => value.toLocaleString('fr-FR'),
-                }
+                },
+                tooltip: { enabled: false }
             },
             scales: {
                 x: {
@@ -223,21 +182,45 @@ function renderChartAnneeDepGrouped(data) {
     const ctx = document.getElementById('chart-annee-dep') ;
     if (!ctx) return ;
 
-    const annees = [...new Set(data.map(d => d.annee))].sort() ;
-    const deps   = [...new Set(data.map(d => d.code_dep))].sort() ;
-    const depNoms = {} ;
-    data.forEach(d => depNoms[d.code_dep] = d.nom_departement) ;
+    // Années uniques
+    const annees = [] ;
+    for (const d of data) {
+        if (!annees.includes(d.annee)) {
+            annees.push(d.annee) ;
+        }
+    }
+    annees.sort() ;
 
-    const datasets = deps.map((dep, i) => ({
-        label: `${depNoms[dep]} (${dep})`,
-        data: annees.map(a => {
-            const found = data.find(d => d.annee == a && d.code_dep == dep) ;
-            return found ? parseInt(found.nb_points) : 0 ;
-        }),
-        backgroundColor: CHART_COLORS[i % CHART_COLORS.length],
-        borderRadius: 4,
-        borderWidth: 0,
-    })) ;
+    // Départements uniques
+    const deps = [] ;
+    for (const d of data) {
+        if (!deps.includes(d.code_dep)) {
+            deps.push(d.code_dep) ;
+        }
+    }
+    deps.sort() ;
+
+    // Dictionnaire nom/code
+    const depNoms = {} ;
+    for (const d of data) {
+        depNoms[d.code_dep] = d.nom_departement ;
+    }
+
+    // Datasets
+    const datasets = deps.map((dep, i) => {
+        const valeurs = annees.map(annee => {
+            const ligne = data.find(d => d.annee == annee && d.code_dep == dep) ;
+            return ligne ? parseInt(ligne.nb_points) : 0 ; // Retourne 0 si pas de borne à "cette année dans ce dep"
+        }) ;
+
+        return {
+            label: `${depNoms[dep]} (${dep})`,
+            data: valeurs,
+            backgroundColor: CHART_COLORS[i],
+            borderRadius: 4,
+            borderWidth: 0,
+        } ;
+    }) ;
 
     new Chart(ctx, {
         type: 'bar',
@@ -255,18 +238,8 @@ function renderChartAnneeDepGrouped(data) {
                         color: '#a09bc0',
                     }
                 },
-                tooltip: {
-                    backgroundColor: '#1e1b2e',
-                    borderColor: '#2e2a45',
-                    borderWidth: 1,
-                    titleColor: '#ede9ff',
-                    bodyColor: '#a09bc0',
-                    padding: 10,
-                    callbacks: {
-                        label: ctx => ` ${ctx.dataset.label} : ${ctx.parsed.y.toLocaleString('fr-FR')} points`
-                    }
-                },
-                datalabels: { display: false } 
+                datalabels: { display: false },
+                tooltip: { enabled: false }
             },
             scales: {
                 x: {

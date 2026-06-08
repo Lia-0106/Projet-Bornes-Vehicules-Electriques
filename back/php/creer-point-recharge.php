@@ -68,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'nom_enseigne'           => 'Enseigne',
         'operateur'              => 'Opérateur',
         'contact_operateur'      => 'Contact opérateur',
+        'date_mise_en_service'   => 'Date de mise en service',
     ] ;
 
     foreach ($champsObligatoires as $champ => $label) {
@@ -400,7 +401,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                  value="<?= htmlspecialchars(isset($_POST['nom_enseigne']) ? $_POST['nom_enseigne'] : '') ?>" />
         </div>
         <div class="field">
-          <label>Date de mise en service</label>
+          <label>Date de mise en service <span>*</span></label>
           <input type="date" name="date_mise_en_service" class="filter-input"
                  value="<?= htmlspecialchars(isset($_POST['date_mise_en_service']) ? $_POST['date_mise_en_service'] : '') ?>" />
         </div>

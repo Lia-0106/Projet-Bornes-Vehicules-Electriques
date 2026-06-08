@@ -161,4 +161,3 @@ CREATE TABLE point_recharge_prise (
   CONSTRAINT point_recharge_prise_id_FK FOREIGN KEY (id) REFERENCES point_de_recharge (id),
   CONSTRAINT point_recharge_prise_type_prise_FK FOREIGN KEY (type_prise) REFERENCES type_prise (type_prise)
 )ENGINE=InnoDB;
-

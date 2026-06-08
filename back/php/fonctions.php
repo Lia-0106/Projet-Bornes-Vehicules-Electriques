@@ -9,9 +9,14 @@
 // INLIST
 // Vérifie si une valeur est présente dans une chaine
 // -------------------------------------------------------
-function inList($chaine, $valeur) {
-    $liste = explode(',', $chaine) ;
-    return in_array($valeur, $liste) ;
+function inList($data, $valeur) {
+    if (!is_array($data)) {
+        $data = explode(',', $data) ;
+        foreach ($data as $i => $elem) {
+            $data[$i] = trim($elem) ;
+        }
+    }
+    return in_array($valeur, $data) ;
 }
 
 // -------------------------------------------------------
