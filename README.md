@@ -1,10 +1,10 @@
 # EliVolt : Application de gestion des bornes de recharge électrique
 
-EliVolt est une application web de visualistaion et de gestion des infrastructures de recharge pour les véhicules électriques en Bretagne. Elle permet d'afficher les points de recharge, d'obtenir des statistiques et de visualiser leur répartition sur une carte interactive.
+EliVolt est une application web de visualisation et de gestion des infrastructures de recharge pour les véhicules électriques en Bretagne. Elle permet d'afficher les points de recharge, d'obtenir des statistiques et de visualiser leur répartition sur une carte interactive.
 
 Les données sont issues de l'open data national IRVE.
 
-Le côté back office permet l'ajout, la modification et la suppresion d'un point de recharge.
+Le côté back office permet l'ajout, la modification et la suppression d'un point de recharge.
 
 -----
 
@@ -21,7 +21,7 @@ Le côté back office permet l'ajout, la modification et la suppresion d'un poin
 ### Front-end :
  - ```HTML, CSS, JavaScript```
  - ```Bootstrap 5.3```
- - ```Leaflet.js``` (carte interactive avce OpenStreetMap)
+ - ```Leaflet.js``` (carte interactive avec OpenStreetMap)
  - Font Awesome (pour les icones)
 
 ### Back-end : 
@@ -45,7 +45,7 @@ Le côté back office permet l'ajout, la modification et la suppresion d'un poin
  - Total des points de recharge
  - Nb de points par année
  - Nb de points par département
- - Nb de points par année et par épartement
+ - Nb de points par année et par département
  - Nb d'aménageurs
  - Types de prises
  - Nb de stations
@@ -97,7 +97,7 @@ Le côté back office permet l'ajout, la modification et la suppresion d'un poin
  - Affichage d'un nombre de points défini dans le tableau du back (ex : afficher 50 points par page)
  - Possibilité de renseigner directement la page où l'on souhaite se rendre
 
-- Système de recherche d'un point par son identifiant et de suppresion du filtre actuel
+- Système de recherche d'un point par son identifiant et de suppression du filtre actuel
 
 - Graphiques de statistiques sur la page d'accueil
 
@@ -109,7 +109,7 @@ Le côté back office permet l'ajout, la modification et la suppresion d'un poin
 projet-cir2-37/                                                                    
 ├── back/                               # Back-office (administration)             
 │   ├── css/                                                                       
-├── php/                                                                           
+│   ├── php/                                                                       
 │   │   ├── API/                                                                   
 │   │   │   ├── Carte.php               # Classe requêtes SQL carte                
 │   │   │   ├── constantes.php          # Identifiants base de données             
@@ -166,15 +166,57 @@ projet-cir2-37/
 
 ### B) Etapes d'installation
 
-**1.** Extraire l'archive
+#### 1. Configuration du VirtualHost
 
-**2.** Placer le dossier dans la VM ```/var/www/html/projet-cir2-37```
+- Extraire l'archive fournie `projet-cir2-37`
+- Placer le dossier dans `/var/www/html`
+- Créer le fichier de configuration avec la commande : `sudo nano /etc/apache2/sites-available/projet-cir2-37.conf`
+- Coller le contenu suivant :
 
-**3.** Créer la base de données et la remplir
-- A l'aide du script SQL
-- A l'aide du script d'insersion de la base de données
+```apache
+<VirtualHost *:80>
 
-**4.** Configurer le VirtualHost Apache
+    ServerName projet-cir2-37
+    ServerAlias 10.10.51.37
+    DocumentRoot /var/www/html/projet-cir2-37/front
+
+    <Directory /var/www/html/projet-cir2-37/front>
+        AllowOverride All
+        Require all granted
+        Options -Indexes
+    </Directory>
+
+    Alias /back /var/www/html/projet-cir2-37/back
+    <Directory /var/www/html/projet-cir2-37/back>
+        AllowOverride All
+        Require all granted
+        Options -Indexes
+    </Directory>
+
+    Alias /ressources /var/www/html/projet-cir2-37/ressources
+    <Directory /var/www/html/projet-cir2-37/ressources>
+        AllowOverride All
+        Require all granted
+        Options -Indexes
+    </Directory>
+
+</VirtualHost>
+```
+
+- Exécuter `sudo a2ensite projet-cir2-37`
+- Exécuter `sudo systemctl reload apache2`
+- Modifier le fichier hosts pour associer le nom de domaine à l'IP :
+  - Linux/Mac : `sudo nano /etc/hosts` → ajouter `10.10.51.37 projet-cir2-37`
+  - Windows : éditer `C:\Windows\System32\drivers\etc\hosts` → ajouter `10.10.51.37 projet-cir2-37`
+
+
+#### 2. Créer la base de données et la remplir
+
+- **Connexion BDD**  -> `mysql -u irveuser -p irvepwd`  
+- **Créer la base et sélectionner** -> `CREATE DATABASE irve ;`puis `use irve ;`  
+- **Créer les tables** -> coller le contenu de `sql-JMerise.sql` dans le terminal MySQL  
+- **Importer les données** -> `python3 import_irve.py` (se placer dans le dossier courant, et les .csv fournis doivent être également dans le même dossier)  
+
 
 ### C) Accès au site
 
@@ -191,8 +233,8 @@ projet-cir2-37/
   
 -----
 
-## VII - Notes
+## VIII - Notes
 
-- Présence d'Alias dans la config du Vhost pour simplifier les liens  
+- Présence d'Alias dans la config du Vhost pour simplifier les liens les accès
   
-- Lors de la création d'un pt avec une donnée existante liée à d'autres, le champs ne sera pas rempli, pour cela, il faut accéder à la page de modification du point (ex : on utilise un aménageur existant mais avec un nouveau contact ou numéro de SIREN -> ceux en base sont conservés)
+- Lors de la création d'un pt avec une donnée existante liée à d'autres, le champ ne sera pas rempli (ex : on utilise un aménageur existant mais avec un nouveau contact ou numéro de SIREN -> ceux en base sont conservés, même si vides)
