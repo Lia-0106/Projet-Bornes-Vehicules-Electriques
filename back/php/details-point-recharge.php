@@ -13,6 +13,7 @@ if (!isset($_SESSION['admin'])) {
 require_once __DIR__ . '/API/Database.php' ;
 require_once __DIR__ . '/API/constantes.php' ;
 require_once __DIR__ . '/API/PointRecharge.php' ;
+require_once __DIR__ . '/fonctions.php' ;
 
 
 // -------------------------------------------------------
@@ -56,7 +57,7 @@ if (!$point) {
 <nav class="ev-nav">
   <a href="/back/index.php" class="brand">
     <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo"/>
-    <span class="brand-name">EliVolt <span class="text-muted fw-normal fs-sm">Admin</span></span>
+    <span class="brand-name">EliVolt <span class="text-muted fw-normal">Admin</span></span>
   </a>
   <div class="nav-links">
     <a href="/back/index.php">Accueil</a>
@@ -155,7 +156,7 @@ if (!$point) {
         </div>
         <hr>
         <div class="info-row"><span class="info-label">Enseigne</span><span><?= htmlspecialchars(isset($point['nom_enseigne']) ? $point['nom_enseigne'] : '—') ?></span></div>
-        <div class="info-row"><span class="info-label">Mise en service</span><span><?= htmlspecialchars(isset($point['date_mise_en_service']) ? $point['date_mise_en_service'] : '—') ?></span></div>
+        <div class="info-row"><span class="info-label">Mise en service</span><span><?= formatDate($point['date_mise_en_service']) ? formatDate($point['date_mise_en_service']) : '—' ?></span></div>
         <div class="info-row"><span class="info-label">Opérateur</span><span><?= htmlspecialchars(isset($point['nom_operateur']) ? $point['nom_operateur'] : '—') ?></span></div>
         <div class="info-row"><span class="info-label">Contact opérateur</span><span><?= htmlspecialchars(isset($point['contact_operateur']) ? $point['contact_operateur'] : '—') ?></span></div>
         <div class="info-row"><span class="info-label">Tel. opérateur</span><span><?= htmlspecialchars(isset($point['telephone_operateur']) ? $point['telephone_operateur'] : '—') ?></span></div>

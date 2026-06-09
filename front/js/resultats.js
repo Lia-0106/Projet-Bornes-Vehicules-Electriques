@@ -36,7 +36,7 @@ function displayResultats(data) {
     tbody.innerHTML = ''
 
     if (data.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-muted py-4">Aucun point de recharge ne correspond à vos critères.</td></tr>`
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center py-4">Aucun point de recharge ne correspond à vos critères.</td></tr>`
     }
 
     data.forEach(item => {

@@ -5,7 +5,7 @@
 // Carte Leaflet centrée sur la Bretagne
 // Tableau marqueurs : stocke les marqueurs actifs
 // -------------------------------------------------------
-var map      = L.map('map').setView([48.1, -2.9], 8) ;
+var map = L.map('map').setView([48.1, -2.9], 8) ;
 var marqueurs = [] ;
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

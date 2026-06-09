@@ -465,6 +465,10 @@ main {
   background: var(--surface2) ;
 }
 
+tbody, td, tfoot, th, thead, tr {
+  border: none;
+}
+
 .table-title { 
   font-size: 13px ; 
   font-weight: 600 ; 

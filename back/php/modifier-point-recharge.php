@@ -179,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <nav class="ev-nav">
   <a href="/back/index.php" class="brand">
     <img src="../../ressources/img/logo.jpeg" alt="Logo Elivolt" class="brand-logo"/>
-    <span class="brand-name">EliVolt <span class="text-muted fw-normal fs-sm">Admin</span></span>
+    <span class="brand-name">EliVolt <span class="text-muted fw-normal">Admin</span></span>
   </a>
   <div class="nav-links">
     <a href="/back/index.php">Accueil</a>

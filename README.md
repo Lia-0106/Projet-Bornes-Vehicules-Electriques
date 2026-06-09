@@ -67,6 +67,8 @@ Le côté back office permet l'ajout, la modification et la suppression d'un poi
  - Caractéristiques
  - Exploitation
 
+**5. Affichage responsive et ergonomique, adapté pour mobiles et tablettes**
+
 ### Back-end :
         
 **1. Accueil : présentation du back-office avec un tableau des points de recharge**
@@ -150,7 +152,6 @@ projet-cir2-37/
 │   ├── planning/                       # Planning et tableau de suivi du projet   
 │   └── import_irve.py                  # Script d'import des données CSV          
 ├── sql/                                # Script de création des tables            
-├── index.html                                                                     
 └── README.md                                                                      
 ```
 
